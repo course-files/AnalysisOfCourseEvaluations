@@ -1,6 +1,7 @@
 ---
 title: "Course Evaluation Results"
 output:
+  html_notebook: default
   pdf_document: 
     toc: yes
     number_sections: yes
@@ -8,7 +9,6 @@ output:
     fig_height: 9
     fig_caption: yes
     keep_tex: yes
-  html_notebook: default
   html_document: 
     toc: yes
     df_print: kable
@@ -18,7 +18,7 @@ output:
     keep_md: yes
 ---
 
-```{css, echo=FALSE}
+```{css CSS_Chunk, echo=FALSE}
 table {
   border-collapse: collapse;
   table-layout: auto;
@@ -64,6 +64,8 @@ td {
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Lecturer**                                                                            | Dr Allan Omondi                                                         |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
+
+\newpage
 
 ------------------------------------------------------------------------
 
@@ -218,6 +220,34 @@ if (!is.element("reshape2", installed.packages()[, 1])) {
                    repos = "https://cloud.r-project.org")
 }
 require("reshape2")
+
+## textstem - Used to lemmatize words ----
+if (!is.element("textstem", installed.packages()[, 1])) {
+  install.packages("textstem", dependencies = TRUE,
+                   repos = "https://cloud.r-project.org")
+}
+require("textstem")
+
+## hunspell - High-Performance Stemmer, Tokenizer, and Spell Checker ----
+if (!is.element("hunspell", installed.packages()[, 1])) {
+  install.packages("hunspell", dependencies = TRUE,
+                   repos = "https://cloud.r-project.org")
+}
+require("hunspell")
+
+## stringr - For processing characters in a string ----
+if (!is.element("stringr", installed.packages()[, 1])) {
+  install.packages("stringr", dependencies = TRUE,
+                   repos = "https://cloud.r-project.org")
+}
+require("stringr")
+
+## webshot2 - To ensure that HTML content is shown as a screenshot ----
+if (!is.element("webshot2", installed.packages()[, 1])) {
+  install.packages("webshot2", dependencies = TRUE,
+                   repos = "https://cloud.r-project.org")
+}
+require("webshot2")
 ```
 
 ```{r STEP2.CustomizetheVisualizations, include=FALSE, warning=FALSE}
@@ -265,13 +295,6 @@ blue_grey_theme <- function() {
     legend.position = "right"
   )
 }
-
-# Customize the text tables for consistency using HTML formatting
-kable_theme <- function(dat, caption) {
-  kable(dat, "html", escape = FALSE, caption = caption) %>%
-    kableExtra::kable_styling(bootstrap_options = c("striped", "condensed", "bordered"),full_width = FALSE)
-}
-
 ```
 
 ```{r ImportDataset, include=FALSE, warning=FALSE}
@@ -386,13 +409,12 @@ df <- data.frame(
 colnames(df) <- c("Mean Score", "Percentage")
 ```
 
-# Overall Course Evaluation Score
+# Course Evaluation Score
 
 ```{r TabularResultOfOverallScore, echo=FALSE, results='asis'}
-df_table <- knitr::kable(df, caption = "Overall Course Evaluation Score", format = "html", digits = 4, align = "c")
-
-print(df_table)
-print(df)
+# kableExtra::kable_styling(
+knitr::kable(df, caption = "Overall Course Evaluation Score", format = "html", digits = 4, align = "c")
+# bootstrap_options = c("striped", "condensed", "bordered"),full_width = FALSE)
 ```
 
 ------------------------------------------------------------------------
@@ -606,6 +628,8 @@ ggplot(evaluation_rating_per_question_per_class_long_data,
              linetype = "dashed", size = 1)
 ```
 
+\newpage
+
 The **"Average Course Evaluation Rating"** variable in the plot below indicates the score **per gender** with a baseline of 4/5.
 
 ```{r VisualizationsForCourseEvaluationResultsperGender, echo=FALSE, warning=FALSE}
@@ -623,6 +647,8 @@ ggplot(evaluation_rating_per_question_per_gender_long_data,
   geom_hline(yintercept = 4, color = "#b90c0c",
              linetype = "dashed", size = 1)
 ```
+
+\newpage
 
 The plot below presents a drill-down of the class group into **regular and exempt** students:
 
@@ -642,7 +668,9 @@ ggplot(evaluation_rating_per_question_per_group_long_data,
              linetype = "dashed", size = 1)
 ```
 
-# Correlations 
+\newpage
+
+# Correlations
 
 The following variables have been renamed to fit the correlation plots:
 
@@ -741,6 +769,8 @@ ggcorrplot(cor(course_evaluation_dataset_short_names))
 
 ```
 
+\newpage
+
 The specifc correlation values are presented below:
 
 ```{r CorrelationMatrixWithFigures, echo=FALSE}
@@ -793,4 +823,635 @@ ggplot(course_evaluation_dataset,
        aes(x = `Q02_General Questions->A - 11. I use the eLearning material posted`, y = Absenteeism, shape = Gender, color = Gender)) +
   geom_point() +
   geom_smooth(method = lm)
+```
+
+\newpage
+
+# Qualitative Data (Likes and Wishes)
+
+```{r QualitativeDatareProcessing, message=FALSE, warning=FALSE, include=FALSE}
+## Average per Question per Group ----
+evaluation_likes_and_wishes <- course_evaluation_dataset %>%
+  rename(`Class Group` = `Q01_Class Demographics`) %>%
+  rename(`Likes` = `Q05_Likes->D - 1. Write two things you like about the teaching and learning in this unit so far.`) %>%
+  rename(`Wishes` = `Q05_Wishes->D - 2. Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)`) %>%
+  filter(!is.na(`Q02_General Questions->A - 11. I use the eLearning material posted`)) %>%
+  rowwise() %>%
+  
+  # average_course_evaluation_rating
+  mutate(average_course_evaluation_rating = mean(c(`Q02_General Questions->A - 1. I am enjoying the subject`, `Q02_General Questions->A - 2. Classes start and end on time`, `Q02_General Questions->A - 3. The learning environment is participative, involves learning by doing and is group-based`, `Q02_General Questions->A - 4. The subject content is delivered according to the course outline and meets my expectations`, `Q02_General Questions->A - 5. The topics are clear and logically developed`, `Q02_General Questions->A - 6. I am developing my oral and writing skills`, `Q02_General Questions->A - 7. I am developing my reflective and critical reasoning skills`, `Q02_General Questions->A - 8. The assessment methods are assisting me to learn`, `Q02_General Questions->A - 9. I receive relevant feedback`, `Q02_General Questions->A - 10. I read the recommended readings and notes`, `Q02_General Questions->A - 11. I use the eLearning material posted`))) %>%
+  
+  # average_level_of_learning_achieved
+  mutate(average_level_of_learning_achieved = mean(c(`Q03_Level of Learning Achieved->B - 1. Concept 1 of 4 - Ensemble Methods for Predictive Analytics`, `Q03_Level of Learning Achieved->B - 2. Concept 2 of 4 - Predictive Modelling Using R`))) %>%
+
+  # average_quality_of_teaching_strategies  
+  mutate(average_quality_of_teaching_strategies = mean(c(`Q04_Quality of Teaching Strategies->C - 1. Labs with comments that describe each step to be followed`, `Q04_Quality of Teaching Strategies->C - 2. Labs that require you to put in effort to make a submission related to the content of the lab`, `Q04_Quality of Teaching Strategies->C - 3. Labs that require you to use Git to work in a team`, `Q04_Quality of Teaching Strategies->C - 4. Labs that require you to work alone`, `Q04_Quality of Teaching Strategies->C - 5. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical/lively the lectures are)`, `Q04_Quality of Teaching Strategies->C - 6. The recordings of online classes`, `Q04_Quality of Teaching Strategies->C - 7. Online classes in general`, `Q04_Quality of Teaching Strategies->C - 8. Face-to-Face classes in general`))) %>%
+
+  # If we had to sort the results
+  arrange(`average_course_evaluation_rating`) %>%
+
+  rename(
+    `A. I am enjoying the subject` =
+      `Q02_General Questions->A - 1. I am enjoying the subject`,
+    `B. Classes start and end on time` =
+      `Q02_General Questions->A - 2. Classes start and end on time`,
+    `C. The learning environment is participative, involves learning by doing and is group-based` =
+      `Q02_General Questions->A - 3. The learning environment is participative, involves learning by doing and is group-based`,
+    `D. The subject content is delivered according to the course outline and meets my expectations` =
+      `Q02_General Questions->A - 4. The subject content is delivered according to the course outline and meets my expectations`,
+    `E. The topics are clear and logically developed` =
+      `Q02_General Questions->A - 5. The topics are clear and logically developed`,
+    `F. I am developing my oral and writing skills` =
+      `Q02_General Questions->A - 6. I am developing my oral and writing skills`,
+    `G. I am developing my reflective and critical reasoning skills` =
+      `Q02_General Questions->A - 7. I am developing my reflective and critical reasoning skills`,
+    `H. The assessment methods are assisting me to learn` =
+      `Q02_General Questions->A - 8. The assessment methods are assisting me to learn`,
+    `I. I receive relevant feedback` =
+      `Q02_General Questions->A - 9. I receive relevant feedback`,
+    `J. I read the recommended readings and notes` =
+      `Q02_General Questions->A - 10. I read the recommended readings and notes`,
+    `K. I use the eLearning material posted` =
+      `Q02_General Questions->A - 11. I use the eLearning material posted`,
+     `L. Average Quality of Teaching Strategies` =
+      average_quality_of_teaching_strategies,
+     `M. Average Level of Learning Achieved` =
+      average_level_of_learning_achieved,
+     `N. Average Course Evaluation Rating` =
+      average_course_evaluation_rating
+  ) %>%
+  select(
+    `Class Group`,
+    `Gender`,
+    `A. I am enjoying the subject`,
+    `B. Classes start and end on time`,
+    `C. The learning environment is participative, involves learning by doing and is group-based`,
+    `D. The subject content is delivered according to the course outline and meets my expectations`,
+    `E. The topics are clear and logically developed`,
+    `F. I am developing my oral and writing skills`,
+    `G. I am developing my reflective and critical reasoning skills`,
+    `H. The assessment methods are assisting me to learn`,
+    `I. I receive relevant feedback`,
+    `J. I read the recommended readings and notes`,
+    `K. I use the eLearning material posted`,
+    `L. Average Quality of Teaching Strategies`,
+    `M. Average Level of Learning Achieved`,
+    `N. Average Course Evaluation Rating`,
+    `Likes`,
+    `Wishes`
+  )
+
+expand_contractions <- function(doc) {
+  doc <- gsub("I'm", "I am", doc, ignore.case = TRUE)
+  doc <- gsub("you're", "you are", doc, ignore.case = TRUE)
+  doc <- gsub("he's", "he is", doc, ignore.case = TRUE)
+  doc <- gsub("she's", "she is", doc, ignore.case = TRUE)
+  doc <- gsub("it's", "it is", doc, ignore.case = TRUE)
+  doc <- gsub("we're", "we are", doc, ignore.case = TRUE)
+  doc <- gsub("they're", "they are", doc, ignore.case = TRUE)
+  doc <- gsub("I'll", "I will", doc, ignore.case = TRUE)
+  doc <- gsub("you'll", "you will", doc, ignore.case = TRUE)
+  doc <- gsub("he'll", "he will", doc, ignore.case = TRUE)
+  doc <- gsub("she'll", "she will", doc, ignore.case = TRUE)
+  doc <- gsub("it'll", "it will", doc, ignore.case = TRUE)
+  doc <- gsub("we'll", "we will", doc, ignore.case = TRUE)
+  doc <- gsub("they'll", "they will", doc, ignore.case = TRUE)
+  doc <- gsub("won't", "will not", doc, ignore.case = TRUE)
+  doc <- gsub("can't", "cannot", doc, ignore.case = TRUE)
+  doc <- gsub("n't", " not", doc, ignore.case = TRUE)
+  return(doc)
+}
+
+# Expand contractions
+evaluation_likes_and_wishes$Likes <- sapply(evaluation_likes_and_wishes$Likes, expand_contractions)
+
+evaluation_likes_and_wishes$Wishes <- sapply(evaluation_likes_and_wishes$Wishes, expand_contractions)
+
+# Remove special characters
+remove_special_characters <- function(doc) {
+  gsub("[^a-zA-Z ]", "", doc, ignore.case = TRUE)
+}
+
+evaluation_likes_and_wishes$Likes <- sapply(evaluation_likes_and_wishes$Likes, remove_special_characters)
+
+evaluation_likes_and_wishes$Wishes <- sapply(evaluation_likes_and_wishes$Wishes, remove_special_characters)
+
+# Tokenization, stopword removal, censorship, short word removal
+undesirable_words <- c("wow", "lol", "none", "na")
+
+evaluation_likes_filtered <- evaluation_likes_and_wishes %>%
+  # We start by tokenization (un-nesting words). This is from the variable
+  # "Like" into the variable "word".
+  unnest_tokens(word, Likes, token = "ngrams", n = 1) %>%
+  # Then we remove stopwords using an anti-join
+  # Anti-join: do not join where the word is in the list of stopwords
+  anti_join(stop_words, by = c("word")) %>%
+  distinct() %>%
+  # Censor or filter out unwanted words
+  filter(!word %in% undesirable_words) %>%
+  # Include only words that are more than 3 characters long (assuming that
+  # these are the words that are meaningful)
+  filter(nchar(word) > 3) %>%
+  # We then rename the variable "word" for ease of use.
+  rename(`Likes` = word) %>%
+  # We focus only on the likes in this data frame
+  select(-Wishes)
+
+# The same is done to create a data frame for the "wishes" only
+evaluation_wishes_filtered <- evaluation_likes_and_wishes %>% # nolint
+  unnest_tokens(word, Wishes, token = "ngrams", n = 1) %>%
+  anti_join(stop_words, by = c("word")) %>%
+  distinct() %>%
+  filter(!word %in% undesirable_words) %>%
+  filter(nchar(word) > 3) %>%
+  rename(`Wishes` = word) %>%
+  select(-Likes)
+
+# Correct Spelling
+correct_spelling <- function(x) {
+  sapply(1:length(x),
+    function(y) {
+      bad <- hunspell(x[y])[[1]]
+      good <-
+        unlist(lapply(hunspell_suggest(bad),
+                      `[[`, 1))
+
+      if (length(bad)) {
+        for (i in 1:length(bad)){
+          x[y] <<- gsub(bad[i], good[i], x[y])
+        }
+      }
+    }
+  )
+  x
+}
+
+# Likes
+corrected_spelling <-
+  evaluation_likes_filtered$`Likes` %>%
+  correct_spelling()
+
+evaluation_likes_filtered$`Likes` <- corrected_spelling
+
+# The repeated pre-processing includes:
+# 1. Expanding Contractions
+evaluation_likes_filtered$`Likes` <- sapply(evaluation_likes_filtered$`Likes`, expand_contractions)
+
+# 2. Remove special Characters
+evaluation_likes_filtered$`Likes` <- sapply(evaluation_likes_filtered$`Likes`, remove_special_characters)
+
+# 3. Convert to Lower-Case for a standard form
+evaluation_likes_filtered$`Likes` <- sapply(evaluation_likes_filtered$`Likes`, tolower)
+
+# 4. Tokenization, stopword removal, short word removal, and censorship
+evaluation_likes_filtered <- evaluation_likes_filtered %>% # nolint
+  unnest_tokens(word, `Likes`, token = "ngrams", n = 1) %>%
+  anti_join(stop_words, by = c("word")) %>%
+  distinct() %>%
+  filter(!word %in% undesirable_words) %>%
+  filter(nchar(word) > 3) %>%
+  rename(`Likes` = word)
+
+# Wishes
+corrected_spelling <-
+  evaluation_wishes_filtered$`Wishes` %>%
+  correct_spelling()
+
+evaluation_wishes_filtered$`Wishes` <- corrected_spelling
+
+### Repeat the pre-processing for the correctly spelt words ----
+# This is done for the sake of the words which were split into more than one
+# word after correcting the spelling mistake.
+
+# The repeated pre-processing includes:
+# 1. Expanding Contractions
+evaluation_wishes_filtered$`Wishes` <- sapply(evaluation_wishes_filtered$`Wishes`, expand_contractions) # nolint
+# 2. Remove special Characters
+evaluation_wishes_filtered$`Wishes` <- sapply(evaluation_wishes_filtered$`Wishes`, remove_special_characters) # nolint
+# 3. Convert to Lower-Case for a standard form
+evaluation_wishes_filtered$`Wishes` <- sapply(evaluation_wishes_filtered$`Wishes`, tolower) # nolint
+
+# 4. Tokenization, stopword removal, short word removal, and censorship
+evaluation_wishes_filtered <- evaluation_wishes_filtered %>% # nolint
+  unnest_tokens(word, `Wishes`, token = "ngrams", n = 1) %>%
+  anti_join(stop_words, by = c("word")) %>%
+  distinct() %>%
+  filter(!word %in% undesirable_words) %>%
+  filter(nchar(word) > 3) %>%
+  rename(`Wishes` = word)
+
+### We can now perform lemmatization on the correctly spelt words ----
+# We need to first create a lemma lookup table. The lemmatize_strings()
+# function will then use this lookup table to replace the words.
+
+# Think of the lemma lookup table as a subset of an entire lemma dictionary.
+# This makes it easier to search for a word in the smaller lookup table
+# instead of searching for a word in the entire lemma dictionary.
+
+# Lemma lookup tables specific to a project can be made by referring to
+# a pre-existing lemma dictionary. The code below shows how the "Hunspell"
+# lemma dictionary is used to create  the lemma lookup table (subset of
+# the dictionary).
+
+# Lemma dictionaries include:
+#   1. Hunspell: https://hunspell.github.io/ or
+#                https://cran.r-project.org/package=hunspell
+#   2. koRpus: https://reaktanz.de/?c=hacking&s=koRpus or
+#              https://cran.r-project.org/package=koRpus
+#   3. Michal Měchura (2016): https://www.lexiconista.com/
+#   etc.
+
+lemma_dictionary_for_likes <-
+  make_lemma_dictionary(evaluation_likes_filtered$`Likes`,
+                        engine = "hunspell")
+
+evaluation_likes_filtered$`Likes` <-
+  evaluation_likes_filtered$`Likes` %>%
+  lemmatize_strings(dictionary = lemma_dictionary_for_likes)
+
+lemma_dictionary_for_wishes <-
+  make_lemma_dictionary(evaluation_wishes_filtered$`Wishes`,
+                        engine = "hunspell")
+
+evaluation_wishes_filtered$`Wishes` <-
+  evaluation_wishes_filtered$`Wishes` %>%
+  lemmatize_strings(dictionary = lemma_dictionary_for_wishes)
+```
+
+```{r SignificantWords_Likes, eval=FALSE, include=FALSE}
+## Evaluation Likes ----
+evaluation_likes_filtered_cloud <- evaluation_likes_filtered %>% # nolint
+  count(`Likes`, sort = TRUE)
+
+wordcloud2(evaluation_likes_filtered_cloud, size = .5)
+
+```
+
+```{r SignificantWords_Wishes, eval=FALSE, include=FALSE}
+## Evaluation Wishes ----
+evaluation_wishes_filtered_cloud <- evaluation_wishes_filtered %>%
+  count(`Wishes`, sort = TRUE)
+
+wordcloud2(evaluation_wishes_filtered_cloud, size = .5)
+```
+
+## Term Frequency - Inverse Document Frequency (TF-IDF) Score
+
+The plot below presents the quantitative measure of "significance" using the Term Frequency - Inverse Document Frequency (TF-IDF) score:
+
+TF-IDF Score (Likes) per Gender
+
+```{r TF-IDFLikesPerGender, echo=FALSE}
+popular_tfidf_words_gender_likes <- evaluation_likes_filtered %>% # nolint
+  unnest_tokens(word, `Likes`) %>%
+  distinct() %>%
+  filter(!word %in% undesirable_words) %>%
+  filter(nchar(word) > 3) %>%
+  rename(`Likes` = word) %>%
+  select(`Class Group`, `Gender`,
+         `N. Average Course Evaluation Rating`, `Likes`) %>%
+  count(`Gender`, `Likes`, sort = TRUE) %>%
+  ungroup() %>%
+  bind_tf_idf(`Likes`, `Gender`, n)
+
+top_popular_tfidf_words <- popular_tfidf_words_gender_likes %>%
+  arrange(desc(tf_idf)) %>%
+  mutate(`Likes` =
+           factor(`Likes`,
+                  levels = rev(unique(`Likes`)))) %>%
+  group_by(`Gender`) %>%
+  slice(seq_len(10)) %>%
+  ungroup() %>%
+  arrange(`Gender`, tf_idf) %>%
+  mutate(row = row_number())
+
+top_popular_tfidf_words %>%
+  ggplot(aes(x = row, tf_idf, fill = `Gender`)) +
+  geom_col(fill = blue_grey_colours_1) +
+  blue_grey_theme() +
+  labs(x = "Word in Course Evaluation", y = "TF-IDF Score") +
+  ggtitle("Important Words using TF-IDF by Chart Level") +
+  ggtitle("Most Important Words by TF-IDF Score in Course Evaluation Likes per 
+      Class Group") +
+  facet_wrap(~`Gender`, scales = "free") +
+  scale_x_continuous(
+                     breaks = top_popular_tfidf_words$row,
+                     labels = top_popular_tfidf_words$`Likes`) +
+  coord_flip()
+```
+
+\newpage
+
+TF-IDF Score (Likes) per Class Group
+
+```{r TF-IDFLikesPerGroup, echo=FALSE}
+### TF-IDF Score per Group ----
+popular_tfidf_words_likes <- evaluation_likes_filtered %>% # nolint
+  unnest_tokens(word, `Likes`) %>%
+  distinct() %>%
+  filter(!word %in% undesirable_words) %>%
+  filter(nchar(word) > 3) %>%
+  rename(`Likes` = word) %>%
+  select(`Class Group`, `Gender`,
+         `N. Average Course Evaluation Rating`, `Likes`) %>%
+  count(`Class Group`, `Likes`, sort = TRUE) %>%
+  ungroup() %>%
+  bind_tf_idf(`Likes`, `Class Group`, n)
+
+top_popular_tfidf_words <- popular_tfidf_words_likes %>%
+  arrange(desc(tf_idf)) %>%
+  mutate(`Likes` =
+           factor(`Likes`,
+                  levels = rev(unique(`Likes`)))) %>%
+  group_by(`Class Group`) %>%
+  slice(seq_len(10)) %>%
+  ungroup() %>%
+  arrange(`Class Group`, tf_idf) %>%
+  mutate(row = row_number())
+
+top_popular_tfidf_words %>%
+  ggplot(aes(x = row, tf_idf, fill = `Class Group`)) +
+  geom_col(fill = blue_grey_colours_1) +
+  blue_grey_theme() +
+  labs(x = "Word in Course Evaluation", y = "TF-IDF Score") +
+  ggtitle("Important Words using TF-IDF by Chart Level") +
+  ggtitle("Most Important Words by TF-IDF Score in Course Evaluation Likes per 
+      Class Group") +
+  facet_wrap(~`Class Group`, scales = "free") +
+  scale_x_continuous(
+                     breaks = top_popular_tfidf_words$row,
+                     labels = top_popular_tfidf_words$`Likes`) +
+  coord_flip()
+```
+
+\newpage
+
+TF-IDF Score (Wishes) per Gender:
+
+```{r TF-IDFWishesPerGender, echo=FALSE}
+## Evaluation Wishes ----
+### TF-IDF Score per Gender ----
+popular_tfidf_words_gender_wishes <- evaluation_wishes_filtered %>% # nolint
+  unnest_tokens(word, `Wishes`) %>%
+  distinct() %>%
+  filter(!word %in% undesirable_words) %>%
+  filter(nchar(word) > 3) %>%
+  rename(`Wishes` = word) %>%
+  select(`Class Group`, `Gender`,
+         `N. Average Course Evaluation Rating`, `Wishes`) %>%
+  count(`Gender`, `Wishes`, sort = TRUE) %>%
+  ungroup() %>%
+  bind_tf_idf(`Wishes`, `Gender`, n)
+
+top_popular_tfidf_words <- popular_tfidf_words_gender_wishes %>%
+  arrange(desc(tf_idf)) %>%
+  mutate(`Wishes` =
+           factor(`Wishes`,
+                  levels = rev(unique(`Wishes`)))) %>%
+  group_by(`Gender`) %>%
+  slice(seq_len(10)) %>%
+  ungroup() %>%
+  arrange(`Gender`, tf_idf) %>%
+  mutate(row = row_number())
+
+top_popular_tfidf_words %>%
+  ggplot(aes(x = row, tf_idf, fill = `Gender`)) +
+  geom_col(fill = blue_grey_colours_1) +
+  blue_grey_theme() +
+  labs(x = "Word in Course Evaluation", y = "TF-IDF Score") +
+  ggtitle("Important Words using TF-IDF by Chart Level") +
+  ggtitle("Most Important Words by TF-IDF Score in Course Evaluation Wishes per 
+      Class Group") +
+  facet_wrap(~`Gender`, scales = "free") +
+  scale_x_continuous(
+                     breaks = top_popular_tfidf_words$row,
+                     labels = top_popular_tfidf_words$`Wishes`) +
+  coord_flip()
+```
+
+\newpage
+
+TF-IDF Score (Wishes) per Group
+
+```{r TF-IDFWishesPerGroup, echo=FALSE}
+### TF-IDF Score per Group ----
+popular_tfidf_words_likes <- evaluation_wishes_filtered %>% # nolint
+  unnest_tokens(word, `Wishes`) %>%
+  distinct() %>%
+  filter(!word %in% undesirable_words) %>%
+  filter(nchar(word) > 3) %>%
+  rename(`Wishes` = word) %>%
+  select(`Class Group`, `Gender`,
+         `N. Average Course Evaluation Rating`, `Wishes`) %>%
+  count(`Class Group`, `Wishes`, sort = TRUE) %>%
+  ungroup() %>%
+  bind_tf_idf(`Wishes`, `Class Group`, n)
+
+top_popular_tfidf_words <- popular_tfidf_words_likes %>%
+  arrange(desc(tf_idf)) %>%
+  mutate(`Wishes` =
+           factor(`Wishes`,
+                  levels = rev(unique(`Wishes`)))) %>%
+  group_by(`Class Group`) %>%
+  slice(seq_len(10)) %>%
+  ungroup() %>%
+  arrange(`Class Group`, tf_idf) %>%
+  mutate(row = row_number())
+
+top_popular_tfidf_words %>%
+  ggplot(aes(x = row, tf_idf, fill = `Class Group`)) +
+  geom_col(fill = blue_grey_colours_1) +
+  blue_grey_theme() +
+  labs(x = "Word in Course Evaluation", y = "TF-IDF Score") +
+  ggtitle("Important Words using TF-IDF by Chart Level") +
+  ggtitle("Most Important Words by TF-IDF Score in Course Evaluation Wishes per 
+      Class Group") +
+  facet_wrap(~`Class Group`, scales = "free") +
+  scale_x_continuous(
+                     breaks = top_popular_tfidf_words$row,
+                     labels = top_popular_tfidf_words$`Wishes`) +
+  coord_flip()
+```
+
+\newpage
+
+## Lexicon-Based Sentiment Analysis
+
+```{r SentimentAnalysisWithNRC, include=FALSE}
+nrc <- get_sentiments("nrc")
+View(nrc)
+
+# Inner Join the Likes/Wishes with the Corresponding Sentiment(s) ----
+evaluation_likes_filtered_nrc <- evaluation_likes_filtered %>%
+  inner_join(get_sentiments("nrc"),
+             by = join_by(`Likes` == word),
+             relationship = "many-to-many")
+
+evaluation_wishes_filtered_nrc <- evaluation_wishes_filtered %>%
+  inner_join(get_sentiments("nrc"),
+             by = join_by(`Wishes` == word),
+             relationship = "many-to-many")
+
+```
+
+The overall sentiment for the likes is:
+
+```{r OverallSentimentForLikes, echo=FALSE, message=FALSE, warning=FALSE}
+# STEP 6. Overall Sentiment ----
+## Evaluation Likes ----
+nrc_likes_plot <- evaluation_likes_filtered_nrc %>%
+  group_by(sentiment) %>%
+  # You can filter by the class group if you wish
+  # filter(`Class Group` == "A") %>%
+  summarise(word_count = n()) %>%
+  ungroup() %>%
+  mutate(sentiment = reorder(sentiment, word_count)) %>%
+  # `fill = -word_count` is used to make the larger bars darker
+  ggplot(aes(sentiment, word_count, fill = -word_count)) +
+  geom_col() +
+  guides(fill = FALSE) + # Turn off the legend
+  blue_grey_theme() +
+  labs(x = "Sentiment", y = "Word Count") +
+  # scale_y_continuous(limits = c(0, 15000)) + #Hard code the axis limit
+  ggtitle("Lexicon-Based Sentiment Analysis of Course Evaluation Likes") +
+  coord_flip()
+plot(nrc_likes_plot)
+```
+
+\newpage
+
+The overall sentiment for the wishes is:
+
+```{r OverallSentimentForWishes, echo=FALSE, message=FALSE, warning=FALSE}
+## Evaluation Wishes ----
+nrc_wishes_plot <- evaluation_wishes_filtered_nrc %>%
+  group_by(sentiment) %>%
+  # You can filter by the class group if you wish
+  # filter(`Class Group` == "A") %>%
+  summarise(word_count = n()) %>%
+  ungroup() %>%
+  mutate(sentiment = reorder(sentiment, word_count)) %>%
+  # fill = -word_count is used to make the larger bars darker
+  ggplot(aes(sentiment, word_count, fill = -word_count)) +
+  geom_col() +
+  guides(fill = FALSE) + # Turn off the legend
+  blue_grey_theme() +
+  labs(x = "Sentiment", y = "Word Count") +
+  # scale_y_continuous(limits = c(0, 15000)) + #Hard code the axis limit
+  ggtitle("Lexicon-Based Sentiment Analysis of Course Evaluation Wishes") +
+  coord_flip()
+plot(nrc_wishes_plot)
+```
+
+\newpage
+
+Chord Diagram of Likes per Class Group:
+
+```{r ChordDiagramLikesPerGroup, echo=FALSE, message=FALSE, warning=FALSE}
+nrc_likes_chord <-  evaluation_likes_filtered_nrc %>%
+  count(sentiment, `Class Group`) %>%
+  group_by(`Class Group`, sentiment) %>%
+  summarise(sentiment_sum = sum(n)) %>%
+  filter(sentiment_sum > 5) %>%
+  mutate(sentiment = reorder(sentiment, sentiment_sum)) %>%
+  ungroup()
+
+circos.clear()
+# Set the gap size
+circos.par(gap.after = c(rep(5, length(unique(nrc_likes_chord[[1]])) - 1), 15,
+                         rep(5, length(unique(nrc_likes_chord[[2]])) - 1), 15))
+
+
+chordDiagram(nrc_likes_chord, transparency = .2)
+title("Lexicon-Based Sentiment Analysis of Course Evaluation Likes per Class Group")
+```
+
+\newpage
+
+Chord Diagram of Likes per Class Gender:
+
+```{r ChordDiagramLikesPerGender, echo=FALSE, message=FALSE, warning=FALSE}
+nrc_likes_chord <-  evaluation_likes_filtered_nrc %>%
+  count(sentiment, `Gender`) %>%
+  group_by(`Gender`, sentiment) %>%
+  summarise(sentiment_sum = sum(n)) %>%
+  filter(sentiment_sum > 5) %>%
+  mutate(sentiment = reorder(sentiment, sentiment_sum)) %>%
+  ungroup()
+
+circos.clear()
+# Set the gap size
+circos.par(gap.after = c(rep(5, length(unique(nrc_likes_chord[[1]])) - 1), 15,
+                         rep(5, length(unique(nrc_likes_chord[[2]])) - 1), 15))
+
+
+chordDiagram(nrc_likes_chord, transparency = .2)
+title("Lexicon-Based Sentiment Analysis of Course Evaluation Likes per Gender")
+```
+
+\newpage
+
+Chord Diagram of Wishes per Class Group:
+
+```{r ChordDiagramPerGroup_Wishes, echo=FALSE, message=FALSE, warning=FALSE}
+nrc_wishes_chord <-  evaluation_wishes_filtered_nrc %>%
+  count(sentiment, `Class Group`) %>%
+  group_by(`Class Group`, sentiment) %>%
+  summarise(sentiment_sum = sum(n)) %>%
+  filter(sentiment_sum > 3) %>%
+  mutate(sentiment = reorder(sentiment, sentiment_sum)) %>%
+  ungroup()
+
+circos.clear()
+# Set the gap size
+circos.par(gap.after = c(rep(5, length(unique(nrc_wishes_chord[[1]])) - 1), 15,
+                         rep(5, length(unique(nrc_wishes_chord[[2]])) - 1), 15))
+
+chordDiagram(nrc_wishes_chord, transparency = .2)
+title("Lexicon-Based Sentiment Analysis of Course Evaluation Wishes per Class Group")
+
+```
+
+\newpage
+
+Chord Diagram of Wishes per Gender:
+
+```{r ChordDiagramPerGender_Wishes, echo=FALSE, message=FALSE, warning=FALSE}
+nrc_wishes_chord <-  evaluation_wishes_filtered_nrc %>%
+  count(sentiment, `Gender`) %>%
+  group_by(`Gender`, sentiment) %>%
+  summarise(sentiment_sum = sum(n)) %>%
+  filter(sentiment_sum > 3) %>%
+  mutate(sentiment = reorder(sentiment, sentiment_sum)) %>%
+  ungroup()
+
+circos.clear()
+# Set the gap size
+circos.par(gap.after = c(rep(5, length(unique(nrc_wishes_chord[[1]])) - 1), 15,
+                         rep(5, length(unique(nrc_wishes_chord[[2]])) - 1), 15))
+
+chordDiagram(nrc_wishes_chord, transparency = .2)
+title("Lexicon-Based Sentiment Analysis of Course Evaluation Wishes per Group")
+```
+
+\newpage
+
+## Raw Data
+
+### Likes
+
+The raw data of the likes is as follows:
+
+```{r RawLikesData, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::kable(course_evaluation_dataset$`Q05_Likes->D - 1. Write two things you like about the teaching and learning in this unit so far.`, caption = "Write two things you like about the teaching and learning in this unit so far", format = "html", digits = 4, align = "l")
+```
+
+\newpage
+
+### Wishes
+
+The raw data of the wishes is as follows:
+
+```{r RawWishesData, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::kable(course_evaluation_dataset$`Q05_Wishes->D - 2. Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)`, caption = "Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)", format = "html", align = "l")
 ```
