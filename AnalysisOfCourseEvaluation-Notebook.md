@@ -3,7 +3,7 @@ title: "Course Evaluation Results"
 author: "Allan Omondi"
 date: "2023-10-02"
 output:
-  html_document: 
+  html_document:
     toc: yes
     df_print: kable
     fig_width: 14
@@ -11,7 +11,9 @@ output:
     fig_caption: yes
     keep_md: yes
   html_notebook: default
-  pdf_document: 
+  word_document:
+    toc: yes
+  pdf_document:
     toc: yes
     number_sections: yes
     fig_width: 12
@@ -52,7 +54,7 @@ td {
 | **Semester Duration**                                                                   | 21^st^ August 2023 to 28^th^ November 2023                              |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Date of Evaluation**                                                                  | 25^th^ September 2023 to 29^th^ September 2023\                         |
-|                                                                                         | (Week 6/14)                                                             |
+|                                                                                         | Week 6/14                                                               |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Total number of students who submitted the course evaluation**                        | 94                                                                      |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
@@ -62,9 +64,10 @@ td {
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **e-Learning URL**                                                                      | <https://elearning.strathmore.edu/course/view.php?id=6599>              |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Data collection tool URL (for access to the raw data)**                               | <https://elearning.strathmore.edu/mod/questionnaire/view.php?id=221958> |
+| **Data collection tool URL for access to the raw data**                                 | <https://elearning.strathmore.edu/mod/questionnaire/view.php?id=221958> |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Lecturer**                                                                            | Dr Allan Omondi                                                         |
+| **Lecturer**                                                                            | Dr Allan Omondi \                                                       |
+|                                                                                         | \<aomondistrathmore.edu\>                                               |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 
 \newpage
@@ -83,21 +86,9 @@ td {
 
 # Course Evaluation Score
 
-<table>
-<caption>Overall Course Evaluation Score</caption>
- <thead>
-  <tr>
-   <th style="text-align:center;"> Mean Score </th>
-   <th style="text-align:center;"> Percentage </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:center;"> 4.3839 </td>
-   <td style="text-align:center;"> 87.6789 </td>
-  </tr>
-</tbody>
-</table>
+Mean Course Evaluation Score = 4.3839 / 5
+
+Percentage Score = 87.68%
 
 ------------------------------------------------------------------------
 
