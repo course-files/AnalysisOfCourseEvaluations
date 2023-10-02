@@ -1,5 +1,7 @@
 ---
 title: "Course Evaluation Results"
+author: "Allan Omondi"
+date: "2023-10-02"
 output:
   html_document: 
     toc: yes
@@ -65,6 +67,8 @@ td {
 | **Lecturer**                                                                            | Dr Allan Omondi                                                         |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 
+\newpage
+
 ------------------------------------------------------------------------
 
 
@@ -77,9 +81,7 @@ td {
 
 
 
-\newline
-
-# Overall Course Evaluation Score
+# Course Evaluation Score
 
 <table>
 <caption>Overall Course Evaluation Score</caption>
@@ -113,15 +115,19 @@ The **"Average Course Evaluation Rating"** variable in the plot below indicates 
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/VisualizationsForCourseEvaluationResultsperClassGroup-1.png)<!-- -->
 
+\newpage
+
 The **"Average Course Evaluation Rating"** variable in the plot below indicates the score **per gender** with a baseline of 4/5.
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/VisualizationsForCourseEvaluationResultsperGender-1.png)<!-- -->
+
+\newpage
 
 The plot below presents a drill-down of the class group into **regular and exempt** students:
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/VisualizationsForCourseEvaluationResultsperGroup-1.png)<!-- -->
 
-\newline
+\newpage
 
 # Correlations
 
@@ -171,6 +177,8 @@ The following variables have been renamed to fit the correlation plots:
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/CorrelationMatrixWithoutFigures-1.png)<!-- -->
 
+\newpage
+
 The specifc correlation values are presented below:
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/CorrelationMatrixWithFigures-1.png)<!-- -->
@@ -201,33 +209,63 @@ Below are the two most extreme (positive and negative) correlations:
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/DrillDownCorr2-1.png)<!-- -->
 
+\newpage
+
+## Absenteeism Percentage
+
+The lower the absenteeism, the more a student makes use of the e-learning materials posted. And the more a student makes use of the e-learning materials posted, the higher their overall grade in the course.
+
+With this in mind, a further investigation of the **absenteeism percentage** is presented below.
+
+Absenteeism by general class group:
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/AbsenteeismBoxandWhiskerGroup-1.png)<!-- -->
+
+\newpage
+
+Absenteeism by specific class group:
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/AbsenteeismBoxandWhiskerSpecificGroup-1.png)<!-- -->
+
+\newpage
+
+Absenteeism by gender:
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/AbsenteeismBoxandWhiskerGender-1.png)<!-- -->
+
+\newpage
+
 # Qualitative Data (Likes and Wishes)
 
 
 
-The most significant words used in the likes include:
 
 
 
-The most significant words used in the wishes include:
 
-
+## Term Frequency - Inverse Document Frequency (TF-IDF) Score
 
 The plot below presents the quantitative measure of "significance" using the Term Frequency - Inverse Document Frequency (TF-IDF) score:
 
-TF-IDF Score Likes per Gender
+TF-IDF Score (likes) per gender:
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/TF-IDFLikesPerGender-1.png)<!-- -->
 
-TF-IDF Score Likes per Class Group
+\newpage
+
+TF-IDF Score (likes) per specific class group:
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/TF-IDFLikesPerGroup-1.png)<!-- -->
 
-TF-IDF Score Wishes per Gender:
+\newpage
+
+TF-IDF Score (wishes) per gender:
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/TF-IDFWishesPerGender-1.png)<!-- -->
 
-TF-IDF Score Wishes per Group
+\newpage
+
+TF-IDF score (wishes) per specific class group:
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/TF-IDFWishesPerGroup-1.png)<!-- -->
 
@@ -237,13 +275,13 @@ TF-IDF Score Wishes per Group
 
 
 
-The overall sentiment for the likes:
+The overall sentiment for the likes is:
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/OverallSentimentForLikes-1.png)<!-- -->
 
 \newpage
 
-The overall sentiment for the wishes:
+The overall sentiment for the wishes is:
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/OverallSentimentForWishes-1.png)<!-- -->
 
@@ -265,6 +303,8 @@ Chord Diagram of Wishes per Class Group:
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/ChordDiagramPerGroup_Wishes-1.png)<!-- -->
 
+\newpage
+
 Chord Diagram of Wishes per Gender:
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/ChordDiagramPerGender_Wishes-1.png)<!-- -->
@@ -272,6 +312,8 @@ Chord Diagram of Wishes per Gender:
 \newpage
 
 ## Raw Data
+
+### Likes
 
 The raw data of the likes is as follows:
 
@@ -567,6 +609,10 @@ The raw data of the likes is as follows:
   </tr>
 </tbody>
 </table>
+
+\newpage
+
+### Wishes
 
 The raw data of the wishes is as follows:
 

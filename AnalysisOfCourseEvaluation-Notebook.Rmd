@@ -1,21 +1,25 @@
 ---
 title: "Course Evaluation Results"
+author: "Allan Omondi"
+date: "`r Sys.Date()`"
 output:
-  html_notebook: default
-  pdf_document: 
+  word_document:
     toc: yes
-    number_sections: yes
-    fig_width: 12
-    fig_height: 9
-    fig_caption: yes
-    keep_tex: yes
-  html_document: 
+  html_document:
     toc: yes
     df_print: kable
     fig_width: 14
     fig_height: 10
     fig_caption: yes
     keep_md: yes
+  pdf_document:
+    toc: yes
+    number_sections: yes
+    fig_width: 12
+    fig_height: 9
+    fig_caption: yes
+    keep_tex: yes
+  html_notebook: default
 ---
 
 ```{css CSS_Chunk, echo=FALSE}
@@ -248,6 +252,12 @@ if (!is.element("webshot2", installed.packages()[, 1])) {
                    repos = "https://cloud.r-project.org")
 }
 require("webshot2")
+
+## caret - To create multivariate box and whisker plots ----
+if (!is.element("caret", installed.packages()[, 1])) {
+  install.packages("caret", dependencies = TRUE)
+}
+require("caret")
 ```
 
 ```{r STEP2.CustomizetheVisualizations, include=FALSE, warning=FALSE}
@@ -827,6 +837,36 @@ ggplot(course_evaluation_dataset,
 
 \newpage
 
+## Absenteeism Percentage
+
+The lower the absenteeism, the more a student makes use of the e-learning materials posted. And the more a student makes use of the e-learning materials posted, the higher their overall grade in the course.
+
+With this in mind, a further investigation of the **absenteeism percentage** is presented below.
+
+Absenteeism by general class group:
+
+```{r AbsenteeismBoxandWhiskerGroup, echo=FALSE, message=FALSE, warning=FALSE}
+featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dataset$Group, plot = "box")
+```
+
+\newpage
+
+Absenteeism by specific class group:
+
+```{r AbsenteeismBoxandWhiskerSpecificGroup, echo=FALSE, message=FALSE, warning=FALSE}
+featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dataset$`Q01_Class Demographics`, plot = "box")
+```
+
+\newpage
+
+Absenteeism by gender:
+
+```{r AbsenteeismBoxandWhiskerGender, echo=FALSE, message=FALSE, warning=FALSE}
+featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dataset$Gender, plot = "box")
+```
+
+\newpage
+
 # Qualitative Data (Likes and Wishes)
 
 ```{r QualitativeDatareProcessing, message=FALSE, warning=FALSE, include=FALSE}
@@ -1099,7 +1139,7 @@ wordcloud2(evaluation_wishes_filtered_cloud, size = .5)
 
 The plot below presents the quantitative measure of "significance" using the Term Frequency - Inverse Document Frequency (TF-IDF) score:
 
-TF-IDF Score (Likes) per Gender
+TF-IDF Score (likes) per gender:
 
 ```{r TF-IDFLikesPerGender, echo=FALSE}
 popular_tfidf_words_gender_likes <- evaluation_likes_filtered %>% # nolint
@@ -1132,7 +1172,7 @@ top_popular_tfidf_words %>%
   labs(x = "Word in Course Evaluation", y = "TF-IDF Score") +
   ggtitle("Important Words using TF-IDF by Chart Level") +
   ggtitle("Most Important Words by TF-IDF Score in Course Evaluation Likes per 
-      Class Group") +
+      Gender") +
   facet_wrap(~`Gender`, scales = "free") +
   scale_x_continuous(
                      breaks = top_popular_tfidf_words$row,
@@ -1142,7 +1182,7 @@ top_popular_tfidf_words %>%
 
 \newpage
 
-TF-IDF Score (Likes) per Class Group
+TF-IDF Score (likes) per specific class group:
 
 ```{r TF-IDFLikesPerGroup, echo=FALSE}
 ### TF-IDF Score per Group ----
@@ -1176,7 +1216,7 @@ top_popular_tfidf_words %>%
   labs(x = "Word in Course Evaluation", y = "TF-IDF Score") +
   ggtitle("Important Words using TF-IDF by Chart Level") +
   ggtitle("Most Important Words by TF-IDF Score in Course Evaluation Likes per 
-      Class Group") +
+      Specific Class Group") +
   facet_wrap(~`Class Group`, scales = "free") +
   scale_x_continuous(
                      breaks = top_popular_tfidf_words$row,
@@ -1186,7 +1226,7 @@ top_popular_tfidf_words %>%
 
 \newpage
 
-TF-IDF Score (Wishes) per Gender:
+TF-IDF Score (wishes) per gender:
 
 ```{r TF-IDFWishesPerGender, echo=FALSE}
 ## Evaluation Wishes ----
@@ -1221,7 +1261,7 @@ top_popular_tfidf_words %>%
   labs(x = "Word in Course Evaluation", y = "TF-IDF Score") +
   ggtitle("Important Words using TF-IDF by Chart Level") +
   ggtitle("Most Important Words by TF-IDF Score in Course Evaluation Wishes per 
-      Class Group") +
+      Gender") +
   facet_wrap(~`Gender`, scales = "free") +
   scale_x_continuous(
                      breaks = top_popular_tfidf_words$row,
@@ -1231,7 +1271,7 @@ top_popular_tfidf_words %>%
 
 \newpage
 
-TF-IDF Score (Wishes) per Group
+TF-IDF score (wishes) per specific class group:
 
 ```{r TF-IDFWishesPerGroup, echo=FALSE}
 ### TF-IDF Score per Group ----
@@ -1265,7 +1305,7 @@ top_popular_tfidf_words %>%
   labs(x = "Word in Course Evaluation", y = "TF-IDF Score") +
   ggtitle("Important Words using TF-IDF by Chart Level") +
   ggtitle("Most Important Words by TF-IDF Score in Course Evaluation Wishes per 
-      Class Group") +
+      Specific Class Group") +
   facet_wrap(~`Class Group`, scales = "free") +
   scale_x_continuous(
                      breaks = top_popular_tfidf_words$row,
