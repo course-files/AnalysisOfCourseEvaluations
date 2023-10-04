@@ -3,7 +3,7 @@
 This is a sample analysis of a course evaluation presented as supplementary course files (instructional materials) for the **BBT4206: Business Intelligence II** course using **R**.
 
 | **Key**                                                               | Value                                                                                                                                                         |
-|-----------------|-------------------------------------------------------|
+|-----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Course Code**                                                       | BBT4206                                                                                                                                                       |
 | **Course Name**                                                       | Business Intelligence II                                                                                                                                      |
 | **URL**                                                               | <https://elearning.strathmore.edu/course/view.php?id=6599>                                                                                                    |

@@ -16,4 +16,4 @@ api_key.txt
 *.so
 
 # Ignored datasets
-data/
+data/Mid_Term_Course_Evaluation_Form_Preprocessed_with_PII.csv

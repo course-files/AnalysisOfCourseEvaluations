@@ -1,7 +1,7 @@
 ---
 title: "Course Evaluation Results"
 author: "Allan Omondi"
-date: "2023-10-02"
+date: "2023-10-04"
 output:
   html_document:
     toc: yes
@@ -11,8 +11,6 @@ output:
     fig_caption: yes
     keep_md: yes
   html_notebook: default
-  word_document:
-    toc: yes
   pdf_document:
     toc: yes
     number_sections: yes
@@ -20,6 +18,8 @@ output:
     fig_height: 9
     fig_caption: yes
     keep_tex: yes
+  word_document:
+    toc: yes
 ---
 
 <style type="text/css">
@@ -53,20 +53,20 @@ td {
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Semester Duration**                                                                   | 21^st^ August 2023 to 28^th^ November 2023                              |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Date of Evaluation**                                                                  | 25^th^ September 2023 to 29^th^ September 2023\                         |
-|                                                                                         | Week 6/14                                                               |
+| **Date of Evaluation**                                                                  | 25^th^ September 2023 to 4^th^ October 2023\                            |
+|                                                                                         | Week 6 & 7 of 14                                                        |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Total number of students who submitted the course evaluation**                        | 94                                                                      |
+| **Total number of students who submitted the course evaluation**                        | 102                                                                     |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Total number of students registered in the AMS at the time of the course evaluation** | 115                                                                     |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Response rate**                                                                       | 81.73%                                                                  |
+| **Response rate**                                                                       | 88.69%                                                                  |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **e-Learning URL**                                                                      | <https://elearning.strathmore.edu/course/view.php?id=6599>              |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Data collection tool URL for access to the raw data**                                 | <https://elearning.strathmore.edu/mod/questionnaire/view.php?id=221958> |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Lecturer**                                                                            | Dr Allan Omondi \                                                       |
+| **Lecturer**                                                                            | Dr Allan Omondi\                                                        |
 |                                                                                         | \<aomondistrathmore.edu\>                                               |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 
@@ -86,9 +86,9 @@ td {
 
 # Course Evaluation Score
 
-Mean Course Evaluation Score = 4.3839 / 5
+Mean Course Evaluation Score = 4.3770 / 5
 
-Percentage Score = 87.68%
+Percentage Score = 87.54%
 
 ------------------------------------------------------------------------
 
@@ -182,15 +182,15 @@ The following are hypothetical statements given that "correlation does not imply
 
 -   **.71 correlation** between "The assessment methods are assisting me to learn" and "I am developing my reflective and critical reasoning skills": *The more effort students put into the assessment, the more they develop their reflective and critical reasoning skills.*
 
--   **.68 correlation** between "I am enjoying the subject" and "I am developing my reflective and critical reasoning skills": *The more a student enjoys the subject, the more they consider their reflective and critical reasoning skills as developing.*
+-   **.67 correlation** between "I am enjoying the subject" and "I am developing my reflective and critical reasoning skills": *The more a student enjoys the subject, the more they consider their reflective and critical reasoning skills as developing.*
 
--   **.65 correlation** between "The assessment methods are assisting me to learn" and "I am enjoying the subject": *Students who value the assessments enjoy the subject more.*
+-   **.65 correlation** between "The assessment methods are assisting me to learn" and "I am enjoying the subject": *The more interesting/challenging the assessment methods, the more students enjoy the course.*
 
--   **.64 correlation** between "Labs that require you to use Git to work in a team" and "Labs that require you to put in effort to make a submission related to the content of the lab": *The more students appreciate the use of Git for working in teams, the more they appreciate labs that require a submission to be made.*
+-   **.63 correlation** between "Labs that require you to use Git to work in a team" and "Labs that require you to put in effort to make a submission related to the content of the lab": *The more students appreciate the use of Git for working in teams, the more they appreciate labs that require a submission to be made.*
 
--   **.61 correlation** between "The subject content is delivered according to the course outline and meets my expectations" and "The topics are clear and logically developed": *The more the course outline is followed, the clearer and more logically developed the topics are.*
+-   **.62 correlation** between "The subject content is delivered according to the course outline and meets my expectations" and "The topics are clear and logically developed": *The more the course outline is followed, the clearer and more logically developed the topics are.*
 
--   **-.33 correlation** between "Concept 1 of 4 - Ensemble Methods for Predictive Analytics" and "Absenteeism": *Students who started the semester late (high absenteeism), had a harder time understanding concept 1 which was covered at the beginning of the semester.*
+-   **-.32 correlation** between "Concept 1 of 4 - Ensemble Methods for Predictive Analytics" and "Absenteeism": *Students who started the semester late (high absenteeism), had a harder time understanding concept 1 which was covered at the beginning of the semester.*
 
 -   **-.36 correlation** between "I use the e-learning material posted" and "absenteeism": *The higher the number of classes missed, the lower the student's engagement with content posted on e-learning*
 
@@ -377,6 +377,9 @@ The raw data of the likes is as follows:
    <td style="text-align:left;"> The online classes  The Labs that require submissions help me to dig deeper. </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> The practical examples and labs </td>
+  </tr>
+  <tr>
    <td style="text-align:left;"> The unit is very practical which helps me in the long run.  The lecturer does not leave anyone behind, ensures everyone has understood the concept </td>
   </tr>
   <tr>
@@ -396,6 +399,9 @@ The raw data of the likes is as follows:
   </tr>
   <tr>
    <td style="text-align:left;"> Detailed Explanations.  Quick feedback by lecturer. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> The labs are guided and help to learn  The lecturer is willing to repeat explaining areas of less understanding </td>
   </tr>
   <tr>
    <td style="text-align:left;"> The lecturer is readily available to help when one is stuck  The unit is well structured and organized </td>
@@ -467,6 +473,9 @@ The raw data of the likes is as follows:
    <td style="text-align:left;"> Interactive  Interesting  </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> The content is very well delivered. </td>
+  </tr>
+  <tr>
    <td style="text-align:left;"> The assistance by the lecturer, the practicality </td>
   </tr>
   <tr>
@@ -503,10 +512,16 @@ The raw data of the likes is as follows:
    <td style="text-align:left;"> The technical aspect of the unit.  The attentiveness to detail when it comes to the labs and concepts are clearly explained. </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> i like the templates that come with the labs   i like the fact that we draw references from real world scenarios  </td>
+  </tr>
+  <tr>
    <td style="text-align:left;"> Wide scope of content  Practicability </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Once you follow the steps for the lab you will be okay.  The lecturer helps in one on one for the labs if one has an issue </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> The attention to detail when explaining the code. It makes it easier to understand  Having practical labs </td>
   </tr>
   <tr>
    <td style="text-align:left;"> I like the way the topics are broken down very logical and easy to understand.  I like that we are constantly able to ask questions and be answered regardless of the nature of the question. </td>
@@ -554,6 +569,9 @@ The raw data of the likes is as follows:
    <td style="text-align:left;"> The learning of this unit is good in terms of the detailed and step by step practicals shown by the lecturer for each lab.The recordings. </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> The teaching is very thorough and labs have well explained instructions. </td>
+  </tr>
+  <tr>
    <td style="text-align:left;"> I like that it challenges me to apply everything practically. </td>
   </tr>
   <tr>
@@ -575,6 +593,9 @@ The raw data of the likes is as follows:
    <td style="text-align:left;"> N/A </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> Systematic  Modular </td>
+  </tr>
+  <tr>
    <td style="text-align:left;"> N/A  </td>
   </tr>
   <tr>
@@ -585,6 +606,9 @@ The raw data of the likes is as follows:
   </tr>
   <tr>
    <td style="text-align:left;"> Its practical  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> none </td>
   </tr>
   <tr>
    <td style="text-align:left;"> It is very practical and a good example of a prospective career path for many. </td>
@@ -676,6 +700,9 @@ The raw data of the wishes is as follows:
    <td style="text-align:left;"> If the concept requires many practicals, the classes should be more online. </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> N/A </td>
+  </tr>
+  <tr>
    <td style="text-align:left;"> For the physical class to be moved to a lab </td>
   </tr>
   <tr>
@@ -695,6 +722,9 @@ The raw data of the wishes is as follows:
   </tr>
   <tr>
    <td style="text-align:left;"> The content is too broad and covers a lot i.e new softwares which make the unit overwhelming. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> More teamwork collaboration in labs. </td>
   </tr>
   <tr>
    <td style="text-align:left;"> It would be better if the physical classes were being recorded because at times one might be behind or missed an important lab step    </td>
@@ -766,6 +796,9 @@ The raw data of the wishes is as follows:
    <td style="text-align:left;"> So far none </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> - </td>
+  </tr>
+  <tr>
    <td style="text-align:left;"> Reduce the workload, its honestly too much </td>
   </tr>
   <tr>
@@ -802,10 +835,16 @@ The raw data of the wishes is as follows:
    <td style="text-align:left;"> I would like there be more simpler labs with easier datasets to understands the concepts first then move on to more complex data handling and manipulation. </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> i wish that that the lab assignments could be allocated more time, that they are marked towards the end of the semester     </td>
+  </tr>
+  <tr>
    <td style="text-align:left;"> None so far </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Kindly share more reading materials and past papers. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Having more practical labs </td>
   </tr>
   <tr>
    <td style="text-align:left;"> I recommend that the deadlines on the labs be more flexible as there are many subject and projects running concurrently. </td>
@@ -853,6 +892,9 @@ The raw data of the wishes is as follows:
    <td style="text-align:left;">  No recommendations there is good delivery. </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> Generally just slow down the amount of work we have to submit considering the IS project we need to work on </td>
+  </tr>
+  <tr>
    <td style="text-align:left;"> One recommendation may be to explain how these concepts can relate to and apply to our IS Project 2. </td>
   </tr>
   <tr>
@@ -874,6 +916,9 @@ The raw data of the wishes is as follows:
    <td style="text-align:left;"> N/A </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> Further work on ease of following the lab work </td>
+  </tr>
+  <tr>
    <td style="text-align:left;"> N/A </td>
   </tr>
   <tr>
@@ -884,6 +929,9 @@ The raw data of the wishes is as follows:
   </tr>
   <tr>
    <td style="text-align:left;"> nothing all is well </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> reduce the workloads on the labs kindly </td>
   </tr>
   <tr>
    <td style="text-align:left;"> n/a. </td>

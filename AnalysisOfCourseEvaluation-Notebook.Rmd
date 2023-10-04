@@ -3,16 +3,6 @@ title: "Course Evaluation Results"
 author: "Allan Omondi"
 date: "`r Sys.Date()`"
 output:
-  word_document:
-    toc: yes
-  html_notebook: default
-  html_document:
-    toc: yes
-    df_print: kable
-    fig_width: 14
-    fig_height: 10
-    fig_caption: yes
-    keep_md: yes
   pdf_document:
     toc: yes
     number_sections: yes
@@ -20,6 +10,16 @@ output:
     fig_height: 9
     fig_caption: yes
     keep_tex: yes
+  word_document:
+    toc: yes
+  html_document:
+    toc: yes
+    df_print: kable
+    fig_width: 14
+    fig_height: 10
+    fig_caption: yes
+    keep_md: yes
+  html_notebook: default
 ---
 
 ```{css CSS_Chunk, echo=FALSE}
@@ -53,20 +53,20 @@ td {
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Semester Duration**                                                                   | 21^st^ August 2023 to 28^th^ November 2023                              |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Date of Evaluation**                                                                  | 25^th^ September 2023 to 29^th^ September 2023\                         |
-|                                                                                         | Week 6/14                                                               |
+| **Date of Evaluation**                                                                  | 25^th^ September 2023 to 4^th^ October 2023\                            |
+|                                                                                         | Week 6 & 7 of 14                                                        |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Total number of students who submitted the course evaluation**                        | 94                                                                      |
+| **Total number of students who submitted the course evaluation**                        | 102                                                                     |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Total number of students registered in the AMS at the time of the course evaluation** | 115                                                                     |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Response rate**                                                                       | 81.73%                                                                  |
+| **Response rate**                                                                       | 88.69%                                                                  |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **e-Learning URL**                                                                      | <https://elearning.strathmore.edu/course/view.php?id=6599>              |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Data collection tool URL for access to the raw data**                                 | <https://elearning.strathmore.edu/mod/questionnaire/view.php?id=221958> |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Lecturer**                                                                            | Dr Allan Omondi \                                                       |
+| **Lecturer**                                                                            | Dr Allan Omondi\                                                        |
 |                                                                                         | \<aomondistrathmore.edu\>                                               |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 
@@ -812,15 +812,15 @@ The following are hypothetical statements given that "correlation does not imply
 
 -   **.71 correlation** between "The assessment methods are assisting me to learn" and "I am developing my reflective and critical reasoning skills": *The more effort students put into the assessment, the more they develop their reflective and critical reasoning skills.*
 
--   **.68 correlation** between "I am enjoying the subject" and "I am developing my reflective and critical reasoning skills": *The more a student enjoys the subject, the more they consider their reflective and critical reasoning skills as developing.*
+-   **.67 correlation** between "I am enjoying the subject" and "I am developing my reflective and critical reasoning skills": *The more a student enjoys the subject, the more they consider their reflective and critical reasoning skills as developing.*
 
--   **.65 correlation** between "The assessment methods are assisting me to learn" and "I am enjoying the subject": *Students who value the assessments enjoy the subject more.*
+-   **.65 correlation** between "The assessment methods are assisting me to learn" and "I am enjoying the subject": *The more interesting/challenging the assessment methods, the more students enjoy the course.*
 
--   **.64 correlation** between "Labs that require you to use Git to work in a team" and "Labs that require you to put in effort to make a submission related to the content of the lab": *The more students appreciate the use of Git for working in teams, the more they appreciate labs that require a submission to be made.*
+-   **.63 correlation** between "Labs that require you to use Git to work in a team" and "Labs that require you to put in effort to make a submission related to the content of the lab": *The more students appreciate the use of Git for working in teams, the more they appreciate labs that require a submission to be made.*
 
--   **.61 correlation** between "The subject content is delivered according to the course outline and meets my expectations" and "The topics are clear and logically developed": *The more the course outline is followed, the clearer and more logically developed the topics are.*
+-   **.62 correlation** between "The subject content is delivered according to the course outline and meets my expectations" and "The topics are clear and logically developed": *The more the course outline is followed, the clearer and more logically developed the topics are.*
 
--   **-.33 correlation** between "Concept 1 of 4 - Ensemble Methods for Predictive Analytics" and "Absenteeism": *Students who started the semester late (high absenteeism), had a harder time understanding concept 1 which was covered at the beginning of the semester.*
+-   **-.32 correlation** between "Concept 1 of 4 - Ensemble Methods for Predictive Analytics" and "Absenteeism": *Students who started the semester late (high absenteeism), had a harder time understanding concept 1 which was covered at the beginning of the semester.*
 
 -   **-.36 correlation** between "I use the e-learning material posted" and "absenteeism": *The higher the number of classes missed, the lower the student's engagement with content posted on e-learning*
 
