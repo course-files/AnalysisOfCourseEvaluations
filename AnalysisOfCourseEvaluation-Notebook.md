@@ -1,27 +1,27 @@
 ---
-title: "Course Evaluation Results"
-author: "Allan Omondi"
-date: "2023-11-26"
+title: "Mid-Term Course Evaluation Results"
+# author: "Allan Omondi"
+# date: "2023-11-26"
 output:
   html_document: 
     toc: yes
     df_print: kable
-    fig_width: 8
-    fig_height: 8
+    fig_width: 9
+    fig_height: 9
     fig_caption: yes
     toc_depth: 4
     keep_md: yes
-  word_document:
-    toc: yes
+  html_notebook: default
   pdf_document:
     toc: yes
     number_sections: yes
-    fig_width: 12
-    fig_height: 9
+    fig_width: 8
+    fig_height: 8
     fig_caption: yes
     keep_tex: yes
-  html_notebook: default
   always_allow_html: true
+  word_document:
+    toc: yes
 ---
 
 <style type="text/css">
@@ -102,9 +102,15 @@ Median Course Evaluation Score = 4.3636 / 5
 
 
 
+\newpage
+
+# Quantitative Data Analysis
+
 ## Course Evaluation Scores per Group
 
 
+
+\newpage
 
 The **"Average Course Evaluation Rating"** variable in the plot below indicates the score **per group** with a baseline of 4/5.
 
@@ -124,7 +130,7 @@ The plot below presents a drill-down of the class group into **regular and exemp
 
 \newpage
 
-# Correlations
+## Correlations
 
 The following variables have been renamed to fit the correlation plots:
 
@@ -170,15 +176,15 @@ The following variables have been renamed to fit the correlation plots:
 
 -   \`Physical Classes\` = \`Q04_Quality of Teaching Strategies-\>C - 8. Face-to-Face classes in general\`
 
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/CorrelationMatrixWithoutFigures-1.png)<!-- -->
-
 \newpage
 
-The specifc correlation values are presented below:
+The general correlation values are presented below:
 
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/CorrelationMatrixWithFigures-1.png)<!-- -->
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/CorrelationMatrixWithoutFigures-1.png)<!-- -->
 
-## Interesting Correlations
+
+
+### Interesting Correlations
 
 The following are hypothetical statements given that "correlation does not imply causation".
 
@@ -206,7 +212,7 @@ Below are the two most extreme correlations:
 
 \newpage
 
-## Absenteeism Percentage
+### Absenteeism Percentage
 
 The lower the absenteeism, the more a student makes use of the e-learning materials posted. And the more a student makes use of the e-learning materials posted, the higher their overall grade in the course.
 
@@ -230,7 +236,7 @@ Absenteeism by gender:
 
 \newpage
 
-# Qualitative Data (Likes and Wishes)
+# Qualitative Data Analysis
 
 
 
@@ -238,35 +244,23 @@ Absenteeism by gender:
 
 
 
-## Term Frequency - Inverse Document Frequency (TF-IDF) Score
 
-The plot below presents the quantitative measure of "significance" using the Term Frequency - Inverse Document Frequency (TF-IDF) score:
 
-TF-IDF Score (likes) per gender:
 
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/TF-IDFLikesPerGender-1.png)<!-- -->
 
-\newpage
 
-TF-IDF Score (likes) per specific class group:
 
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/TF-IDFLikesPerGroup-1.png)<!-- -->
 
-\newpage
 
-TF-IDF Score (wishes) per gender:
 
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/TF-IDFWishesPerGender-1.png)<!-- -->
 
-\newpage
 
-TF-IDF score (wishes) per specific class group:
 
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/TF-IDFWishesPerGroup-1.png)<!-- -->
 
-\newpage
 
-## Lexicon-Based Sentiment Analysis
+
+
+## Sentiment Analysis (Lexicon-Based)
 
 
 
@@ -306,7 +300,27 @@ Chord Diagram of Wishes per Gender:
 
 \newpage
 
-## Raw Data
+## Topic Modelling (Latent Dirichlet Allocation (LDA) based)
+
+The goal of topic modelling is to identify significant thematically related terms (topics) in the students' course evaluation textual feedback. In this case, a topic is a mixture of words and a student's textual feedback is a combination of one or more topics (mixed-membership model).
+
+The algorithm used is Latent Dirichlet Allocation (LDA).
+
+
+
+
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/visualizations_for_likes_topic_modelling-1.png)<!-- -->
+
+\newpage
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/visualizations_for_wishes_topic_modelling-1.png)<!-- -->
+
+\newpage
+
+# Appendix A
+
+## Raw Qualitative Data
 
 ### Likes
 
@@ -316,7 +330,7 @@ The raw data of the likes is as follows:
 <caption>Write two things you like about the teaching and learning in this unit so far</caption>
  <thead>
   <tr>
-   <th style="text-align:left;"> Comment </th>
+   <th style="text-align:left;"> Comment (Likes) </th>
   </tr>
  </thead>
 <tbody>
@@ -639,7 +653,7 @@ The raw data of the wishes is as follows:
 <caption>Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)</caption>
  <thead>
   <tr>
-   <th style="text-align:left;"> Comment </th>
+   <th style="text-align:left;"> Comment (Wishes) </th>
   </tr>
  </thead>
 <tbody>
@@ -954,15 +968,3 @@ I wish he would go through the content first then afterwards focus on individual
   </tr>
 </tbody>
 </table>
-
-# Topic Modelling
-
-The goal is to identify significant thematically related terms (topics) in the students' course evaluation textual feedback. In this case, a topic is a mixture of words and a student's textual feedback is a combination of one or more topics (mixed-membership model).
-
-The algorithm used is Latent Dirichlet Allocation (LDA).
-
-
-
-Examine the data
-
-

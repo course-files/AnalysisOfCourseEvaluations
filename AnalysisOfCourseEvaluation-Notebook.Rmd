@@ -1,9 +1,16 @@
 ---
-title: "Course Evaluation Results"
-author: "Allan Omondi"
-date: "`r Sys.Date()`"
+title: "Mid-Term Course Evaluation Results"
+# author: "Allan Omondi"
+# date: "`r Sys.Date()`"
 output:
-  always_allow_html: true
+  html_document: 
+    toc: yes
+    df_print: kable
+    fig_width: 9
+    fig_height: 9
+    fig_caption: yes
+    toc_depth: 4
+    keep_md: yes
   html_notebook: default
   pdf_document:
     toc: yes
@@ -12,14 +19,7 @@ output:
     fig_height: 8
     fig_caption: yes
     keep_tex: yes
-  html_document: 
-    toc: yes
-    df_print: kable
-    fig_width: 8
-    fig_height: 8
-    fig_caption: yes
-    toc_depth: 4
-    keep_md: yes
+  always_allow_html: true
   word_document:
     toc: yes
 ---
@@ -146,6 +146,8 @@ require("devtools")
 #  install.packages("kableExtra", dependencies = TRUE)
 #}
 #require("kableExtra")
+# The following kableExtra is used as an alternative to the one
+# stored in CRAN because of the errors when rendering to PDF.
 devtools::install_github("kupietz/kableExtra")
 require("kableExtra")
 
@@ -269,6 +271,30 @@ if (!is.element("caret", installed.packages()[, 1])) {
   install.packages("caret", dependencies = TRUE)
 }
 require("caret")
+
+## tm - For text mining (qualitative data analysis) ----
+if (!is.element("tm", installed.packages()[, 1])) {
+  install.packages("tm", dependencies = TRUE)
+}
+require("tm")
+
+## plotly - For interactive ggplot graphs ----
+if (!is.element("plotly", installed.packages()[, 1])) {
+  install.packages("plotly", dependencies = TRUE)
+}
+require("plotly")
+
+## lda - For Latent Dirichlet Allocation (LDA) used for topic modelling ----
+if (!is.element("lda", installed.packages()[, 1])) {
+  install.packages("lda", dependencies = TRUE)
+}
+require("lda")
+
+## topicmodels - For an interface to the C code for LDA models ----
+if (!is.element("topicmodels", installed.packages()[, 1])) {
+  install.packages("topicmodels", dependencies = TRUE)
+}
+require("topicmodels")
 ```
 
 ```{r STEP2.CustomizetheVisualizations, include=FALSE, warning=FALSE}
@@ -626,6 +652,10 @@ evaluation_rating_per_question_per_gender_long_data <- evaluation_rating_per_que
                values_to = "Mean Value")
 ```
 
+\newpage
+
+# Quantitative Data Analysis
+
 ## Course Evaluation Scores per Group
 
 ```{r ProcessStringsBeforePlotting, include=FALSE, warning=FALSE}
@@ -645,6 +675,8 @@ evaluation_rating_per_question_per_gender_long_data$`Evaluation Question` <-
   str_wrap(evaluation_rating_per_question_per_gender_long_data$`Evaluation Question`, # nolint
          width = 30)
 ```
+
+\newpage
 
 The **"Average Course Evaluation Rating"** variable in the plot below indicates the score **per group** with a baseline of 4/5.
 
@@ -706,7 +738,7 @@ ggplot(evaluation_rating_per_question_per_group_long_data,
 
 \newpage
 
-# Correlations
+## Correlations
 
 The following variables have been renamed to fit the correlation plots:
 
@@ -752,7 +784,11 @@ The following variables have been renamed to fit the correlation plots:
 
 -   \`Physical Classes\` = \`Q04_Quality of Teaching Strategies-\>C - 8. Face-to-Face classes in general\`
 
-```{r CorrelationMatrixWithoutFigures, echo=FALSE}
+\newpage
+
+The general correlation values are presented below:
+
+```{r CorrelationMatrixWithoutFigures, echo=FALSE, fig.height=10}
 course_evaluation_dataset_short_names <- course_evaluation_dataset %>%
   rename(
     `A. Enjoying Subject` = `Q02_General Questions->A - 1. I am enjoying the subject`,
@@ -805,11 +841,11 @@ ggcorrplot(cor(course_evaluation_dataset_short_names))
 
 ```
 
-\newpage
+```{r CorrelationMatrixWithFigures, eval=FALSE, include=FALSE}
+# \newpage
+# 
+# The specific correlation values are presented below:
 
-The specifc correlation values are presented below:
-
-```{r CorrelationMatrixWithFigures, echo=FALSE}
 # Create a correlation matrix
 corr_matrix <- cor(course_evaluation_dataset_short_names)
 
@@ -825,7 +861,7 @@ p <- ggplot2::ggplot(data = reshape2::melt(corr_matrix),
 ggcorrplot(corr_matrix, hc.order = TRUE, type = "lower", lab = TRUE)
 ```
 
-## Interesting Correlations
+### Interesting Correlations
 
 The following are hypothetical statements given that "correlation does not imply causation".
 
@@ -863,7 +899,7 @@ ggplot(course_evaluation_dataset,
 
 \newpage
 
-## Absenteeism Percentage
+### Absenteeism Percentage
 
 The lower the absenteeism, the more a student makes use of the e-learning materials posted. And the more a student makes use of the e-learning materials posted, the higher their overall grade in the course.
 
@@ -871,7 +907,7 @@ With this in mind, a further investigation of the **absenteeism percentage** is 
 
 Absenteeism by general class group:
 
-```{r AbsenteeismBoxandWhiskerGroup, echo=FALSE, message=FALSE, warning=FALSE}
+```{r AbsenteeismBoxandWhiskerGroup, echo=FALSE, fig.height=5, message=FALSE, warning=FALSE}
 featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dataset$Group, plot = "box")
 ```
 
@@ -879,7 +915,7 @@ featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dat
 
 Absenteeism by specific class group:
 
-```{r AbsenteeismBoxandWhiskerSpecificGroup, echo=FALSE, message=FALSE, warning=FALSE}
+```{r AbsenteeismBoxandWhiskerSpecificGroup, echo=FALSE, fig.height=8, message=FALSE, warning=FALSE}
 featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dataset$`Q01_Class Demographics`, plot = "box")
 ```
 
@@ -887,13 +923,13 @@ featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dat
 
 Absenteeism by gender:
 
-```{r AbsenteeismBoxandWhiskerGender, echo=FALSE, message=FALSE, warning=FALSE}
+```{r AbsenteeismBoxandWhiskerGender, echo=FALSE, fig.height=8, message=FALSE, warning=FALSE}
 featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dataset$Gender, plot = "box")
 ```
 
 \newpage
 
-# Qualitative Data (Likes and Wishes)
+# Qualitative Data Analysis
 
 ```{r QualitativeDatareProcessing, message=FALSE, warning=FALSE, include=FALSE}
 ## Average per Question per Group ----
@@ -1161,13 +1197,15 @@ evaluation_wishes_filtered_cloud <- evaluation_wishes_filtered %>%
 wordcloud2(evaluation_wishes_filtered_cloud, size = .5)
 ```
 
-## Term Frequency - Inverse Document Frequency (TF-IDF) Score
+```{r removed_TFIDF_section_comment1, eval=FALSE, include=FALSE}
+# Term Frequency - Inverse Document Frequency (TF-IDF) Score
+# 
+# The plot below presents the quantitative measure of "significance" using the Term Frequency - Inverse Document Frequency (TF-IDF) score:
+# 
+# TF-IDF Score (likes) per gender:
+```
 
-The plot below presents the quantitative measure of "significance" using the Term Frequency - Inverse Document Frequency (TF-IDF) score:
-
-TF-IDF Score (likes) per gender:
-
-```{r TF-IDFLikesPerGender, echo=FALSE}
+```{r TF-IDFLikesPerGender, eval=FALSE, include=FALSE}
 popular_tfidf_words_gender_likes <- evaluation_likes_filtered %>% # nolint
   unnest_tokens(word, `Likes`) %>%
   distinct() %>%
@@ -1206,11 +1244,13 @@ top_popular_tfidf_words %>%
   coord_flip()
 ```
 
-\newpage
+```{r removed_TFIDF_section_comment2, eval=FALSE, include=FALSE}
+# \newpage
+# 
+# TF-IDF Score (likes) per specific class group:
+```
 
-TF-IDF Score (likes) per specific class group:
-
-```{r TF-IDFLikesPerGroup, echo=FALSE}
+```{r TF-IDFLikesPerGroup, eval=FALSE, include=FALSE}
 ### TF-IDF Score per Group ----
 popular_tfidf_words_likes <- evaluation_likes_filtered %>% # nolint
   unnest_tokens(word, `Likes`) %>%
@@ -1250,11 +1290,13 @@ top_popular_tfidf_words %>%
   coord_flip()
 ```
 
-\newpage
+```{r removed_TFIDF_section_comment3, eval=FALSE, include=FALSE}
+# \newpage
+# 
+# TF-IDF Score (wishes) per gender:
+```
 
-TF-IDF Score (wishes) per gender:
-
-```{r TF-IDFWishesPerGender, echo=FALSE}
+```{r TF-IDFWishesPerGender, eval=FALSE, include=FALSE}
 ## Evaluation Wishes ----
 ### TF-IDF Score per Gender ----
 popular_tfidf_words_gender_wishes <- evaluation_wishes_filtered %>% # nolint
@@ -1295,11 +1337,13 @@ top_popular_tfidf_words %>%
   coord_flip()
 ```
 
-\newpage
+```{r removed_TFIDF_section_comment4, eval=FALSE, include=FALSE}
+# \newpage
+# 
+# TF-IDF score (wishes) per specific class group:
+```
 
-TF-IDF score (wishes) per specific class group:
-
-```{r TF-IDFWishesPerGroup, echo=FALSE}
+```{r TF-IDFWishesPerGroup, eval=FALSE, include=FALSE}
 ### TF-IDF Score per Group ----
 popular_tfidf_words_likes <- evaluation_wishes_filtered %>% # nolint
   unnest_tokens(word, `Wishes`) %>%
@@ -1339,9 +1383,7 @@ top_popular_tfidf_words %>%
   coord_flip()
 ```
 
-\newpage
-
-## Lexicon-Based Sentiment Analysis
+## Sentiment Analysis (Lexicon-Based)
 
 ```{r SentimentAnalysisWithNRC, include=FALSE}
 nrc <- get_sentiments("nrc")
@@ -1361,7 +1403,7 @@ evaluation_wishes_filtered_nrc <- evaluation_wishes_filtered %>%
 
 The overall sentiment for the likes is:
 
-```{r OverallSentimentForLikes, echo=FALSE, message=FALSE, warning=FALSE}
+```{r OverallSentimentForLikes, echo=FALSE, fig.height=5, message=FALSE, warning=FALSE}
 # STEP 6. Overall Sentiment ----
 ## Evaluation Likes ----
 nrc_likes_plot <- evaluation_likes_filtered_nrc %>%
@@ -1387,7 +1429,7 @@ plot(nrc_likes_plot)
 
 The overall sentiment for the wishes is:
 
-```{r OverallSentimentForWishes, echo=FALSE, message=FALSE, warning=FALSE}
+```{r OverallSentimentForWishes, echo=FALSE, fig.height=8, message=FALSE, warning=FALSE}
 ## Evaluation Wishes ----
 nrc_wishes_plot <- evaluation_wishes_filtered_nrc %>%
   group_by(sentiment) %>%
@@ -1501,7 +1543,66 @@ title("Lexicon-Based Sentiment Analysis of Course Evaluation Wishes per Group")
 
 \newpage
 
-## Raw Data
+## Topic Modelling (Latent Dirichlet Allocation (LDA) based)
+
+The goal of topic modelling is to identify significant thematically related terms (topics) in the students' course evaluation textual feedback. In this case, a topic is a mixture of words and a student's textual feedback is a combination of one or more topics (mixed-membership model).
+
+The algorithm used is Latent Dirichlet Allocation (LDA).
+
+```{r Create_a_DTM, message=TRUE, warning=TRUE, include=FALSE}
+# LDA requires the data to be presented in a Document-Term Matrix (DTM)
+# format. The conversion into a DTM is done below: 
+evaluation_likes_filtered_dtm <-    evaluation_likes_filtered %>%   count(`Class Group`, Likes, sort = TRUE) %>%   ungroup() %>%   cast_dtm(`Class Group`, Likes, n)
+
+# inspect(evaluation_likes_filtered_dtm)
+evaluation_wishes_filtered_dtm <-    evaluation_wishes_filtered %>%   count(`Class Group`, Wishes, sort = TRUE) %>%   ungroup() %>%   cast_dtm(`Class Group`, Wishes, n) # inspect(evaluation_likes_filtered_dtm)
+```
+
+```{r train_LDA_model_for_topic_modelling, message=TRUE, warning=TRUE, include=FALSE}
+likes_topic_model <- LDA(evaluation_likes_filtered_dtm,
+                         k = 6,
+                         control = list(seed = 7))
+wishes_topic_model <- LDA(evaluation_wishes_filtered_dtm,
+                          k = 6,
+                          control = list(seed = 7))
+```
+
+```{r visualizations_for_likes_topic_modelling, echo=FALSE}
+likes_topics <- tidy(likes_topic_model, matrix = "beta")
+likes_top_terms <-
+  likes_topics %>%
+  group_by (topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+
+likes_top_terms %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +   geom_col(show.legend = FALSE) +   facet_wrap(~topic, scales = "free") +   theme_minimal() +   theme(plot.title =            element_text(hjust = 0.5, size = 18)) +   labs(     title = "Topic Model of Course Evaluation Likes",     caption = "Top Terms by Topic (betas)"     ) +   ylab("") +   xlab("") +   coord_flip()
+```
+
+\newpage
+
+```{r visualizations_for_wishes_topic_modelling, echo=FALSE}
+wishes_topics <- tidy(wishes_topic_model, matrix = "beta")
+wishes_top_terms <-
+  wishes_topics %>%
+  group_by (topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+
+wishes_top_terms %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +   facet_wrap(~topic, scales = "free") +   theme_minimal() + theme(plot.title = element_text(hjust = 0.5, size = 18)) +   labs(     title = "Topic Model of Course Evaluation Wishes",     caption = "Top Terms by Topic (betas)"     ) +   ylab("") +   xlab("") +   coord_flip()
+```
+
+\newpage
+
+# Appendix A
+
+## Raw Qualitative Data
 
 ### Likes
 
@@ -1529,94 +1630,4 @@ knitr::kable(course_evaluation_dataset$`Q05_Wishes->D - 2. Write at least one re
 
 # course_evaluation_dataset$`Q05_Wishes->D - 2. Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)` %>%
   # my_kable_styling("Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)")
-```
-
-# Topic Modelling
-
-The goal is to identify significant thematically related terms (topics) in the students' course evaluation textual feedback. In this case, a topic is a mixture of words and a student's textual feedback is a combination of one or more topics (mixed-membership model).
-
-The algorithm used is Latent Dirichlet Allocation (LDA).
-
-```{r LoadLibraries, eval=FALSE, include=FALSE}
-library(tidytext) #text mining, unnesting
-library(topicmodels) #the LDA algorithm
-library(tidyr) #gather()
-library(dplyr) #awesome tools
-library(ggplot2) #visualization
-library(kableExtra) #create attractive tables
-library(knitr) #simple table generator
-library(ggrepel) #text and label geoms for ggplot2
-library(gridExtra)
-library(formattable) #color tile and color bar in `kables`
-library(tm) #text mining
-library(circlize) #already loaded, but just being comprehensive
-library(plotly) #interactive ggplot graphs
-
- #define some colors to use throughout
-my_colors <- c("#E69F00", "#56B4E9", "#009E73", "#CC79A7", "#D55E00", "#D65E00")
-
-#customize ggplot2's default theme settings
-#this tutorial doesn't actually pass any parameters, but you may use it again in future tutorials so it's nice to have the options
-theme_lyrics <- function(aticks = element_blank(),
-                         pgminor = element_blank(),
-                         lt = element_blank(),
-                         lp = "none")
-{
-  theme(plot.title = element_text(hjust = 0.5), #center the title
-        axis.ticks = aticks, #set axis ticks to on or off
-        panel.grid.minor = pgminor, #turn on or off the minor grid lines
-        legend.title = lt, #turn on or off the legend title
-        legend.position = lp) #turn on or off the legend
-}
-
-#customize the text tables for consistency using HTML formatting
-my_kable_styling <- function(dat, caption) {
-  knitr::kable(dat, "html", escape = FALSE, caption = caption) %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "condensed", "bordered"),
-                full_width = FALSE)
-}
-
-word_chart <- function(data, input, title) {
-  data %>%
-  #set y = 1 to just plot one variable and use word as the label
-  ggplot(aes(as.factor(row), 1, label = input, fill = factor(topic) )) +
-  #you want the words, not the points
-  geom_point(color = "transparent") +
-  #make sure the labels don't overlap
-  geom_label_repel(nudge_x = .2,  
-                   direction = "y",
-                   box.padding = 0.1,
-                   segment.color = "transparent",
-                   size = 3) +
-  facet_grid(~topic) +
-  theme_lyrics() +
-  theme(axis.text.y = element_blank(), axis.text.x = element_blank(),
-        #axis.title.x = element_text(size = 9),
-        panel.grid = element_blank(), panel.background = element_blank(),
-        panel.border = element_rect("lightgray", fill = NA),
-        strip.text.x = element_text(size = 9)) +
-  labs(x = NULL, y = NULL, title = title) +
-    #xlab(NULL) + ylab(NULL) +
-  #ggtitle(title) +
-  coord_flip()
-}
-```
-
-Examine the data
-
-```{r ExamineTheData, eval=FALSE, include=FALSE}
- #group the dataset by writer (source) and count the words
-evaluation_likes_filtered %>%
-  group_by(`Class Group`) %>%
-  mutate(word_count = n()) %>%
-  select(`Class Group`, Likes, word_count) %>%
-  distinct() %>%
-  ungroup() %>%
-  #assign color bar for word_count that varies according to size
-  #create static color for source and genre
-#  mutate(word_count = color_bar("lightpink")(word_count),  
-#         source = color_tile("lightblue","lightblue")(source),
-#         genre = color_tile("lightgreen","lightgreen")(genre)) %>%
-  my_kable_styling("Three Sources Stats")
-cast_dtm(evaluation_likes_filtered$`Class Group`, evaluation_likes_filtered$Likes)
 ```

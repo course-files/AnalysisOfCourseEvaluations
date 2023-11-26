@@ -12,9 +12,9 @@
     --outline \
     --outline-depth 4 \
     --footer-line \
-    --footer-spacing 1 \
+    --footer-spacing 4 \
     --footer-font-size 10 \
     --footer-left "BBT4206: Business Intelligence II" \
     --footer-right 'Page [page] of [toPage]'\
-    --footer-center "Course Evaluation Results" \
+    --footer-center "Mid-Term Course Evaluation Results" \
     AnalysisOfCourseEvaluation-Notebook.html AnalysisOfCourseEvaluation-Notebook.pdf
