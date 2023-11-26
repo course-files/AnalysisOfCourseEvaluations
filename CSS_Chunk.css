@@ -1,0 +1,22 @@
+table {
+  border-collapse: collapse;
+  table-layout: auto;
+  margin: 0 auto;
+}
+th {
+  border-bottom: 1px solid #000;
+  padding: 8px;
+  text-align: center;
+  vertical-align: bottom;
+}
+td {
+  border-bottom: 1px solid #000;
+  padding: 8px;
+  text-align: auto;
+  vertical-align: middle;
+}
+/* Whole document: */
+body{
+  font-family: Arial;
+  font-size: 14pt;
+}

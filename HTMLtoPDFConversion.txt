@@ -5,16 +5,21 @@
     --dpi 600 \
     --image-dpi 600 \
     --image-quality 100 \
-    --orientation Landscape \
+    --orientation Portrait \
     --page-size A4 \
     --title "Course Evaluation" \
     --no-pdf-compression \
     --outline \
     --outline-depth 4 \
+    --margin-bottom 10 \
+    --margin-left 5 \
+    --margin-right 5 \
+    --margin-top 10 \
+    --minimum-font-size 12 \
     --footer-line \
     --footer-spacing 4 \
-    --footer-font-size 10 \
+    --footer-font-size 11 \
     --footer-left "BBT4206: Business Intelligence II" \
     --footer-right 'Page [page] of [toPage]'\
-    --footer-center "Mid-Term Course Evaluation Results" \
+    --footer-center "Mid-Semester Course Evaluation Results" \
     AnalysisOfCourseEvaluation-Notebook.html AnalysisOfCourseEvaluation-Notebook.pdf

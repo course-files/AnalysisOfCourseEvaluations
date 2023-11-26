@@ -1,16 +1,17 @@
 ---
-title: "Mid-Term Course Evaluation Results"
+title: "Mid-Semester Course Evaluation Results"
 # author: "Allan Omondi"
 # date: "`r Sys.Date()`"
 output:
   html_document: 
     toc: yes
     df_print: kable
-    fig_width: 9
-    fig_height: 9
+    fig_width: 8
+    fig_height: 8
     fig_caption: yes
     toc_depth: 4
     keep_md: yes
+    css: CSS_Chunk.css
   html_notebook: default
   pdf_document:
     toc: yes
@@ -24,29 +25,7 @@ output:
     toc: yes
 ---
 
-```{css CSS_Chunk, echo=FALSE}
-table {
-  border-collapse: collapse;
-  table-layout: auto;
-  margin: 0 auto;
-}
-th {
-  border-bottom: 1px solid #000;
-  padding: 8px;
-  text-align: center;
-  vertical-align: bottom;
-}
-td {
-  border-bottom: 1px solid #000;
-  padding: 8px;
-  text-align: auto;
-  vertical-align: middle;
-}
-```
-
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| Key                                                                                     | Value                                                                   |
-+=========================================================================================+=========================================================================+
 | **Course**                                                                              | Business Intelligence II                                                |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Course Code**                                                                         | BBT4206                                                                 |
@@ -56,7 +35,7 @@ td {
 | **Semester Duration**                                                                   | 21^st^ August 2023 to 28^th^ November 2023                              |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Date of Evaluation**                                                                  | 25^th^ September 2023 to 4^th^ October 2023\                            |
-|                                                                                         | Week 6 & 7 of 14                                                        |
+|                                                                                         | (Week 6 & 7 of 14)                                                      |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Total number of students who submitted the course evaluation**                        | 102                                                                     |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
@@ -66,17 +45,15 @@ td {
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **e-Learning URL**                                                                      | <https://elearning.strathmore.edu/course/view.php?id=6599>              |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Data collection tool URL for access to the raw data**                                 | <https://elearning.strathmore.edu/mod/questionnaire/view.php?id=221958> |
+| **Data collection tool URL\                                                             | <https://elearning.strathmore.edu/mod/questionnaire/view.php?id=221958> |
+| (for access to the raw data)**                                                          |                                                                         |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Lecturer**                                                                            | Dr Allan Omondi\                                                        |
-|                                                                                         | \<aomondi\@strathmore.edu\>                                             |
+| **Lecturer**                                                                            | Dr Allan Omondi \<aomondi\@strathmore.edu\>                             |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-
-\newpage
 
 ------------------------------------------------------------------------
 
-```{r STEP1.InstallandLoadtheRequiredPackages, include=FALSE, warning=FALSE}
+```{r InstallandLoadtheRequiredPackages, include=FALSE, warning=FALSE}
 # STEP 1. Install and Load the Required Packages ----
 # The following packages can be installed and loaded before proceeding to 
 # the subsequent steps.
@@ -297,7 +274,7 @@ if (!is.element("topicmodels", installed.packages()[, 1])) {
 require("topicmodels")
 ```
 
-```{r STEP2.CustomizetheVisualizations, include=FALSE, warning=FALSE}
+```{r CustomizetheVisualizations, include=FALSE, warning=FALSE}
 # STEP 2. Customize the Visualizations, Tables, and Colour Scheme ----
 # The following defines a blue-grey colour scheme for the visualizations:
 ## shades of blue and shades of grey
@@ -658,7 +635,7 @@ evaluation_rating_per_question_per_gender_long_data <- evaluation_rating_per_que
 
 ## Course Evaluation Scores per Group
 
-```{r ProcessStringsBeforePlotting, include=FALSE, warning=FALSE}
+```{r ProcessStringsBeforePlotting, warning=FALSE, include=FALSE}
 # This is done to enable word wrapping when the plot is created
 # Per Group
 evaluation_rating_per_question_per_group_long_data$`Evaluation Question` <- 
@@ -676,11 +653,9 @@ evaluation_rating_per_question_per_gender_long_data$`Evaluation Question` <-
          width = 30)
 ```
 
-\newpage
-
 The **"Average Course Evaluation Rating"** variable in the plot below indicates the score **per group** with a baseline of 4/5.
 
-```{r VisualizationsForCourseEvaluationResultsperClassGroup, echo=FALSE, warning=FALSE}
+```{r VisualizationsForCourseEvaluationResultsperClassGroup, echo=FALSE, fig.height=10, warning=FALSE}
 ### Visualizations (Grouped Vertical Bar Chart) ----
 # Per Group
 ggplot(evaluation_rating_per_question_per_class_long_data,
@@ -700,7 +675,7 @@ ggplot(evaluation_rating_per_question_per_class_long_data,
 
 The **"Average Course Evaluation Rating"** variable in the plot below indicates the score **per gender** with a baseline of 4/5.
 
-```{r VisualizationsForCourseEvaluationResultsperGender, echo=FALSE, warning=FALSE}
+```{r VisualizationsForCourseEvaluationResultsperGender, echo=FALSE, fig.height=12, warning=FALSE}
 ### Visualizations (Grouped Vertical Bar Chart) ----
 # Per Group
 ggplot(evaluation_rating_per_question_per_gender_long_data,
@@ -720,7 +695,7 @@ ggplot(evaluation_rating_per_question_per_gender_long_data,
 
 The plot below presents a drill-down of the class group into **regular and exempt** students:
 
-```{r VisualizationsForCourseEvaluationResultsperGroup, echo=FALSE, warning=FALSE}
+```{r VisualizationsForCourseEvaluationResultsperGroup, echo=FALSE, fig.height=12, warning=FALSE}
 ### Visualizations (Grouped Vertical Bar Chart) ----
 # Per Group
 ggplot(evaluation_rating_per_question_per_group_long_data,
@@ -740,55 +715,8 @@ ggplot(evaluation_rating_per_question_per_group_long_data,
 
 ## Correlations
 
-The following variables have been renamed to fit the correlation plots:
-
--   \`A. Enjoying Subject\` = \`Q02_General Questions-\>A - 1. I am enjoying the subject\`,
-
--   \`B. Classes Start-End\` = \`Q02_General Questions-\>A - 2. Classes start and end on time\`,
-
--   \`C. Learning Environment\` = \`Q02_General Questions-\>A - 3. The learning environment is participative, involves learning by doing and is group-based\`,
-
--   \`D. Content Delivery\` = \`Q02_General Questions-\>A - 4. The subject content is delivered according to the course outline and meets my expectations\`,
-
--   \`E. Clear Topics\` = \`Q02_General Questions-\>A - 5. The topics are clear and logically developed\`,
-
--   \`F. Oral and Writing\` = \`Q02_General Questions-\>A - 6. I am developing my oral and writing skills\`,
-
--   \`G. Critical Thinking\` = \`Q02_General Questions-\>A - 7. I am developing my reflective and critical reasoning skills\`,
-
--   \`H. Assessment Methods\` = \`Q02_General Questions-\>A - 8. The assessment methods are assisting me to learn\`,
-
--   \`I. Relevant Feedback\` = \`Q02_General Questions-\>A - 9. I receive relevant feedback\`,
-
--   \`J. Read Recommendations\` = \`Q02_General Questions-\>A - 10. I read the recommended readings and notes\`,
-
--   \`L. eLearning Material\` = \`Q02_General Questions-\>A - 11. I use the eLearning material posted\`,
-
--   \`Understood Concept 1\` = \`Q03_Level of Learning Achieved-\>B - 1. Concept 1 of 4 - Ensemble Methods for Predictive Analytics\`,
-
--   \`Understood Concept 2\` = \`Q03_Level of Learning Achieved-\>B - 2. Concept 2 of 4 - Predictive Modelling Using R\`,
-
--   \`Teaching - Labs\` = \`Q04_Quality of Teaching Strategies-\>C - 1. Labs with comments that describe each step to be followed\`,
-
--   \`Labs with Submission\` = \`Q04_Quality of Teaching Strategies-\>C - 2. Labs that require you to put in effort to make a submission related to the content of the lab\`,
-
--   \`Git in Teams\` =\`Q04_Quality of Teaching Strategies-\>C - 3. Labs that require you to use Git to work in a team\`,
-
--   \`Solo Labs\` = \`Q04_Quality of Teaching Strategies-\>C - 4. Labs that require you to work alone\`,
-
--   \`Quality of Lectures\` = \`Q04_Quality of Teaching Strategies-\>C - 5. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical/lively the lectures are)\`,
-
--   \`Recordings of Classes\` = \`Q04_Quality of Teaching Strategies-\>C - 6. The recordings of online classes\`,
-
--   \`Online Classes\` = \`Q04_Quality of Teaching Strategies-\>C - 7. Online classes in general\`,
-
--   \`Physical Classes\` = \`Q04_Quality of Teaching Strategies-\>C - 8. Face-to-Face classes in general\`
-
-\newpage
-
-The general correlation values are presented below:
-
-```{r CorrelationMatrixWithoutFigures, echo=FALSE, fig.height=10}
+```{r CorrelationMatrixWithoutFigures, fig.height=10, include=FALSE}
+# The general correlation values are presented below:
 course_evaluation_dataset_short_names <- course_evaluation_dataset %>%
   rename(
     `A. Enjoying Subject` = `Q02_General Questions->A - 1. I am enjoying the subject`,
@@ -837,15 +765,13 @@ course_evaluation_dataset_short_names <- course_evaluation_dataset %>%
     `Physical Classes`
   )
 
-ggcorrplot(cor(course_evaluation_dataset_short_names))
+# ggcorrplot(cor(course_evaluation_dataset_short_names))
 
 ```
 
-```{r CorrelationMatrixWithFigures, eval=FALSE, include=FALSE}
-# \newpage
-# 
-# The specific correlation values are presented below:
+The specific correlation values are presented below:
 
+```{r CorrelationMatrixWithFigures, echo=FALSE, fig.height=12, fig.width=12}
 # Create a correlation matrix
 corr_matrix <- cor(course_evaluation_dataset_short_names)
 
@@ -881,7 +807,7 @@ The following are hypothetical statements given that "correlation does not imply
 
 -   **-.36 correlation** between "I use the e-learning material posted" and "absenteeism": *The higher the number of classes missed, the lower the student's engagement with content posted on e-learning*
 
-Below are the two most extreme correlations:
+(1) A **.73 correlation** between "I am developing my oral and writing skills" and "I am developing my reflective and critical reasoning skills":
 
 ```{r DrillDownCorr1, echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(course_evaluation_dataset,
@@ -889,6 +815,8 @@ ggplot(course_evaluation_dataset,
   geom_point() +
   geom_smooth(method = lm)
 ```
+
+(2) A **.71 correlation** between "The assessment methods are assisting me to learn" and "I am developing my reflective and critical reasoning skills":
 
 ```{r DrillDownCorr2, echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(course_evaluation_dataset,
@@ -905,25 +833,21 @@ The lower the absenteeism, the more a student makes use of the e-learning materi
 
 With this in mind, a further investigation of the **absenteeism percentage** is presented below.
 
-Absenteeism by general class group:
+#### Absenteeism by General Class Group
 
-```{r AbsenteeismBoxandWhiskerGroup, echo=FALSE, fig.height=5, message=FALSE, warning=FALSE}
+```{r AbsenteeismBoxandWhiskerGroup, echo=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE}
 featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dataset$Group, plot = "box")
 ```
 
-\newpage
+#### Absenteeism by Specific Class Group
 
-Absenteeism by specific class group:
-
-```{r AbsenteeismBoxandWhiskerSpecificGroup, echo=FALSE, fig.height=8, message=FALSE, warning=FALSE}
+```{r AbsenteeismBoxandWhiskerSpecificGroup, echo=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE}
 featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dataset$`Q01_Class Demographics`, plot = "box")
 ```
 
-\newpage
+#### Absenteeism by Gender
 
-Absenteeism by gender:
-
-```{r AbsenteeismBoxandWhiskerGender, echo=FALSE, fig.height=8, message=FALSE, warning=FALSE}
+```{r AbsenteeismBoxandWhiskerGender, echo=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE}
 featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dataset$Gender, plot = "box")
 ```
 
@@ -1401,9 +1325,9 @@ evaluation_wishes_filtered_nrc <- evaluation_wishes_filtered %>%
 
 ```
 
-The overall sentiment for the likes is:
+The "likes" refer to the answer to the question, "Write two things you like about the teaching and learning in this unit so far." The sentiments expressed through the "likes" are:
 
-```{r OverallSentimentForLikes, echo=FALSE, fig.height=5, message=FALSE, warning=FALSE}
+```{r OverallSentimentForLikes, echo=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE}
 # STEP 6. Overall Sentiment ----
 ## Evaluation Likes ----
 nrc_likes_plot <- evaluation_likes_filtered_nrc %>%
@@ -1425,11 +1349,9 @@ nrc_likes_plot <- evaluation_likes_filtered_nrc %>%
 plot(nrc_likes_plot)
 ```
 
-\newpage
+The "wishes" refer to the answer to the question, "Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)." The sentiments expressed through the "wishes" are:
 
-The overall sentiment for the wishes is:
-
-```{r OverallSentimentForWishes, echo=FALSE, fig.height=8, message=FALSE, warning=FALSE}
+```{r OverallSentimentForWishes, echo=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE}
 ## Evaluation Wishes ----
 nrc_wishes_plot <- evaluation_wishes_filtered_nrc %>%
   group_by(sentiment) %>%
@@ -1538,16 +1460,14 @@ circos.par(gap.after = c(rep(5, length(unique(nrc_wishes_chord[[1]])) - 1), 15,
                          rep(5, length(unique(nrc_wishes_chord[[2]])) - 1), 15))
 
 chordDiagram(nrc_wishes_chord, transparency = .2)
-title("Lexicon-Based Sentiment Analysis of Course Evaluation Wishes per Group")
+title("Lexicon-Based Sentiment Analysis of Course Evaluation Wishes per Gender")
 ```
 
 \newpage
 
 ## Topic Modelling (Latent Dirichlet Allocation (LDA) based)
 
-The goal of topic modelling is to identify significant thematically related terms (topics) in the students' course evaluation textual feedback. In this case, a topic is a mixture of words and a student's textual feedback is a combination of one or more topics (mixed-membership model).
-
-The algorithm used is Latent Dirichlet Allocation (LDA).
+The goal of topic modelling is to identify latent (hidden) terms (topics) in the students' course evaluation textual feedback. In this case, a topic is a mixture of words and a student's textual feedback is a combination of one or more topics (mixed-membership model).
 
 ```{r Create_a_DTM, message=TRUE, warning=TRUE, include=FALSE}
 # LDA requires the data to be presented in a Document-Term Matrix (DTM)
@@ -1560,12 +1480,18 @@ evaluation_wishes_filtered_dtm <-    evaluation_wishes_filtered %>%   count(`Cla
 
 ```{r train_LDA_model_for_topic_modelling, message=TRUE, warning=TRUE, include=FALSE}
 likes_topic_model <- LDA(evaluation_likes_filtered_dtm,
-                         k = 6,
+                         k = 2,
                          control = list(seed = 7))
 wishes_topic_model <- LDA(evaluation_wishes_filtered_dtm,
-                          k = 6,
+                          k = 3,
                           control = list(seed = 7))
 ```
+
+The 2 topics for the "likes" (as guided by the LDA model) are:
+
+1.  Topic 1: Well-Explained Lectures
+
+2.  Topic 2: Interactive and Practical Labs
 
 ```{r visualizations_for_likes_topic_modelling, echo=FALSE}
 likes_topics <- tidy(likes_topic_model, matrix = "beta")
@@ -1582,6 +1508,14 @@ likes_top_terms %>%
 ```
 
 \newpage
+
+The 3 topics for the "wishes" (as guided by the LDA model) are:
+
+1.  Topic 1: Reduce Workload
+
+2.  Topic 2: Lenient Deadlines
+
+3.  Topic 3: Recommend Professional Certifications
 
 ```{r visualizations_for_wishes_topic_modelling, echo=FALSE}
 wishes_topics <- tidy(wishes_topic_model, matrix = "beta")
@@ -1600,9 +1534,55 @@ wishes_top_terms %>%
 
 \newpage
 
-# Appendix A
+# Appendices
 
-## Raw Qualitative Data
+## Appendix A: Full Names of Variables
+
+The following variables have been renamed to fit the correlation plots:
+
+-   \`A. Enjoying Subject\` = \`Q02_General Questions-\>A - 1. I am enjoying the subject\`,
+
+-   \`B. Classes Start-End\` = \`Q02_General Questions-\>A - 2. Classes start and end on time\`,
+
+-   \`C. Learning Environment\` = \`Q02_General Questions-\>A - 3. The learning environment is participative, involves learning by doing and is group-based\`,
+
+-   \`D. Content Delivery\` = \`Q02_General Questions-\>A - 4. The subject content is delivered according to the course outline and meets my expectations\`,
+
+-   \`E. Clear Topics\` = \`Q02_General Questions-\>A - 5. The topics are clear and logically developed\`,
+
+-   \`F. Oral and Writing\` = \`Q02_General Questions-\>A - 6. I am developing my oral and writing skills\`,
+
+-   \`G. Critical Thinking\` = \`Q02_General Questions-\>A - 7. I am developing my reflective and critical reasoning skills\`,
+
+-   \`H. Assessment Methods\` = \`Q02_General Questions-\>A - 8. The assessment methods are assisting me to learn\`,
+
+-   \`I. Relevant Feedback\` = \`Q02_General Questions-\>A - 9. I receive relevant feedback\`,
+
+-   \`J. Read Recommendations\` = \`Q02_General Questions-\>A - 10. I read the recommended readings and notes\`,
+
+-   \`L. eLearning Material\` = \`Q02_General Questions-\>A - 11. I use the eLearning material posted\`,
+
+-   \`Understood Concept 1\` = \`Q03_Level of Learning Achieved-\>B - 1. Concept 1 of 4 - Ensemble Methods for Predictive Analytics\`,
+
+-   \`Understood Concept 2\` = \`Q03_Level of Learning Achieved-\>B - 2. Concept 2 of 4 - Predictive Modelling Using R\`,
+
+-   \`Teaching - Labs\` = \`Q04_Quality of Teaching Strategies-\>C - 1. Labs with comments that describe each step to be followed\`,
+
+-   \`Labs with Submission\` = \`Q04_Quality of Teaching Strategies-\>C - 2. Labs that require you to put in effort to make a submission related to the content of the lab\`,
+
+-   \`Git in Teams\` =\`Q04_Quality of Teaching Strategies-\>C - 3. Labs that require you to use Git to work in a team\`,
+
+-   \`Solo Labs\` = \`Q04_Quality of Teaching Strategies-\>C - 4. Labs that require you to work alone\`,
+
+-   \`Quality of Lectures\` = \`Q04_Quality of Teaching Strategies-\>C - 5. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical/lively the lectures are)\`,
+
+-   \`Recordings of Classes\` = \`Q04_Quality of Teaching Strategies-\>C - 6. The recordings of online classes\`,
+
+-   \`Online Classes\` = \`Q04_Quality of Teaching Strategies-\>C - 7. Online classes in general\`,
+
+-   \`Physical Classes\` = \`Q04_Quality of Teaching Strategies-\>C - 8. Face-to-Face classes in general\`
+
+## Appendix B: Raw Qualitative Data
 
 ### Likes
 

@@ -1,16 +1,17 @@
 ---
-title: "Mid-Term Course Evaluation Results"
+title: "Mid-Semester Course Evaluation Results"
 # author: "Allan Omondi"
 # date: "2023-11-26"
 output:
   html_document: 
     toc: yes
     df_print: kable
-    fig_width: 9
-    fig_height: 9
+    fig_width: 8
+    fig_height: 8
     fig_caption: yes
     toc_depth: 4
     keep_md: yes
+    css: CSS_Chunk.css
   html_notebook: default
   pdf_document:
     toc: yes
@@ -24,29 +25,7 @@ output:
     toc: yes
 ---
 
-<style type="text/css">
-table {
-  border-collapse: collapse;
-  table-layout: auto;
-  margin: 0 auto;
-}
-th {
-  border-bottom: 1px solid #000;
-  padding: 8px;
-  text-align: center;
-  vertical-align: bottom;
-}
-td {
-  border-bottom: 1px solid #000;
-  padding: 8px;
-  text-align: auto;
-  vertical-align: middle;
-}
-</style>
-
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| Key                                                                                     | Value                                                                   |
-+=========================================================================================+=========================================================================+
 | **Course**                                                                              | Business Intelligence II                                                |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Course Code**                                                                         | BBT4206                                                                 |
@@ -56,7 +35,7 @@ td {
 | **Semester Duration**                                                                   | 21^st^ August 2023 to 28^th^ November 2023                              |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Date of Evaluation**                                                                  | 25^th^ September 2023 to 4^th^ October 2023\                            |
-|                                                                                         | Week 6 & 7 of 14                                                        |
+|                                                                                         | (Week 6 & 7 of 14)                                                      |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Total number of students who submitted the course evaluation**                        | 102                                                                     |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
@@ -66,13 +45,11 @@ td {
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **e-Learning URL**                                                                      | <https://elearning.strathmore.edu/course/view.php?id=6599>              |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Data collection tool URL for access to the raw data**                                 | <https://elearning.strathmore.edu/mod/questionnaire/view.php?id=221958> |
+| **Data collection tool URL\                                                             | <https://elearning.strathmore.edu/mod/questionnaire/view.php?id=221958> |
+| (for access to the raw data)**                                                          |                                                                         |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Lecturer**                                                                            | Dr Allan Omondi\                                                        |
-|                                                                                         | \<aomondi\@strathmore.edu\>                                             |
+| **Lecturer**                                                                            | Dr Allan Omondi \<aomondi\@strathmore.edu\>                             |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-
-\newpage
 
 ------------------------------------------------------------------------
 
@@ -110,8 +87,6 @@ Median Course Evaluation Score = 4.3636 / 5
 
 
 
-\newpage
-
 The **"Average Course Evaluation Rating"** variable in the plot below indicates the score **per group** with a baseline of 4/5.
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/VisualizationsForCourseEvaluationResultsperClassGroup-1.png)<!-- -->
@@ -131,6 +106,158 @@ The plot below presents a drill-down of the class group into **regular and exemp
 \newpage
 
 ## Correlations
+
+
+
+The specific correlation values are presented below:
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/CorrelationMatrixWithFigures-1.png)<!-- -->
+
+### Interesting Correlations
+
+The following are hypothetical statements given that "correlation does not imply causation".
+
+-   **.73 correlation** between "I am developing my oral and writing skills" and "I am developing my reflective and critical reasoning skills": *Consider writing as formalized thinking.*
+
+-   **.71 correlation** between "The assessment methods are assisting me to learn" and "I am developing my reflective and critical reasoning skills": *The more effort students put into the assessment, the more they develop their reflective and critical reasoning skills.*
+
+-   **.67 correlation** between "I am enjoying the subject" and "I am developing my reflective and critical reasoning skills": *The more a student enjoys the subject, the more they consider their reflective and critical reasoning skills as developing.*
+
+-   **.65 correlation** between "The assessment methods are assisting me to learn" and "I am enjoying the subject": *The more interesting/challenging the assessment methods, the more students enjoy the course.*
+
+-   **.63 correlation** between "Labs that require you to use Git to work in a team" and "Labs that require you to put in effort to make a submission related to the content of the lab": *The more students appreciate the use of Git for working in teams, the more they appreciate labs that require a submission to be made.*
+
+-   **.62 correlation** between "The subject content is delivered according to the course outline and meets my expectations" and "The topics are clear and logically developed": *The more the course outline is followed, the clearer and more logically developed the topics are.*
+
+-   **-.32 correlation** between "Concept 1 of 4 - Ensemble Methods for Predictive Analytics" and "Absenteeism": *Students who started the semester late (high absenteeism), had a harder time understanding concept 1 which was covered at the beginning of the semester.*
+
+-   **-.36 correlation** between "I use the e-learning material posted" and "absenteeism": *The higher the number of classes missed, the lower the student's engagement with content posted on e-learning*
+
+(1) A **.73 correlation** between "I am developing my oral and writing skills" and "I am developing my reflective and critical reasoning skills":
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/DrillDownCorr1-1.png)<!-- -->
+
+(2) A **.71 correlation** between "The assessment methods are assisting me to learn" and "I am developing my reflective and critical reasoning skills":
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/DrillDownCorr2-1.png)<!-- -->
+
+\newpage
+
+### Absenteeism Percentage
+
+The lower the absenteeism, the more a student makes use of the e-learning materials posted. And the more a student makes use of the e-learning materials posted, the higher their overall grade in the course.
+
+With this in mind, a further investigation of the **absenteeism percentage** is presented below.
+
+#### Absenteeism by General Class Group
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/AbsenteeismBoxandWhiskerGroup-1.png)<!-- -->
+
+#### Absenteeism by Specific Class Group
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/AbsenteeismBoxandWhiskerSpecificGroup-1.png)<!-- -->
+
+#### Absenteeism by Gender
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/AbsenteeismBoxandWhiskerGender-1.png)<!-- -->
+
+\newpage
+
+# Qualitative Data Analysis
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Sentiment Analysis (Lexicon-Based)
+
+
+
+The "likes" refer to the answer to the question, "Write two things you like about the teaching and learning in this unit so far." The sentiments expressed through the "likes" are:
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/OverallSentimentForLikes-1.png)<!-- -->
+
+The "wishes" refer to the answer to the question, "Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)." The sentiments expressed through the "wishes" are:
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/OverallSentimentForWishes-1.png)<!-- -->
+
+\newpage
+
+Chord Diagram of Likes per Class Group:
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/ChordDiagramLikesPerGroup-1.png)<!-- -->
+
+\newpage
+
+Chord Diagram of Likes per Class Gender:
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/ChordDiagramLikesPerGender-1.png)<!-- -->
+
+\newpage
+
+Chord Diagram of Wishes per Class Group:
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/ChordDiagramPerGroup_Wishes-1.png)<!-- -->
+
+\newpage
+
+Chord Diagram of Wishes per Gender:
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/ChordDiagramPerGender_Wishes-1.png)<!-- -->
+
+\newpage
+
+## Topic Modelling (Latent Dirichlet Allocation (LDA) based)
+
+The goal of topic modelling is to identify latent (hidden) terms (topics) in the students' course evaluation textual feedback. In this case, a topic is a mixture of words and a student's textual feedback is a combination of one or more topics (mixed-membership model).
+
+
+
+
+
+The 2 topics for the "likes" (as guided by the LDA model) are:
+
+1.  Topic 1: Well-Explained Lectures
+
+2.  Topic 2: Interactive and Practical Labs
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/visualizations_for_likes_topic_modelling-1.png)<!-- -->
+
+\newpage
+
+The 3 topics for the "wishes" (as guided by the LDA model) are:
+
+1.  Topic 1: Reduce Workload
+
+2.  Topic 2: Lenient Deadlines
+
+3.  Topic 3: Recommend Professional Certifications
+
+![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/visualizations_for_wishes_topic_modelling-1.png)<!-- -->
+
+\newpage
+
+# Appendices
+
+## Appendix A: Full Names of Variables
 
 The following variables have been renamed to fit the correlation plots:
 
@@ -176,151 +303,7 @@ The following variables have been renamed to fit the correlation plots:
 
 -   \`Physical Classes\` = \`Q04_Quality of Teaching Strategies-\>C - 8. Face-to-Face classes in general\`
 
-\newpage
-
-The general correlation values are presented below:
-
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/CorrelationMatrixWithoutFigures-1.png)<!-- -->
-
-
-
-### Interesting Correlations
-
-The following are hypothetical statements given that "correlation does not imply causation".
-
--   **.73 correlation** between "I am developing my oral and writing skills" and "I am developing my reflective and critical reasoning skills": *Consider writing as formalized thinking.*
-
--   **.71 correlation** between "The assessment methods are assisting me to learn" and "I am developing my reflective and critical reasoning skills": *The more effort students put into the assessment, the more they develop their reflective and critical reasoning skills.*
-
--   **.67 correlation** between "I am enjoying the subject" and "I am developing my reflective and critical reasoning skills": *The more a student enjoys the subject, the more they consider their reflective and critical reasoning skills as developing.*
-
--   **.65 correlation** between "The assessment methods are assisting me to learn" and "I am enjoying the subject": *The more interesting/challenging the assessment methods, the more students enjoy the course.*
-
--   **.63 correlation** between "Labs that require you to use Git to work in a team" and "Labs that require you to put in effort to make a submission related to the content of the lab": *The more students appreciate the use of Git for working in teams, the more they appreciate labs that require a submission to be made.*
-
--   **.62 correlation** between "The subject content is delivered according to the course outline and meets my expectations" and "The topics are clear and logically developed": *The more the course outline is followed, the clearer and more logically developed the topics are.*
-
--   **-.32 correlation** between "Concept 1 of 4 - Ensemble Methods for Predictive Analytics" and "Absenteeism": *Students who started the semester late (high absenteeism), had a harder time understanding concept 1 which was covered at the beginning of the semester.*
-
--   **-.36 correlation** between "I use the e-learning material posted" and "absenteeism": *The higher the number of classes missed, the lower the student's engagement with content posted on e-learning*
-
-Below are the two most extreme correlations:
-
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/DrillDownCorr1-1.png)<!-- -->
-
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/DrillDownCorr2-1.png)<!-- -->
-
-\newpage
-
-### Absenteeism Percentage
-
-The lower the absenteeism, the more a student makes use of the e-learning materials posted. And the more a student makes use of the e-learning materials posted, the higher their overall grade in the course.
-
-With this in mind, a further investigation of the **absenteeism percentage** is presented below.
-
-Absenteeism by general class group:
-
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/AbsenteeismBoxandWhiskerGroup-1.png)<!-- -->
-
-\newpage
-
-Absenteeism by specific class group:
-
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/AbsenteeismBoxandWhiskerSpecificGroup-1.png)<!-- -->
-
-\newpage
-
-Absenteeism by gender:
-
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/AbsenteeismBoxandWhiskerGender-1.png)<!-- -->
-
-\newpage
-
-# Qualitative Data Analysis
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Sentiment Analysis (Lexicon-Based)
-
-
-
-The overall sentiment for the likes is:
-
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/OverallSentimentForLikes-1.png)<!-- -->
-
-\newpage
-
-The overall sentiment for the wishes is:
-
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/OverallSentimentForWishes-1.png)<!-- -->
-
-\newpage
-
-Chord Diagram of Likes per Class Group:
-
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/ChordDiagramLikesPerGroup-1.png)<!-- -->
-
-\newpage
-
-Chord Diagram of Likes per Class Gender:
-
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/ChordDiagramLikesPerGender-1.png)<!-- -->
-
-\newpage
-
-Chord Diagram of Wishes per Class Group:
-
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/ChordDiagramPerGroup_Wishes-1.png)<!-- -->
-
-\newpage
-
-Chord Diagram of Wishes per Gender:
-
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/ChordDiagramPerGender_Wishes-1.png)<!-- -->
-
-\newpage
-
-## Topic Modelling (Latent Dirichlet Allocation (LDA) based)
-
-The goal of topic modelling is to identify significant thematically related terms (topics) in the students' course evaluation textual feedback. In this case, a topic is a mixture of words and a student's textual feedback is a combination of one or more topics (mixed-membership model).
-
-The algorithm used is Latent Dirichlet Allocation (LDA).
-
-
-
-
-
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/visualizations_for_likes_topic_modelling-1.png)<!-- -->
-
-\newpage
-
-![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/visualizations_for_wishes_topic_modelling-1.png)<!-- -->
-
-\newpage
-
-# Appendix A
-
-## Raw Qualitative Data
+## Appendix B: Raw Qualitative Data
 
 ### Likes
 
