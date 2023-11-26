@@ -1,0 +1,20 @@
+# Conversion to HTML by https://wkhtmltopdf.org/index.html
+# Command:
+
+"/c/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe" \
+    --dpi 600 \
+    --image-dpi 600 \
+    --image-quality 100 \
+    --orientation Landscape \
+    --page-size A4 \
+    --title "Course Evaluation" \
+    --no-pdf-compression \
+    --outline \
+    --outline-depth 4 \
+    --footer-line \
+    --footer-spacing 1 \
+    --footer-font-size 10 \
+    --footer-left "BBT4206: Business Intelligence II" \
+    --footer-right 'Page [page] of [toPage]'\
+    --footer-center "Course Evaluation Results" \
+    AnalysisOfCourseEvaluation-Notebook.html AnalysisOfCourseEvaluation-Notebook.pdf
