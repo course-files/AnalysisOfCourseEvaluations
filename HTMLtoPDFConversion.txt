@@ -21,5 +21,5 @@
     --footer-font-size 11 \
     --footer-left "BBT4206: Business Intelligence II" \
     --footer-right 'Page [page] of [toPage]'\
-    --footer-center "Mid-Semester Course Evaluation Results" \
-    AnalysisOfCourseEvaluation-Notebook.html AnalysisOfCourseEvaluation-Notebook.pdf
+    --footer-center "End-Semester Course Evaluation Results" \
+    10.b.BBT4206-End-SemesterCourseEvaluation-20230821-20231128-BI2-BBIT4-2.html 10.b.BBT4206-End-SemesterCourseEvaluation-20230821-20231128-BI2-BBIT4-2.pdf

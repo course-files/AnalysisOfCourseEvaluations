@@ -1,5 +1,5 @@
 ---
-title: "Mid-Semester Course Evaluation Results"
+title: "End-Semester Course Evaluation Results"
 # author: "Allan Omondi"
 # date: "`r Sys.Date()`"
 output:
@@ -34,18 +34,17 @@ output:
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Semester Duration**                                                                   | 21^st^ August 2023 to 28^th^ November 2023                              |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Date of Evaluation**                                                                  | 25^th^ September 2023 to 4^th^ October 2023\                            |
-|                                                                                         | (Week 6 & 7 of 14)                                                      |
+| **Date of Evaluation**                                                                  | 21^st^ November 2023 to 27^th^ November 2023 (Week 14 of 14)            |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Total number of students who submitted the course evaluation**                        | 102                                                                     |
+| **Total number of students who submitted the course evaluation**                        | 107                                                                     |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Total number of students registered in the AMS at the time of the course evaluation** | 115                                                                     |
+| **Total number of students registered in the AMS at the time of the course evaluation** | 114                                                                     |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Response rate**                                                                       | 88.69%                                                                  |
+| **Response rate**                                                                       | 94%                                                                     |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **e-Learning URL**                                                                      | <https://elearning.strathmore.edu/course/view.php?id=6599>              |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
-| **Data collection tool URL\                                                             | <https://elearning.strathmore.edu/mod/questionnaire/view.php?id=221958> |
+| **Data collection tool URL\                                                             | <https://elearning.strathmore.edu/mod/questionnaire/view.php?id=221959> |
 | (for access to the raw data)**                                                          |                                                                         |
 +-----------------------------------------------------------------------------------------+-------------------------------------------------------------------------+
 | **Lecturer**                                                                            | Dr Allan Omondi \<aomondi\@strathmore.edu\>                             |
@@ -54,7 +53,7 @@ output:
 ------------------------------------------------------------------------
 
 ```{r InstallandLoadtheRequiredPackages, include=FALSE, warning=FALSE}
-# STEP 1. Install and Load the Required Packages ----
+# Install and Load the Required Packages ----
 # The following packages can be installed and loaded before proceeding to 
 # the subsequent steps.
 
@@ -275,7 +274,7 @@ require("topicmodels")
 ```
 
 ```{r CustomizetheVisualizations, include=FALSE, warning=FALSE}
-# STEP 2. Customize the Visualizations, Tables, and Colour Scheme ----
+# Customize the Visualizations, Tables, and Colour Scheme ----
 # The following defines a blue-grey colour scheme for the visualizations:
 ## shades of blue and shades of grey
 blue_grey_colours_11 <- c("#27408E", "#304FAF", "#536CB5", "#6981c7", "#8da0db",
@@ -328,66 +327,87 @@ my_kable_styling <- function(dat, caption) {
 ```
 
 ```{r ImportDataset, include=FALSE, warning=FALSE}
-# STEP 3. Load the Dataset ----
+# Load the Dataset ----
 library(readr)
-course_evaluation_dataset <- read_csv("data/Mid_Term_Course_Evaluation_Form_Preprocessed.csv", 
-    col_types = cols(`Submitted on:` = col_datetime(format = "%d/%m/%Y %H:%M:%S"), 
-        Course = col_character(), Group = col_factor(levels = c("20230821-20231128-BI2-BBIT4.2-A", 
-            "20230821-20231128-BI2-BBIT4.2-B", 
-            "20230821-20231128-BI2-BBIT4.2-C")), 
-        Username = col_integer(), Gender = col_factor(levels = c("Male", 
-            "Female")), `Q01_Class Demographics` = col_factor(levels = c("1 : Group A - Regular", 
-            "2 : Group A - Exempt", "3 : Group B - Regular", 
-            "4 : Group B - Exempt", "5 : Group C - Regular", 
-            "6 : Group C - Exempt"))))
+course_evaluation_dataset <-
+  read_csv(
+    "data/10.b.BBT4206-End-Sem-20230821-20231128-BI2-BBIT4-2_WITHOUT_PII.csv",
+    col_types = cols(
+      `Submitted on:` = col_datetime(format = "%d/%m/%Y %H:%M"),
+      Course = col_character(),
+      Group = col_factor(levels = c(
+                                    "20230821-20231128-BI2-BBIT4.2-A",
+                                    "20230821-20231128-BI2-BBIT4.2-B",
+                                    "20230821-20231128-BI2-BBIT4.2-C")),
+      Gender = col_factor(levels = c("Male", "Female")),
+      `Q01_Class Demographics` = col_factor(levels = c(
+                                                       "1 : Group A - Regular",
+                                                       "2 : Group A - Exempt",
+                                                       "3 : Group B - Regular",
+                                                       "4 : Group B - Exempt",
+                                                       "5 : Group C - Regular",
+                                                       "6 : Group C - Exempt"))
+    )
+  )
 ```
 
 ```{r evaluation_rating_per_question_per_group_per_gender, warning=FALSE, include=FALSE}
-# STEP 4. Evaluation Rating per Group (1st) and per Gender (2nd) ----
+# Evaluation Rating per Group (1st) and per Gender (2nd) ----
 ## Average per Question per Group ----
 evaluation_rating_per_question_per_group_per_gender <- course_evaluation_dataset %>%
   rename(`Class Group` = `Q01_Class Demographics`) %>%
-  filter(!is.na(`Q02_General Questions->A - 11. I use the eLearning material posted`)) %>%
+  filter(!is.na(`Q02_General Questions->A - 11. I used the eLearning material posted`)) %>%
   rowwise() %>%
   
   # average_course_evaluation_rating
-  mutate(average_course_evaluation_rating = mean(c(`Q02_General Questions->A - 1. I am enjoying the subject`, `Q02_General Questions->A - 2. Classes start and end on time`, `Q02_General Questions->A - 3. The learning environment is participative, involves learning by doing and is group-based`, `Q02_General Questions->A - 4. The subject content is delivered according to the course outline and meets my expectations`, `Q02_General Questions->A - 5. The topics are clear and logically developed`, `Q02_General Questions->A - 6. I am developing my oral and writing skills`, `Q02_General Questions->A - 7. I am developing my reflective and critical reasoning skills`, `Q02_General Questions->A - 8. The assessment methods are assisting me to learn`, `Q02_General Questions->A - 9. I receive relevant feedback`, `Q02_General Questions->A - 10. I read the recommended readings and notes`, `Q02_General Questions->A - 11. I use the eLearning material posted`))) %>%
+  mutate(average_course_evaluation_rating = mean(c(`Q02_General Questions->A - 1. I enjoyed the subject`, `Q02_General Questions->A - 2. Classes started and ended on time`, `Q02_General Questions->A - 3. The learning environment was participative, involved learning by doing and was group-based`, `Q02_General Questions->A - 4. The subject content was delivered according to the course outline and met my expectations`, `Q02_General Questions->A - 5. The topics were clear and logically developed`, `Q02_General Questions->A - 6. I developed my oral and writing skills`, `Q02_General Questions->A - 7. I developed my reflective and critical reasoning skills`, `Q02_General Questions->A - 8. The assessment methods assisted me to learn`, `Q02_General Questions->A - 9. I received relevant feedback`, `Q02_General Questions->A - 10. I read the recommended readings and notes`, `Q02_General Questions->A - 11. I used the eLearning material posted`))) %>%
   
   # average_level_of_learning_achieved
-  mutate(average_level_of_learning_achieved = mean(c(`Q03_Level of Learning Achieved->B - 1. Concept 1 of 4 - Ensemble Methods for Predictive Analytics`, `Q03_Level of Learning Achieved->B - 2. Concept 2 of 4 - Predictive Modelling Using R`))) %>%
+  mutate(average_level_of_learning_achieved = mean(c(`Q03_Level of Learning Achieved->B - 1. - BI1 - Concept 1 of 4: Ensemble Methods for Predictive Analytics`, `Q03_Level of Learning Achieved->B - 2. - BI1 - Concept 2 of 4: Linear Algorithms for Predictive Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 3. - BI1 - Concept 3 of 4: Non-Linear Algorithms for Predictive Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 4. - BI1 - Concept 4 of 4: Dashboarding for Business-Facing and Customer-Facing Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 1. - BI2 - Concept 1 of 4: Ensemble Methods for Predictive Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 2. - BI2 - Concept 2 of 4: Predictive Modelling Using R`,
+                                                     `Q03_Level of Learning Achieved->B - 3. - BI2 - Concept 3 of 4: Data Warehousing and BI Strategy Implementation`,
+                                                     `Q03_Level of Learning Achieved->B - 4. - BI2 - Concept 4 of 4: Data Engineering`))) %>%
+  
+  # average_level_of_skill_achieved
+  mutate(average_level_of_skill_achieved = mean(c(`Q04_Competency for Technologies->D - 1. ChartJS`, `Q04_Competency for Technologies->D - 2. R (includes R markdown and R plumber)`, `Q04_Competency for Technologies->D - 3. MySQL`, `Q04_Competency for Technologies->D - 4. Kafka`, `Q04_Competency for Technologies->D - 5. ksqlDB`, `Q04_Competency for Technologies->D - 6. ClickHouse`, `Q04_Competency for Technologies->D - 7. Linear and Non-Linear ML Algorithms in the caret package`))) %>%
 
   # average_quality_of_teaching_strategies  
-  mutate(average_quality_of_teaching_strategies = mean(c(`Q04_Quality of Teaching Strategies->C - 1. Labs with comments that describe each step to be followed`, `Q04_Quality of Teaching Strategies->C - 2. Labs that require you to put in effort to make a submission related to the content of the lab`, `Q04_Quality of Teaching Strategies->C - 3. Labs that require you to use Git to work in a team`, `Q04_Quality of Teaching Strategies->C - 4. Labs that require you to work alone`, `Q04_Quality of Teaching Strategies->C - 5. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical/lively the lectures are)`, `Q04_Quality of Teaching Strategies->C - 6. The recordings of online classes`, `Q04_Quality of Teaching Strategies->C - 7. Online classes in general`, `Q04_Quality of Teaching Strategies->C - 8. Face-to-Face classes in general`))) %>%
+  mutate(average_quality_of_teaching_strategies = mean(c(`Q05_Quality of Teaching Strategies->E - 1. Group project`, `Q05_Quality of Teaching Strategies->E - 2. Lab manuals that outline the steps to follow during the labs`, `Q05_Quality of Teaching Strategies->E - 3. Required lab work submissions at the end of each lab manual that outline the activity to be done on your own`, `Q05_Quality of Teaching Strategies->E - 4. Supplementary videos/audio to watch/listen to`, `Q05_Quality of Teaching Strategies->E - 5. Lectures slides`, `Q05_Quality of Teaching Strategies->E - 6. Lecture notes on some of the lecture slides`, `Q05_Quality of Teaching Strategies->E - 7. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical the lectures are)`, `Q05_Quality of Teaching Strategies->E - 8. The division of theory and practice such that most of the theory is done during the recorded online classes and most of the practice is done during the physical classes`, `Q05_Quality of Teaching Strategies->E - 9. The recordings of online classes`))) %>%
   
   group_by(`Class Group`, `Gender`) %>%
   summarise(
-    `A. I am enjoying the subject` =
-      mean(`Q02_General Questions->A - 1. I am enjoying the subject`),
-    `B. Classes start and end on time` =
-      mean(`Q02_General Questions->A - 2. Classes start and end on time`),
-    `C. The learning environment is participative, involves learning by doing and is group-based` =
-      mean(`Q02_General Questions->A - 3. The learning environment is participative, involves learning by doing and is group-based`),
-    `D. The subject content is delivered according to the course outline and meets my expectations` =
-      mean(`Q02_General Questions->A - 4. The subject content is delivered according to the course outline and meets my expectations`),
-    `E. The topics are clear and logically developed` =
-      mean(`Q02_General Questions->A - 5. The topics are clear and logically developed`),
-    `F. I am developing my oral and writing skills` =
-      mean(`Q02_General Questions->A - 6. I am developing my oral and writing skills`),
-    `G. I am developing my reflective and critical reasoning skills` =
-      mean(`Q02_General Questions->A - 7. I am developing my reflective and critical reasoning skills`),
-    `H. The assessment methods are assisting me to learn` =
-      mean(`Q02_General Questions->A - 8. The assessment methods are assisting me to learn`),
-    `I. I receive relevant feedback` =
-      mean(`Q02_General Questions->A - 9. I receive relevant feedback`),
+    `A. I enjoyed the subject` =
+      mean(`Q02_General Questions->A - 1. I enjoyed the subject`),
+    `B. Classes started and ended on time` =
+      mean(`Q02_General Questions->A - 2. Classes started and ended on time`),
+    `C. The learning environment was participative, involved learning by doing and was group-based` =
+      mean(`Q02_General Questions->A - 3. The learning environment was participative, involved learning by doing and was group-based`),
+    `D. The subject content was delivered according to the course outline and met my expectations` =
+      mean(`Q02_General Questions->A - 4. The subject content was delivered according to the course outline and met my expectations`),
+    `E. The topics were clear and logically developed` =
+      mean(`Q02_General Questions->A - 5. The topics were clear and logically developed`),
+    `F. I developed my oral and writing skills` =
+      mean(`Q02_General Questions->A - 6. I developed my oral and writing skills`),
+    `G. I developed my reflective and critical reasoning skills` =
+      mean(`Q02_General Questions->A - 7. I developed my reflective and critical reasoning skills`),
+    `H. The assessment methods assisted me to learn` =
+      mean(`Q02_General Questions->A - 8. The assessment methods assisted me to learn`),
+    `I. I received relevant feedback` =
+      mean(`Q02_General Questions->A - 9. I received relevant feedback`),
     `J. I read the recommended readings and notes` =
       mean(`Q02_General Questions->A - 10. I read the recommended readings and notes`),
-    `K. I use the eLearning material posted` =
-      mean(`Q02_General Questions->A - 11. I use the eLearning material posted`),
+    `K. I used the eLearning material posted` =
+      mean(`Q02_General Questions->A - 11. I used the eLearning material posted`),
      `L. Average Quality of Teaching Strategies` =
       mean(average_quality_of_teaching_strategies),
      `M. Average Level of Learning Achieved` =
       mean(average_level_of_learning_achieved),
-     `N. Average Course Evaluation Rating` =
+     `N. Average Level of Technical Skill Achieved` =
+      mean(average_level_of_skill_achieved),
+     `O. Average Course Evaluation Rating` =
       mean(average_course_evaluation_rating)
   ) %>%
   # If we had to sort the results
@@ -395,37 +415,47 @@ evaluation_rating_per_question_per_group_per_gender <- course_evaluation_dataset
   select(
     `Class Group`,
     `Gender`,
-    `A. I am enjoying the subject`,
-    `B. Classes start and end on time`,
-    `C. The learning environment is participative, involves learning by doing and is group-based`,
-    `D. The subject content is delivered according to the course outline and meets my expectations`,
-    `E. The topics are clear and logically developed`,
-    `F. I am developing my oral and writing skills`,
-    `G. I am developing my reflective and critical reasoning skills`,
-    `H. The assessment methods are assisting me to learn`,
-    `I. I receive relevant feedback`,
+    `A. I enjoyed the subject`,
+    `B. Classes started and ended on time`,
+    `C. The learning environment was participative, involved learning by doing and was group-based`,
+    `D. The subject content was delivered according to the course outline and met my expectations`,
+    `E. The topics were clear and logically developed`,
+    `F. I developed my oral and writing skills`,
+    `G. I developed my reflective and critical reasoning skills`,
+    `H. The assessment methods assisted me to learn`,
+    `I. I received relevant feedback`,
     `J. I read the recommended readings and notes`,
-    `K. I use the eLearning material posted`,
+    `K. I used the eLearning material posted`,
     `L. Average Quality of Teaching Strategies`,
     `M. Average Level of Learning Achieved`,
-    `N. Average Course Evaluation Rating`
+    `N. Average Level of Technical Skill Achieved`,
+    `O. Average Course Evaluation Rating`
   )
 ```
 
 ```{r OverallScore, include=FALSE}
 overall_score <- course_evaluation_dataset %>%
   rename(`Class Group` = `Q01_Class Demographics`) %>%
-  filter(!is.na(`Q02_General Questions->A - 11. I use the eLearning material posted`)) %>%
+  filter(!is.na(`Q02_General Questions->A - 11. I used the eLearning material posted`)) %>%
   rowwise() %>%
   
   # average_course_evaluation_rating
-  mutate(average_course_evaluation_rating = mean(c(`Q02_General Questions->A - 1. I am enjoying the subject`, `Q02_General Questions->A - 2. Classes start and end on time`, `Q02_General Questions->A - 3. The learning environment is participative, involves learning by doing and is group-based`, `Q02_General Questions->A - 4. The subject content is delivered according to the course outline and meets my expectations`, `Q02_General Questions->A - 5. The topics are clear and logically developed`, `Q02_General Questions->A - 6. I am developing my oral and writing skills`, `Q02_General Questions->A - 7. I am developing my reflective and critical reasoning skills`, `Q02_General Questions->A - 8. The assessment methods are assisting me to learn`, `Q02_General Questions->A - 9. I receive relevant feedback`, `Q02_General Questions->A - 10. I read the recommended readings and notes`, `Q02_General Questions->A - 11. I use the eLearning material posted`))) %>%
+  mutate(average_course_evaluation_rating = mean(c(`Q02_General Questions->A - 1. I enjoyed the subject`, `Q02_General Questions->A - 2. Classes started and ended on time`, `Q02_General Questions->A - 3. The learning environment was participative, involved learning by doing and was group-based`, `Q02_General Questions->A - 4. The subject content was delivered according to the course outline and met my expectations`, `Q02_General Questions->A - 5. The topics were clear and logically developed`, `Q02_General Questions->A - 6. I developed my oral and writing skills`, `Q02_General Questions->A - 7. I developed my reflective and critical reasoning skills`, `Q02_General Questions->A - 8. The assessment methods assisted me to learn`, `Q02_General Questions->A - 9. I received relevant feedback`, `Q02_General Questions->A - 10. I read the recommended readings and notes`, `Q02_General Questions->A - 11. I used the eLearning material posted`))) %>%
   
   # average_level_of_learning_achieved
-  mutate(average_level_of_learning_achieved = mean(c(`Q03_Level of Learning Achieved->B - 1. Concept 1 of 4 - Ensemble Methods for Predictive Analytics`, `Q03_Level of Learning Achieved->B - 2. Concept 2 of 4 - Predictive Modelling Using R`))) %>%
+  mutate(average_level_of_learning_achieved = mean(c(`Q03_Level of Learning Achieved->B - 1. - BI1 - Concept 1 of 4: Ensemble Methods for Predictive Analytics`, `Q03_Level of Learning Achieved->B - 2. - BI1 - Concept 2 of 4: Linear Algorithms for Predictive Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 3. - BI1 - Concept 3 of 4: Non-Linear Algorithms for Predictive Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 4. - BI1 - Concept 4 of 4: Dashboarding for Business-Facing and Customer-Facing Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 1. - BI2 - Concept 1 of 4: Ensemble Methods for Predictive Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 2. - BI2 - Concept 2 of 4: Predictive Modelling Using R`,
+                                                     `Q03_Level of Learning Achieved->B - 3. - BI2 - Concept 3 of 4: Data Warehousing and BI Strategy Implementation`,
+                                                     `Q03_Level of Learning Achieved->B - 4. - BI2 - Concept 4 of 4: Data Engineering`))) %>%
+  
+  # average_level_of_skill_achieved
+  mutate(average_level_of_skill_achieved = mean(c(`Q04_Competency for Technologies->D - 1. ChartJS`, `Q04_Competency for Technologies->D - 2. R (includes R markdown and R plumber)`, `Q04_Competency for Technologies->D - 3. MySQL`, `Q04_Competency for Technologies->D - 4. Kafka`, `Q04_Competency for Technologies->D - 5. ksqlDB`, `Q04_Competency for Technologies->D - 6. ClickHouse`, `Q04_Competency for Technologies->D - 7. Linear and Non-Linear ML Algorithms in the caret package`))) %>%
 
   # average_quality_of_teaching_strategies  
-  mutate(average_quality_of_teaching_strategies = mean(c(`Q04_Quality of Teaching Strategies->C - 1. Labs with comments that describe each step to be followed`, `Q04_Quality of Teaching Strategies->C - 2. Labs that require you to put in effort to make a submission related to the content of the lab`, `Q04_Quality of Teaching Strategies->C - 3. Labs that require you to use Git to work in a team`, `Q04_Quality of Teaching Strategies->C - 4. Labs that require you to work alone`, `Q04_Quality of Teaching Strategies->C - 5. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical/lively the lectures are)`, `Q04_Quality of Teaching Strategies->C - 6. The recordings of online classes`, `Q04_Quality of Teaching Strategies->C - 7. Online classes in general`, `Q04_Quality of Teaching Strategies->C - 8. Face-to-Face classes in general`))) %>%
+  mutate(average_quality_of_teaching_strategies = mean(c(`Q05_Quality of Teaching Strategies->E - 1. Group project`, `Q05_Quality of Teaching Strategies->E - 2. Lab manuals that outline the steps to follow during the labs`, `Q05_Quality of Teaching Strategies->E - 3. Required lab work submissions at the end of each lab manual that outline the activity to be done on your own`, `Q05_Quality of Teaching Strategies->E - 4. Supplementary videos/audio to watch/listen to`, `Q05_Quality of Teaching Strategies->E - 5. Lectures slides`, `Q05_Quality of Teaching Strategies->E - 6. Lecture notes on some of the lecture slides`, `Q05_Quality of Teaching Strategies->E - 7. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical the lectures are)`, `Q05_Quality of Teaching Strategies->E - 8. The division of theory and practice such that most of the theory is done during the recorded online classes and most of the practice is done during the physical classes`, `Q05_Quality of Teaching Strategies->E - 9. The recordings of online classes`))) %>%
   ungroup() %>%
   summarise(mean_score = mean(average_course_evaluation_rating), median_score = median(average_course_evaluation_rating)) %>%
   select(mean_score, median_score)
@@ -459,149 +489,173 @@ cat(" / 5")
 ------------------------------------------------------------------------
 
 ```{r evaluation_rating_per_question_per_eLearning_class_per_gender, include=FALSE, warning=FALSE}
-# STEP 5. Evaluation Rating per e-learning Class Group (1st) and per Gender (2nd) ----
+# Evaluation Rating per e-learning Class Group (1st) and per Gender (2nd) ----
 # Get the average course evaluation rating per class group on e-learning
 # (first grouping) and per gender (second grouping) 
 evaluation_rating_per_question_per_eLearning_class_per_gender <- course_evaluation_dataset %>%
   rename(`Class Group` = `Q01_Class Demographics`) %>%
-  filter(!is.na(`Q02_General Questions->A - 11. I use the eLearning material posted`)) %>%
+  filter(!is.na(`Q02_General Questions->A - 11. I used the eLearning material posted`)) %>%
   rowwise() %>%
   
   # average_course_evaluation_rating
-  mutate(average_course_evaluation_rating = mean(c(`Q02_General Questions->A - 1. I am enjoying the subject`, `Q02_General Questions->A - 2. Classes start and end on time`, `Q02_General Questions->A - 3. The learning environment is participative, involves learning by doing and is group-based`, `Q02_General Questions->A - 4. The subject content is delivered according to the course outline and meets my expectations`, `Q02_General Questions->A - 5. The topics are clear and logically developed`, `Q02_General Questions->A - 6. I am developing my oral and writing skills`, `Q02_General Questions->A - 7. I am developing my reflective and critical reasoning skills`, `Q02_General Questions->A - 8. The assessment methods are assisting me to learn`, `Q02_General Questions->A - 9. I receive relevant feedback`, `Q02_General Questions->A - 10. I read the recommended readings and notes`, `Q02_General Questions->A - 11. I use the eLearning material posted`))) %>%
+  mutate(average_course_evaluation_rating = mean(c(`Q02_General Questions->A - 1. I enjoyed the subject`, `Q02_General Questions->A - 2. Classes started and ended on time`, `Q02_General Questions->A - 3. The learning environment was participative, involved learning by doing and was group-based`, `Q02_General Questions->A - 4. The subject content was delivered according to the course outline and met my expectations`, `Q02_General Questions->A - 5. The topics were clear and logically developed`, `Q02_General Questions->A - 6. I developed my oral and writing skills`, `Q02_General Questions->A - 7. I developed my reflective and critical reasoning skills`, `Q02_General Questions->A - 8. The assessment methods assisted me to learn`, `Q02_General Questions->A - 9. I received relevant feedback`, `Q02_General Questions->A - 10. I read the recommended readings and notes`, `Q02_General Questions->A - 11. I used the eLearning material posted`))) %>%
   
   # average_level_of_learning_achieved
-  mutate(average_level_of_learning_achieved = mean(c(`Q03_Level of Learning Achieved->B - 1. Concept 1 of 4 - Ensemble Methods for Predictive Analytics`, `Q03_Level of Learning Achieved->B - 2. Concept 2 of 4 - Predictive Modelling Using R`))) %>%
+  mutate(average_level_of_learning_achieved = mean(c(`Q03_Level of Learning Achieved->B - 1. - BI1 - Concept 1 of 4: Ensemble Methods for Predictive Analytics`, `Q03_Level of Learning Achieved->B - 2. - BI1 - Concept 2 of 4: Linear Algorithms for Predictive Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 3. - BI1 - Concept 3 of 4: Non-Linear Algorithms for Predictive Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 4. - BI1 - Concept 4 of 4: Dashboarding for Business-Facing and Customer-Facing Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 1. - BI2 - Concept 1 of 4: Ensemble Methods for Predictive Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 2. - BI2 - Concept 2 of 4: Predictive Modelling Using R`,
+                                                     `Q03_Level of Learning Achieved->B - 3. - BI2 - Concept 3 of 4: Data Warehousing and BI Strategy Implementation`,
+                                                     `Q03_Level of Learning Achieved->B - 4. - BI2 - Concept 4 of 4: Data Engineering`))) %>%
+  
+  # average_level_of_skill_achieved
+  mutate(average_level_of_skill_achieved = mean(c(`Q04_Competency for Technologies->D - 1. ChartJS`, `Q04_Competency for Technologies->D - 2. R (includes R markdown and R plumber)`, `Q04_Competency for Technologies->D - 3. MySQL`, `Q04_Competency for Technologies->D - 4. Kafka`, `Q04_Competency for Technologies->D - 5. ksqlDB`, `Q04_Competency for Technologies->D - 6. ClickHouse`, `Q04_Competency for Technologies->D - 7. Linear and Non-Linear ML Algorithms in the caret package`))) %>%
 
   # average_quality_of_teaching_strategies  
-  mutate(average_quality_of_teaching_strategies = mean(c(`Q04_Quality of Teaching Strategies->C - 1. Labs with comments that describe each step to be followed`, `Q04_Quality of Teaching Strategies->C - 2. Labs that require you to put in effort to make a submission related to the content of the lab`, `Q04_Quality of Teaching Strategies->C - 3. Labs that require you to use Git to work in a team`, `Q04_Quality of Teaching Strategies->C - 4. Labs that require you to work alone`, `Q04_Quality of Teaching Strategies->C - 5. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical/lively the lectures are)`, `Q04_Quality of Teaching Strategies->C - 6. The recordings of online classes`, `Q04_Quality of Teaching Strategies->C - 7. Online classes in general`, `Q04_Quality of Teaching Strategies->C - 8. Face-to-Face classes in general`))) %>%
+  mutate(average_quality_of_teaching_strategies = mean(c(`Q05_Quality of Teaching Strategies->E - 1. Group project`, `Q05_Quality of Teaching Strategies->E - 2. Lab manuals that outline the steps to follow during the labs`, `Q05_Quality of Teaching Strategies->E - 3. Required lab work submissions at the end of each lab manual that outline the activity to be done on your own`, `Q05_Quality of Teaching Strategies->E - 4. Supplementary videos/audio to watch/listen to`, `Q05_Quality of Teaching Strategies->E - 5. Lectures slides`, `Q05_Quality of Teaching Strategies->E - 6. Lecture notes on some of the lecture slides`, `Q05_Quality of Teaching Strategies->E - 7. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical the lectures are)`, `Q05_Quality of Teaching Strategies->E - 8. The division of theory and practice such that most of the theory is done during the recorded online classes and most of the practice is done during the physical classes`, `Q05_Quality of Teaching Strategies->E - 9. The recordings of online classes`))) %>%
   
   group_by(`Group`, `Gender`) %>%
   summarise(
-    `A. I am enjoying the subject` =
-      mean(`Q02_General Questions->A - 1. I am enjoying the subject`),
-    `B. Classes start and end on time` =
-      mean(`Q02_General Questions->A - 2. Classes start and end on time`),
-    `C. The learning environment is participative, involves learning by doing and is group-based` =
-      mean(`Q02_General Questions->A - 3. The learning environment is participative, involves learning by doing and is group-based`),
-    `D. The subject content is delivered according to the course outline and meets my expectations` =
-      mean(`Q02_General Questions->A - 4. The subject content is delivered according to the course outline and meets my expectations`),
-    `E. The topics are clear and logically developed` =
-      mean(`Q02_General Questions->A - 5. The topics are clear and logically developed`),
-    `F. I am developing my oral and writing skills` =
-      mean(`Q02_General Questions->A - 6. I am developing my oral and writing skills`),
-    `G. I am developing my reflective and critical reasoning skills` =
-      mean(`Q02_General Questions->A - 7. I am developing my reflective and critical reasoning skills`),
-    `H. The assessment methods are assisting me to learn` =
-      mean(`Q02_General Questions->A - 8. The assessment methods are assisting me to learn`),
-    `I. I receive relevant feedback` =
-      mean(`Q02_General Questions->A - 9. I receive relevant feedback`),
+    `A. I enjoyed the subject` =
+      mean(`Q02_General Questions->A - 1. I enjoyed the subject`),
+    `B. Classes started and ended on time` =
+      mean(`Q02_General Questions->A - 2. Classes started and ended on time`),
+    `C. The learning environment was participative, involved learning by doing and was group-based` =
+      mean(`Q02_General Questions->A - 3. The learning environment was participative, involved learning by doing and was group-based`),
+    `D. The subject content was delivered according to the course outline and met my expectations` =
+      mean(`Q02_General Questions->A - 4. The subject content was delivered according to the course outline and met my expectations`),
+    `E. The topics were clear and logically developed` =
+      mean(`Q02_General Questions->A - 5. The topics were clear and logically developed`),
+    `F. I developed my oral and writing skills` =
+      mean(`Q02_General Questions->A - 6. I developed my oral and writing skills`),
+    `G. I developed my reflective and critical reasoning skills` =
+      mean(`Q02_General Questions->A - 7. I developed my reflective and critical reasoning skills`),
+    `H. The assessment methods assisted me to learn` =
+      mean(`Q02_General Questions->A - 8. The assessment methods assisted me to learn`),
+    `I. I received relevant feedback` =
+      mean(`Q02_General Questions->A - 9. I received relevant feedback`),
     `J. I read the recommended readings and notes` =
       mean(`Q02_General Questions->A - 10. I read the recommended readings and notes`),
-    `K. I use the eLearning material posted` =
-      mean(`Q02_General Questions->A - 11. I use the eLearning material posted`),
+    `K. I used the eLearning material posted` =
+      mean(`Q02_General Questions->A - 11. I used the eLearning material posted`),
      `L. Average Quality of Teaching Strategies` =
       mean(average_quality_of_teaching_strategies),
      `M. Average Level of Learning Achieved` =
       mean(average_level_of_learning_achieved),
-     `N. Average Course Evaluation Rating` =
+     `N. Average Level of Technical Skill Achieved` =
+      mean(average_level_of_skill_achieved),
+     `O. Average Course Evaluation Rating` =
       mean(average_course_evaluation_rating)
   ) %>%
   # If we had to sort the results
-  # arrange(`Mean Average Course Evaluation Rating`) %>%
+  # arrange(`O. Average Course Evaluation Rating`) %>%
   select(
     `Group`,
     `Gender`,
-    `A. I am enjoying the subject`,
-    `B. Classes start and end on time`,
-    `C. The learning environment is participative, involves learning by doing and is group-based`,
-    `D. The subject content is delivered according to the course outline and meets my expectations`,
-    `E. The topics are clear and logically developed`,
-    `F. I am developing my oral and writing skills`,
-    `G. I am developing my reflective and critical reasoning skills`,
-    `H. The assessment methods are assisting me to learn`,
-    `I. I receive relevant feedback`,
+    `A. I enjoyed the subject`,
+    `B. Classes started and ended on time`,
+    `C. The learning environment was participative, involved learning by doing and was group-based`,
+    `D. The subject content was delivered according to the course outline and met my expectations`,
+    `E. The topics were clear and logically developed`,
+    `F. I developed my oral and writing skills`,
+    `G. I developed my reflective and critical reasoning skills`,
+    `H. The assessment methods assisted me to learn`,
+    `I. I received relevant feedback`,
     `J. I read the recommended readings and notes`,
-    `K. I use the eLearning material posted`,
+    `K. I used the eLearning material posted`,
     `L. Average Quality of Teaching Strategies`,
     `M. Average Level of Learning Achieved`,
-    `N. Average Course Evaluation Rating`
+    `N. Average Level of Technical Skill Achieved`,
+    `O. Average Course Evaluation Rating`
   )
 ```
 
 ```{r evaluation_rating_per_question_per_gender_per_group, include=FALSE, warning=FALSE}
-# STEP 6. Evaluation Rating per Gender (1st) and per Group (2nd) ----
+# Evaluation Rating per Gender (1st) and per Group (2nd) ----
 # The average course evaluation rating per gender (first grouping) and per
 # group (second grouping)
 evaluation_rating_per_question_per_gender_per_group <- course_evaluation_dataset %>%
   rename(`Class Group` = `Q01_Class Demographics`) %>%
-  filter(!is.na(`Q02_General Questions->A - 11. I use the eLearning material posted`)) %>%
+  filter(!is.na(`Q02_General Questions->A - 11. I used the eLearning material posted`)) %>%
   rowwise() %>%
   
   # average_course_evaluation_rating
-  mutate(average_course_evaluation_rating = mean(c(`Q02_General Questions->A - 1. I am enjoying the subject`, `Q02_General Questions->A - 2. Classes start and end on time`, `Q02_General Questions->A - 3. The learning environment is participative, involves learning by doing and is group-based`, `Q02_General Questions->A - 4. The subject content is delivered according to the course outline and meets my expectations`, `Q02_General Questions->A - 5. The topics are clear and logically developed`, `Q02_General Questions->A - 6. I am developing my oral and writing skills`, `Q02_General Questions->A - 7. I am developing my reflective and critical reasoning skills`, `Q02_General Questions->A - 8. The assessment methods are assisting me to learn`, `Q02_General Questions->A - 9. I receive relevant feedback`, `Q02_General Questions->A - 10. I read the recommended readings and notes`, `Q02_General Questions->A - 11. I use the eLearning material posted`))) %>%
+  mutate(average_course_evaluation_rating = mean(c(`Q02_General Questions->A - 1. I enjoyed the subject`, `Q02_General Questions->A - 2. Classes started and ended on time`, `Q02_General Questions->A - 3. The learning environment was participative, involved learning by doing and was group-based`, `Q02_General Questions->A - 4. The subject content was delivered according to the course outline and met my expectations`, `Q02_General Questions->A - 5. The topics were clear and logically developed`, `Q02_General Questions->A - 6. I developed my oral and writing skills`, `Q02_General Questions->A - 7. I developed my reflective and critical reasoning skills`, `Q02_General Questions->A - 8. The assessment methods assisted me to learn`, `Q02_General Questions->A - 9. I received relevant feedback`, `Q02_General Questions->A - 10. I read the recommended readings and notes`, `Q02_General Questions->A - 11. I used the eLearning material posted`))) %>%
   
   # average_level_of_learning_achieved
-  mutate(average_level_of_learning_achieved = mean(c(`Q03_Level of Learning Achieved->B - 1. Concept 1 of 4 - Ensemble Methods for Predictive Analytics`, `Q03_Level of Learning Achieved->B - 2. Concept 2 of 4 - Predictive Modelling Using R`))) %>%
+  mutate(average_level_of_learning_achieved = mean(c(`Q03_Level of Learning Achieved->B - 1. - BI1 - Concept 1 of 4: Ensemble Methods for Predictive Analytics`, `Q03_Level of Learning Achieved->B - 2. - BI1 - Concept 2 of 4: Linear Algorithms for Predictive Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 3. - BI1 - Concept 3 of 4: Non-Linear Algorithms for Predictive Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 4. - BI1 - Concept 4 of 4: Dashboarding for Business-Facing and Customer-Facing Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 1. - BI2 - Concept 1 of 4: Ensemble Methods for Predictive Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 2. - BI2 - Concept 2 of 4: Predictive Modelling Using R`,
+                                                     `Q03_Level of Learning Achieved->B - 3. - BI2 - Concept 3 of 4: Data Warehousing and BI Strategy Implementation`,
+                                                     `Q03_Level of Learning Achieved->B - 4. - BI2 - Concept 4 of 4: Data Engineering`))) %>%
+
+  # average_level_of_skill_achieved
+  mutate(average_level_of_skill_achieved = mean(c(`Q04_Competency for Technologies->D - 1. ChartJS`, `Q04_Competency for Technologies->D - 2. R (includes R markdown and R plumber)`, `Q04_Competency for Technologies->D - 3. MySQL`, `Q04_Competency for Technologies->D - 4. Kafka`, `Q04_Competency for Technologies->D - 5. ksqlDB`, `Q04_Competency for Technologies->D - 6. ClickHouse`, `Q04_Competency for Technologies->D - 7. Linear and Non-Linear ML Algorithms in the caret package`))) %>%
 
   # average_quality_of_teaching_strategies  
-  mutate(average_quality_of_teaching_strategies = mean(c(`Q04_Quality of Teaching Strategies->C - 1. Labs with comments that describe each step to be followed`, `Q04_Quality of Teaching Strategies->C - 2. Labs that require you to put in effort to make a submission related to the content of the lab`, `Q04_Quality of Teaching Strategies->C - 3. Labs that require you to use Git to work in a team`, `Q04_Quality of Teaching Strategies->C - 4. Labs that require you to work alone`, `Q04_Quality of Teaching Strategies->C - 5. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical/lively the lectures are)`, `Q04_Quality of Teaching Strategies->C - 6. The recordings of online classes`, `Q04_Quality of Teaching Strategies->C - 7. Online classes in general`, `Q04_Quality of Teaching Strategies->C - 8. Face-to-Face classes in general`))) %>%
-  
+  mutate(average_quality_of_teaching_strategies = mean(c(`Q05_Quality of Teaching Strategies->E - 1. Group project`, `Q05_Quality of Teaching Strategies->E - 2. Lab manuals that outline the steps to follow during the labs`, `Q05_Quality of Teaching Strategies->E - 3. Required lab work submissions at the end of each lab manual that outline the activity to be done on your own`, `Q05_Quality of Teaching Strategies->E - 4. Supplementary videos/audio to watch/listen to`, `Q05_Quality of Teaching Strategies->E - 5. Lectures slides`, `Q05_Quality of Teaching Strategies->E - 6. Lecture notes on some of the lecture slides`, `Q05_Quality of Teaching Strategies->E - 7. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical the lectures are)`, `Q05_Quality of Teaching Strategies->E - 8. The division of theory and practice such that most of the theory is done during the recorded online classes and most of the practice is done during the physical classes`, `Q05_Quality of Teaching Strategies->E - 9. The recordings of online classes`))) %>%
+
   group_by(`Gender`, `Class Group`) %>%
   summarise(
-    `A. I am enjoying the subject` =
-      mean(`Q02_General Questions->A - 1. I am enjoying the subject`),
-    `B. Classes start and end on time` =
-      mean(`Q02_General Questions->A - 2. Classes start and end on time`),
-    `C. The learning environment is participative, involves learning by doing and is group-based` =
-      mean(`Q02_General Questions->A - 3. The learning environment is participative, involves learning by doing and is group-based`),
-    `D. The subject content is delivered according to the course outline and meets my expectations` =
-      mean(`Q02_General Questions->A - 4. The subject content is delivered according to the course outline and meets my expectations`),
-    `E. The topics are clear and logically developed` =
-      mean(`Q02_General Questions->A - 5. The topics are clear and logically developed`),
-    `F. I am developing my oral and writing skills` =
-      mean(`Q02_General Questions->A - 6. I am developing my oral and writing skills`),
-    `G. I am developing my reflective and critical reasoning skills` =
-      mean(`Q02_General Questions->A - 7. I am developing my reflective and critical reasoning skills`),
-    `H. The assessment methods are assisting me to learn` =
-      mean(`Q02_General Questions->A - 8. The assessment methods are assisting me to learn`),
-    `I. I receive relevant feedback` =
-      mean(`Q02_General Questions->A - 9. I receive relevant feedback`),
+    `A. I enjoyed the subject` =
+      mean(`Q02_General Questions->A - 1. I enjoyed the subject`),
+    `B. Classes started and ended on time` =
+      mean(`Q02_General Questions->A - 2. Classes started and ended on time`),
+    `C. The learning environment was participative, involved learning by doing and was group-based` =
+      mean(`Q02_General Questions->A - 3. The learning environment was participative, involved learning by doing and was group-based`),
+    `D. The subject content was delivered according to the course outline and met my expectations` =
+      mean(`Q02_General Questions->A - 4. The subject content was delivered according to the course outline and met my expectations`),
+    `E. The topics were clear and logically developed` =
+      mean(`Q02_General Questions->A - 5. The topics were clear and logically developed`),
+    `F. I developed my oral and writing skills` =
+      mean(`Q02_General Questions->A - 6. I developed my oral and writing skills`),
+    `G. I developed my reflective and critical reasoning skills` =
+      mean(`Q02_General Questions->A - 7. I developed my reflective and critical reasoning skills`),
+    `H. The assessment methods assisted me to learn` =
+      mean(`Q02_General Questions->A - 8. The assessment methods assisted me to learn`),
+    `I. I received relevant feedback` =
+      mean(`Q02_General Questions->A - 9. I received relevant feedback`),
     `J. I read the recommended readings and notes` =
       mean(`Q02_General Questions->A - 10. I read the recommended readings and notes`),
-    `K. I use the eLearning material posted` =
-      mean(`Q02_General Questions->A - 11. I use the eLearning material posted`),
+    `K. I used the eLearning material posted` =
+      mean(`Q02_General Questions->A - 11. I used the eLearning material posted`),
      `L. Average Quality of Teaching Strategies` =
       mean(average_quality_of_teaching_strategies),
      `M. Average Level of Learning Achieved` =
       mean(average_level_of_learning_achieved),
-     `N. Average Course Evaluation Rating` =
+     `N. Average Level of Technical Skill Achieved` =
+      mean(average_level_of_skill_achieved),
+     `O. Average Course Evaluation Rating` =
       mean(average_course_evaluation_rating)
   ) %>%
   # If we had to sort the results
-  # arrange(`Mean Average Course Evaluation Rating`) %>%
+  # arrange(`O. Average Course Evaluation Rating`) %>%
   select(
-    `Gender`,
     `Class Group`,
-    `A. I am enjoying the subject`,
-    `B. Classes start and end on time`,
-    `C. The learning environment is participative, involves learning by doing and is group-based`,
-    `D. The subject content is delivered according to the course outline and meets my expectations`,
-    `E. The topics are clear and logically developed`,
-    `F. I am developing my oral and writing skills`,
-    `G. I am developing my reflective and critical reasoning skills`,
-    `H. The assessment methods are assisting me to learn`,
-    `I. I receive relevant feedback`,
+    `Gender`,
+    `A. I enjoyed the subject`,
+    `B. Classes started and ended on time`,
+    `C. The learning environment was participative, involved learning by doing and was group-based`,
+    `D. The subject content was delivered according to the course outline and met my expectations`,
+    `E. The topics were clear and logically developed`,
+    `F. I developed my oral and writing skills`,
+    `G. I developed my reflective and critical reasoning skills`,
+    `H. The assessment methods assisted me to learn`,
+    `I. I received relevant feedback`,
     `J. I read the recommended readings and notes`,
-    `K. I use the eLearning material posted`,
+    `K. I used the eLearning material posted`,
     `L. Average Quality of Teaching Strategies`,
     `M. Average Level of Learning Achieved`,
-    `N. Average Course Evaluation Rating`
+    `N. Average Level of Technical Skill Achieved`,
+    `O. Average Course Evaluation Rating`
   )
 ```
 
 ```{r Transpose, include=FALSE, warning=FALSE}
-# STEP 7. Transpose the Data  for Easier Visualization ----
+# Transpose the Data  for Easier Visualization ----
 # We then transpose the data frame (for the group by class group and group by gender options)
 
 # Group by Class Group
@@ -709,6 +763,21 @@ ggplot(evaluation_rating_per_question_per_group_long_data,
   blue_grey_theme() +
   geom_hline(yintercept = 4, color = "#b90c0c",
              linetype = "dashed", size = 1)
+
+
+
+```
+
+\newpage
+
+Note that the 22 indicated as "NA" are all in Group A. Group A students filled in the course evaluation form before the question was set. Out of those asked, 98% do not regret the choice to take the Business Intelligence Option instead of the Computer Networking Option in their final year.
+
+```{r Regret, echo=FALSE, message=FALSE, warning=FALSE}
+regret <- course_evaluation_dataset %>%
+  group_by(`Q07_Regret->G - 1. Do you regret choosing the BI Option instead of the Computer Networking Option?`) %>%
+  summarise(Number = n()) %>%
+  rename(`Do you regret choosing the BI Option?` = `Q07_Regret->G - 1. Do you regret choosing the BI Option instead of the Computer Networking Option?`)
+regret
 ```
 
 \newpage
@@ -719,28 +788,45 @@ ggplot(evaluation_rating_per_question_per_group_long_data,
 # The general correlation values are presented below:
 course_evaluation_dataset_short_names <- course_evaluation_dataset %>%
   rename(
-    `A. Enjoying Subject` = `Q02_General Questions->A - 1. I am enjoying the subject`,
-    `B. Classes Start-End` = `Q02_General Questions->A - 2. Classes start and end on time`,
-    `C. Learning Environment` = `Q02_General Questions->A - 3. The learning environment is participative, involves learning by doing and is group-based`,
-    `D. Content Delivery` = `Q02_General Questions->A - 4. The subject content is delivered according to the course outline and meets my expectations`,
-    `E. Clear Topics` = `Q02_General Questions->A - 5. The topics are clear and logically developed`,
-     `F. Oral and Writing` = `Q02_General Questions->A - 6. I am developing my oral and writing skills`,
-    `G. Critical Thinking` = `Q02_General Questions->A - 7. I am developing my reflective and critical reasoning skills`,
-     `H. Assessment Methods` = `Q02_General Questions->A - 8. The assessment methods are assisting me to learn`,
-    `I. Relevant Feedback` = `Q02_General Questions->A - 9. I receive relevant feedback`,
+    `A. Enjoying Subject` = `Q02_General Questions->A - 1. I enjoyed the subject`,
+    `B. Classes Start-End` = `Q02_General Questions->A - 2. Classes started and ended on time`,
+    `C. Learning Environment` = `Q02_General Questions->A - 3. The learning environment was participative, involved learning by doing and was group-based`,
+    `D. Content Delivery` = `Q02_General Questions->A - 4. The subject content was delivered according to the course outline and met my expectations`,
+    `E. Clear Topics` = `Q02_General Questions->A - 5. The topics were clear and logically developed`,
+     `F. Oral and Writing` = `Q02_General Questions->A - 6. I developed my oral and writing skills`,
+    `G. Critical Thinking` = `Q02_General Questions->A - 7. I developed my reflective and critical reasoning skills`,
+     `H. Assessment Methods` = `Q02_General Questions->A - 8. The assessment methods assisted me to learn`,
+    `I. Relevant Feedback` = `Q02_General Questions->A - 9. I received relevant feedback`,
     `J. Read Recommendations` = `Q02_General Questions->A - 10. I read the recommended readings and notes`,
-    `L. eLearning Material` = `Q02_General Questions->A - 11. I use the eLearning material posted`,
-    `Understood Concept 1` = `Q03_Level of Learning Achieved->B - 1. Concept 1 of 4 - Ensemble Methods for Predictive Analytics`,
-    `Understood Concept 2` = `Q03_Level of Learning Achieved->B - 2. Concept 2 of 4 - Predictive Modelling Using R`,
-    `Teaching - Labs` = `Q04_Quality of Teaching Strategies->C - 1. Labs with comments that describe each step to be followed`,
-    `Labs with Submission` = `Q04_Quality of Teaching Strategies->C - 2. Labs that require you to put in effort to make a submission related to the content of the lab`,
-    `Git in Teams` =`Q04_Quality of Teaching Strategies->C - 3. Labs that require you to use Git to work in a team`,
-    `Solo Labs` = `Q04_Quality of Teaching Strategies->C - 4. Labs that require you to work alone`,
-    `Quality of Lectures` = `Q04_Quality of Teaching Strategies->C - 5. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical/lively the lectures are)`,
-    `Recordings of Classes` = `Q04_Quality of Teaching Strategies->C - 6. The recordings of online classes`,
-    `Online Classes` = `Q04_Quality of Teaching Strategies->C - 7. Online classes in general`,
-    `Physical Classes` = `Q04_Quality of Teaching Strategies->C - 8. Face-to-Face classes in general`
-    ) %>% 
+    `L. eLearning Material` = `Q02_General Questions->A - 11. I used the eLearning material posted`,
+    `Understood BI1 Concept 1` = `Q03_Level of Learning Achieved->B - 1. - BI1 - Concept 1 of 4: Ensemble Methods for Predictive Analytics`,
+    `Understood BI1 Concept 2` = `Q03_Level of Learning Achieved->B - 2. - BI1 - Concept 2 of 4: Linear Algorithms for Predictive Analytics`,
+    `Understood BI1 Concept 3` = `Q03_Level of Learning Achieved->B - 3. - BI1 - Concept 3 of 4: Non-Linear Algorithms for Predictive Analytics`,
+    `Understood BI1 Concept 4` = `Q03_Level of Learning Achieved->B - 4. - BI1 - Concept 4 of 4: Dashboarding for Business-Facing and Customer-Facing Analytics`,
+    `Understood BI2 Concept 1` = `Q03_Level of Learning Achieved->B - 1. - BI2 - Concept 1 of 4: Ensemble Methods for Predictive Analytics`,
+    `Understood BI2 Concept 2` = `Q03_Level of Learning Achieved->B - 2. - BI2 - Concept 2 of 4: Predictive Modelling Using R`,
+    `Understood BI2 Concept 3` = `Q03_Level of Learning Achieved->B - 3. - BI2 - Concept 3 of 4: Data Warehousing and BI Strategy Implementation`,
+    `Understood BI2 Concept 4` = `Q03_Level of Learning Achieved->B - 4. - BI2 - Concept 4 of 4: Data Engineering`,
+    
+    `Acquired Skill 1` = `Q04_Competency for Technologies->D - 1. ChartJS`,
+    `Acquired Skill 2` = `Q04_Competency for Technologies->D - 2. R (includes R markdown and R plumber)`,
+    `Acquired Skill 3` = `Q04_Competency for Technologies->D - 3. MySQL`,
+    `Acquired Skill 4` = `Q04_Competency for Technologies->D - 4. Kafka`,
+    
+    `Acquired Skill 5` = `Q04_Competency for Technologies->D - 5. ksqlDB`,
+    `Acquired Skill 6` = `Q04_Competency for Technologies->D - 6. ClickHouse`,
+    `Acquired Skill 7` = `Q04_Competency for Technologies->D - 7. Linear and Non-Linear ML Algorithms in the caret package`,
+    
+    `Group Project` = `Q05_Quality of Teaching Strategies->E - 1. Group project`,
+    `Labs Manuals` = `Q05_Quality of Teaching Strategies->E - 2. Lab manuals that outline the steps to follow during the labs`,
+    `Lab Submissions` = `Q05_Quality of Teaching Strategies->E - 3. Required lab work submissions at the end of each lab manual that outline the activity to be done on your own`,
+    `Supplementary Videos/Audio` = `Q05_Quality of Teaching Strategies->E - 4. Supplementary videos/audio to watch/listen to`,
+    `Lecture Slides` = `Q05_Quality of Teaching Strategies->E - 5. Lectures slides`,
+    `Lecture Notes` = `Q05_Quality of Teaching Strategies->E - 6. Lecture notes on some of the lecture slides`,
+    `Quality of Lectures` = `Q05_Quality of Teaching Strategies->E - 7. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical the lectures are)`,
+    `Online for Theory` = `Q05_Quality of Teaching Strategies->E - 8. The division of theory and practice such that most of the theory is done during the recorded online classes and most of the practice is done during the physical classes`,
+    `Recording of Online` = `Q05_Quality of Teaching Strategies->E - 9. The recordings of online classes`
+    ) %>%
   select(
     `Absenteeism`,
     `A. Enjoying Subject`,
@@ -754,15 +840,31 @@ course_evaluation_dataset_short_names <- course_evaluation_dataset %>%
     `I. Relevant Feedback`,
     `J. Read Recommendations`,
     `L. eLearning Material`,
-    `Understood Concept 1`,
-    `Understood Concept 2`,
-    `Labs with Submission`,
-    `Git in Teams`,
-    `Solo Labs`,
+    `Understood BI1 Concept 1`,
+    `Understood BI1 Concept 2`,
+    `Understood BI1 Concept 3`,
+    `Understood BI1 Concept 4`,
+    `Understood BI2 Concept 1`,
+    `Understood BI2 Concept 2`,
+    `Understood BI2 Concept 3`,
+    `Understood BI2 Concept 4`,
+    `Acquired Skill 1`,
+    `Acquired Skill 2`,
+    `Acquired Skill 3`,
+    `Acquired Skill 4`,
+    `Acquired Skill 5`,
+    `Acquired Skill 6`,
+    `Acquired Skill 7`,
+    `Group Project`,
+    `Labs Manuals`,
+    `Lab Submissions`,
+    `Supplementary Videos/Audio`,
+    `Lecture Slides`,
+    `Lecture Notes`,
     `Quality of Lectures`,
-    `Recordings of Classes`,
-    `Online Classes`,
-    `Physical Classes`
+    `Online for Theory`,
+    `Recording of Online`
+    
   )
 
 # ggcorrplot(cor(course_evaluation_dataset_short_names))
@@ -779,48 +881,44 @@ corr_matrix <- cor(course_evaluation_dataset_short_names)
 p <- ggplot2::ggplot(data = reshape2::melt(corr_matrix),
                      ggplot2::aes(Var1, Var2, fill = value)) +
   ggplot2::geom_tile() +
-  ggplot2::geom_text(ggplot2::aes(label = label_wrap(label, width = 10)), size = 4) +  # Customize label_wrap width
+  ggplot2::geom_text(ggplot2::aes(label = label_wrap(label, width = 6)), size = 4) +  # Customize label_wrap width
   ggplot2::scale_fill_gradient2(low = "red", high = "green") +
   ggplot2::theme_minimal() +
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
 
-ggcorrplot(corr_matrix, hc.order = TRUE, type = "lower", lab = TRUE)
+ggcorrplot(lab_size = 2, corr_matrix, hc.order = TRUE, type = "lower", lab = TRUE)
 ```
 
 ### Interesting Correlations
 
 The following are hypothetical statements given that "correlation does not imply causation".
 
--   **.73 correlation** between "I am developing my oral and writing skills" and "I am developing my reflective and critical reasoning skills": *Consider writing as formalized thinking.*
+-   **.81 correlation** between "Acquired Skill 6 (ClickHouse)" and "Acquired Skill 5 (ksqlDB)": *The two technologies are related and taught in the same lab (Data Engineering).*
 
--   **.71 correlation** between "The assessment methods are assisting me to learn" and "I am developing my reflective and critical reasoning skills": *The more effort students put into the assessment, the more they develop their reflective and critical reasoning skills.*
+-   **.82 correlation** between "Acquired Skill 4 (Kafka)" and "Acquired Skill 5 (ksqlDB)": *The two technologies are related and taught in the same lab and concept (Data Engineering).*
 
--   **.67 correlation** between "I am enjoying the subject" and "I am developing my reflective and critical reasoning skills": *The more a student enjoys the subject, the more they consider their reflective and critical reasoning skills as developing.*
+-   **.78 correlation** between "Acquired Skill 6 (ClickHouse)" and "Acquired Skill 4 (Kafka)": *The two technologies are related and taught in the same lab (Data Engineering).*
 
--   **.65 correlation** between "The assessment methods are assisting me to learn" and "I am enjoying the subject": *The more interesting/challenging the assessment methods, the more students enjoy the course.*
+-   **.75 correlation** between "Lab Manuals (Lab manuals that outline the steps to follow during the labs)" and "Lab Submissions (Required lab work submissions at the end of each lab manual that outline the activity to be done on your own)": *The more the effort to clearly outline the steps to be done in a lab manual, the more impact it has on the students' learning.*
 
--   **.63 correlation** between "Labs that require you to use Git to work in a team" and "Labs that require you to put in effort to make a submission related to the content of the lab": *The more students appreciate the use of Git for working in teams, the more they appreciate labs that require a submission to be made.*
+-   **.76 correlation** between "The quality of lecture slides" and "the quality of lecture notes on some of the slides: *The higher the quality of the slides, the higher the quality of the notes on some of the slides.*
 
--   **.62 correlation** between "The subject content is delivered according to the course outline and meets my expectations" and "The topics are clear and logically developed": *The more the course outline is followed, the clearer and more logically developed the topics are.*
-
--   **-.32 correlation** between "Concept 1 of 4 - Ensemble Methods for Predictive Analytics" and "Absenteeism": *Students who started the semester late (high absenteeism), had a harder time understanding concept 1 which was covered at the beginning of the semester.*
-
--   **-.36 correlation** between "I use the e-learning material posted" and "absenteeism": *The higher the number of classes missed, the lower the student's engagement with content posted on e-learning*
-
-(1) A **.73 correlation** between "I am developing my oral and writing skills" and "I am developing my reflective and critical reasoning skills":
+(1) A **.76 correlation** between "The quality of lecture slides" and "the quality of lecture notes on some of the slides.
 
 ```{r DrillDownCorr1, echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(course_evaluation_dataset,
-       aes(x = `Q02_General Questions->A - 6. I am developing my oral and writing skills`, y = `Q02_General Questions->A - 7. I am developing my reflective and critical reasoning skills`, shape = Gender, color = Gender)) +
+       aes(x = `Q05_Quality of Teaching Strategies->E - 5. Lectures slides`, y = `Q05_Quality of Teaching Strategies->E - 6. Lecture notes on some of the lecture slides`, shape = Gender, color = Gender)) +
   geom_point() +
   geom_smooth(method = lm)
 ```
 
-(2) A **.71 correlation** between "The assessment methods are assisting me to learn" and "I am developing my reflective and critical reasoning skills":
+\newpage
+
+(2) A **.75 correlation** between "Lab Manuals (Lab manuals that outline the steps to follow during the labs)" and "Lab Submissions (Required lab work submissions at the end of each lab manual that outline the activity to be done on your own)".
 
 ```{r DrillDownCorr2, echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(course_evaluation_dataset,
-       aes(x = `Q02_General Questions->A - 11. I use the eLearning material posted`, y = Absenteeism, shape = Gender, color = Gender)) +
+       aes(x = `Q05_Quality of Teaching Strategies->E - 2. Lab manuals that outline the steps to follow during the labs`, y = `Q05_Quality of Teaching Strategies->E - 3. Required lab work submissions at the end of each lab manual that outline the activity to be done on your own`, shape = Gender, color = Gender)) +
   geom_point() +
   geom_smooth(method = lm)
 ```
@@ -829,7 +927,7 @@ ggplot(course_evaluation_dataset,
 
 ### Absenteeism Percentage
 
-The lower the absenteeism, the more a student makes use of the e-learning materials posted. And the more a student makes use of the e-learning materials posted, the higher their overall grade in the course.
+The lower the absenteeism, the more a student makes use of the lab manuals for practical classes. And the more a student makes use of the lab manuals, the more the lab submissions have an impact on their overall acquisition of skills.
 
 With this in mind, a further investigation of the **absenteeism percentage** is presented below.
 
@@ -859,73 +957,89 @@ featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dat
 ## Average per Question per Group ----
 evaluation_likes_and_wishes <- course_evaluation_dataset %>%
   rename(`Class Group` = `Q01_Class Demographics`) %>%
-  rename(`Likes` = `Q05_Likes->D - 1. Write two things you like about the teaching and learning in this unit so far.`) %>%
-  rename(`Wishes` = `Q05_Wishes->D - 2. Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)`) %>%
-  filter(!is.na(`Q02_General Questions->A - 11. I use the eLearning material posted`)) %>%
+  rename(`Likes` = `Q07_Likes->G - 1. Write two things you liked about the teaching and learning in this course.`) %>%
+  rename(`Wishes` = `Q07_Wishes->G - 2. Write at least one recommendation to improve the teaching and learning in this course (for future classes)`) %>%
+  rename(`Topics` = `Q06_Topics to Add->F - 1. Are there any topics that you recommend should be added to in addition to the ones already in the BI1 and BI2 course outlines?`) %>%
+  filter(!is.na(`Q02_General Questions->A - 11. I used the eLearning material posted`)) %>%
   rowwise() %>%
   
   # average_course_evaluation_rating
-  mutate(average_course_evaluation_rating = mean(c(`Q02_General Questions->A - 1. I am enjoying the subject`, `Q02_General Questions->A - 2. Classes start and end on time`, `Q02_General Questions->A - 3. The learning environment is participative, involves learning by doing and is group-based`, `Q02_General Questions->A - 4. The subject content is delivered according to the course outline and meets my expectations`, `Q02_General Questions->A - 5. The topics are clear and logically developed`, `Q02_General Questions->A - 6. I am developing my oral and writing skills`, `Q02_General Questions->A - 7. I am developing my reflective and critical reasoning skills`, `Q02_General Questions->A - 8. The assessment methods are assisting me to learn`, `Q02_General Questions->A - 9. I receive relevant feedback`, `Q02_General Questions->A - 10. I read the recommended readings and notes`, `Q02_General Questions->A - 11. I use the eLearning material posted`))) %>%
+  mutate(average_course_evaluation_rating = mean(c(`Q02_General Questions->A - 1. I enjoyed the subject`, `Q02_General Questions->A - 2. Classes started and ended on time`, `Q02_General Questions->A - 3. The learning environment was participative, involved learning by doing and was group-based`, `Q02_General Questions->A - 4. The subject content was delivered according to the course outline and met my expectations`, `Q02_General Questions->A - 5. The topics were clear and logically developed`, `Q02_General Questions->A - 6. I developed my oral and writing skills`, `Q02_General Questions->A - 7. I developed my reflective and critical reasoning skills`, `Q02_General Questions->A - 8. The assessment methods assisted me to learn`, `Q02_General Questions->A - 9. I received relevant feedback`, `Q02_General Questions->A - 10. I read the recommended readings and notes`, `Q02_General Questions->A - 11. I used the eLearning material posted`))) %>%
   
   # average_level_of_learning_achieved
-  mutate(average_level_of_learning_achieved = mean(c(`Q03_Level of Learning Achieved->B - 1. Concept 1 of 4 - Ensemble Methods for Predictive Analytics`, `Q03_Level of Learning Achieved->B - 2. Concept 2 of 4 - Predictive Modelling Using R`))) %>%
+  mutate(average_level_of_learning_achieved = mean(c(`Q03_Level of Learning Achieved->B - 1. - BI1 - Concept 1 of 4: Ensemble Methods for Predictive Analytics`, `Q03_Level of Learning Achieved->B - 2. - BI1 - Concept 2 of 4: Linear Algorithms for Predictive Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 3. - BI1 - Concept 3 of 4: Non-Linear Algorithms for Predictive Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 4. - BI1 - Concept 4 of 4: Dashboarding for Business-Facing and Customer-Facing Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 1. - BI2 - Concept 1 of 4: Ensemble Methods for Predictive Analytics`,
+                                                     `Q03_Level of Learning Achieved->B - 2. - BI2 - Concept 2 of 4: Predictive Modelling Using R`,
+                                                     `Q03_Level of Learning Achieved->B - 3. - BI2 - Concept 3 of 4: Data Warehousing and BI Strategy Implementation`,
+                                                     `Q03_Level of Learning Achieved->B - 4. - BI2 - Concept 4 of 4: Data Engineering`))) %>%
+  
+  # average_level_of_skill_achieved
+  mutate(average_level_of_skill_achieved = mean(c(`Q04_Competency for Technologies->D - 1. ChartJS`, `Q04_Competency for Technologies->D - 2. R (includes R markdown and R plumber)`, `Q04_Competency for Technologies->D - 3. MySQL`, `Q04_Competency for Technologies->D - 4. Kafka`, `Q04_Competency for Technologies->D - 5. ksqlDB`, `Q04_Competency for Technologies->D - 6. ClickHouse`, `Q04_Competency for Technologies->D - 7. Linear and Non-Linear ML Algorithms in the caret package`))) %>%
 
   # average_quality_of_teaching_strategies  
-  mutate(average_quality_of_teaching_strategies = mean(c(`Q04_Quality of Teaching Strategies->C - 1. Labs with comments that describe each step to be followed`, `Q04_Quality of Teaching Strategies->C - 2. Labs that require you to put in effort to make a submission related to the content of the lab`, `Q04_Quality of Teaching Strategies->C - 3. Labs that require you to use Git to work in a team`, `Q04_Quality of Teaching Strategies->C - 4. Labs that require you to work alone`, `Q04_Quality of Teaching Strategies->C - 5. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical/lively the lectures are)`, `Q04_Quality of Teaching Strategies->C - 6. The recordings of online classes`, `Q04_Quality of Teaching Strategies->C - 7. Online classes in general`, `Q04_Quality of Teaching Strategies->C - 8. Face-to-Face classes in general`))) %>%
-
-  # If we had to sort the results
-  arrange(`average_course_evaluation_rating`) %>%
-
-  rename(
-    `A. I am enjoying the subject` =
-      `Q02_General Questions->A - 1. I am enjoying the subject`,
-    `B. Classes start and end on time` =
-      `Q02_General Questions->A - 2. Classes start and end on time`,
-    `C. The learning environment is participative, involves learning by doing and is group-based` =
-      `Q02_General Questions->A - 3. The learning environment is participative, involves learning by doing and is group-based`,
-    `D. The subject content is delivered according to the course outline and meets my expectations` =
-      `Q02_General Questions->A - 4. The subject content is delivered according to the course outline and meets my expectations`,
-    `E. The topics are clear and logically developed` =
-      `Q02_General Questions->A - 5. The topics are clear and logically developed`,
-    `F. I am developing my oral and writing skills` =
-      `Q02_General Questions->A - 6. I am developing my oral and writing skills`,
-    `G. I am developing my reflective and critical reasoning skills` =
-      `Q02_General Questions->A - 7. I am developing my reflective and critical reasoning skills`,
-    `H. The assessment methods are assisting me to learn` =
-      `Q02_General Questions->A - 8. The assessment methods are assisting me to learn`,
-    `I. I receive relevant feedback` =
-      `Q02_General Questions->A - 9. I receive relevant feedback`,
+  mutate(average_quality_of_teaching_strategies = mean(c(`Q05_Quality of Teaching Strategies->E - 1. Group project`, `Q05_Quality of Teaching Strategies->E - 2. Lab manuals that outline the steps to follow during the labs`, `Q05_Quality of Teaching Strategies->E - 3. Required lab work submissions at the end of each lab manual that outline the activity to be done on your own`, `Q05_Quality of Teaching Strategies->E - 4. Supplementary videos/audio to watch/listen to`, `Q05_Quality of Teaching Strategies->E - 5. Lectures slides`, `Q05_Quality of Teaching Strategies->E - 6. Lecture notes on some of the lecture slides`, `Q05_Quality of Teaching Strategies->E - 7. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical the lectures are)`, `Q05_Quality of Teaching Strategies->E - 8. The division of theory and practice such that most of the theory is done during the recorded online classes and most of the practice is done during the physical classes`, `Q05_Quality of Teaching Strategies->E - 9. The recordings of online classes`))) %>%
+  
+    rename(
+    `A. I enjoyed the subject` =
+      (`Q02_General Questions->A - 1. I enjoyed the subject`),
+    `B. Classes started and ended on time` =
+      (`Q02_General Questions->A - 2. Classes started and ended on time`),
+    `C. The learning environment was participative, involved learning by doing and was group-based` =
+      (`Q02_General Questions->A - 3. The learning environment was participative, involved learning by doing and was group-based`),
+    `D. The subject content was delivered according to the course outline and met my expectations` =
+      (`Q02_General Questions->A - 4. The subject content was delivered according to the course outline and met my expectations`),
+    `E. The topics were clear and logically developed` =
+      (`Q02_General Questions->A - 5. The topics were clear and logically developed`),
+    `F. I developed my oral and writing skills` =
+      (`Q02_General Questions->A - 6. I developed my oral and writing skills`),
+    `G. I developed my reflective and critical reasoning skills` =
+      (`Q02_General Questions->A - 7. I developed my reflective and critical reasoning skills`),
+    `H. The assessment methods assisted me to learn` =
+      (`Q02_General Questions->A - 8. The assessment methods assisted me to learn`),
+    `I. I received relevant feedback` =
+      (`Q02_General Questions->A - 9. I received relevant feedback`),
     `J. I read the recommended readings and notes` =
-      `Q02_General Questions->A - 10. I read the recommended readings and notes`,
-    `K. I use the eLearning material posted` =
-      `Q02_General Questions->A - 11. I use the eLearning material posted`,
+      (`Q02_General Questions->A - 10. I read the recommended readings and notes`),
+    `K. I used the eLearning material posted` =
+      (`Q02_General Questions->A - 11. I used the eLearning material posted`),
      `L. Average Quality of Teaching Strategies` =
-      average_quality_of_teaching_strategies,
+      (average_quality_of_teaching_strategies),
      `M. Average Level of Learning Achieved` =
-      average_level_of_learning_achieved,
-     `N. Average Course Evaluation Rating` =
-      average_course_evaluation_rating
+      (average_level_of_learning_achieved),
+     `N. Average Level of Technical Skill Achieved` =
+      (average_level_of_skill_achieved),
+     `O. Average Course Evaluation Rating` =
+      (average_course_evaluation_rating)
   ) %>%
+  
+  group_by(`Class Group`, `Gender`) %>%
+  # If we had to sort the results
+  arrange(`O. Average Course Evaluation Rating`) %>%
   select(
     `Class Group`,
     `Gender`,
-    `A. I am enjoying the subject`,
-    `B. Classes start and end on time`,
-    `C. The learning environment is participative, involves learning by doing and is group-based`,
-    `D. The subject content is delivered according to the course outline and meets my expectations`,
-    `E. The topics are clear and logically developed`,
-    `F. I am developing my oral and writing skills`,
-    `G. I am developing my reflective and critical reasoning skills`,
-    `H. The assessment methods are assisting me to learn`,
-    `I. I receive relevant feedback`,
+    `A. I enjoyed the subject`,
+    `B. Classes started and ended on time`,
+    `C. The learning environment was participative, involved learning by doing and was group-based`,
+    `D. The subject content was delivered according to the course outline and met my expectations`,
+    `E. The topics were clear and logically developed`,
+    `F. I developed my oral and writing skills`,
+    `G. I developed my reflective and critical reasoning skills`,
+    `H. The assessment methods assisted me to learn`,
+    `I. I received relevant feedback`,
     `J. I read the recommended readings and notes`,
-    `K. I use the eLearning material posted`,
+    `K. I used the eLearning material posted`,
     `L. Average Quality of Teaching Strategies`,
     `M. Average Level of Learning Achieved`,
-    `N. Average Course Evaluation Rating`,
+    `N. Average Level of Technical Skill Achieved`,
+    `O. Average Course Evaluation Rating`,
     `Likes`,
-    `Wishes`
+    `Wishes`,
+    `Topics`
   )
+
 
 expand_contractions <- function(doc) {
   doc <- gsub("I'm", "I am", doc, ignore.case = TRUE)
@@ -962,6 +1076,8 @@ evaluation_likes_and_wishes$Likes <- sapply(evaluation_likes_and_wishes$Likes, r
 
 evaluation_likes_and_wishes$Wishes <- sapply(evaluation_likes_and_wishes$Wishes, remove_special_characters)
 
+evaluation_likes_and_wishes$Topics <- sapply(evaluation_likes_and_wishes$Topics, remove_special_characters)
+
 # Tokenization, stopword removal, censorship, short word removal
 undesirable_words <- c("wow", "lol", "none", "na")
 
@@ -979,9 +1095,9 @@ evaluation_likes_filtered <- evaluation_likes_and_wishes %>%
   # these are the words that are meaningful)
   filter(nchar(word) > 3) %>%
   # We then rename the variable "word" for ease of use.
-  rename(`Likes` = word) %>%
+  rename(`Likes` = word) # %>%
   # We focus only on the likes in this data frame
-  select(-Wishes)
+  # select(-Wishes)
 
 # The same is done to create a data frame for the "wishes" only
 evaluation_wishes_filtered <- evaluation_likes_and_wishes %>% # nolint
@@ -990,8 +1106,19 @@ evaluation_wishes_filtered <- evaluation_likes_and_wishes %>% # nolint
   distinct() %>%
   filter(!word %in% undesirable_words) %>%
   filter(nchar(word) > 3) %>%
-  rename(`Wishes` = word) %>%
-  select(-Likes)
+  rename(`Wishes` = word) # %>%
+  # select(-Likes)
+
+# The same is done to create a data frame for the "topics" only
+evaluation_topics_filtered <- evaluation_likes_and_wishes %>% # nolint
+  unnest_tokens(word, Topics, token = "ngrams", n = 1) %>%
+  anti_join(stop_words, by = c("word")) %>%
+  distinct() %>%
+  filter(!word %in% undesirable_words) %>%
+  filter(nchar(word) > 3) %>%
+  rename(`Topics` = word) # %>%
+  # select(-Likes)
+
 
 # Correct Spelling
 correct_spelling <- function(x) {
@@ -1066,6 +1193,38 @@ evaluation_wishes_filtered <- evaluation_wishes_filtered %>% # nolint
   filter(nchar(word) > 3) %>%
   rename(`Wishes` = word)
 
+# Wishes
+corrected_spelling <-
+  evaluation_wishes_filtered$`Wishes` %>%
+  correct_spelling()
+
+evaluation_wishes_filtered$`Wishes` <- corrected_spelling
+
+# Topics
+# corrected_spelling <-
+  # evaluation_topics_filtered$`Topics` %>%
+  # correct_spelling()
+
+# evaluation_topics_filtered$Topics <- corrected_spelling
+
+### ***** Repeat the pre-processing for the correctly spelt words ----
+# The repeated pre-processing includes:
+# 1. Expanding Contractions
+evaluation_topics_filtered$`Topics` <- sapply(evaluation_topics_filtered$`Topics`, expand_contractions) # nolint
+# 2. Remove special Characters
+evaluation_topics_filtered$`Topics` <- sapply(evaluation_topics_filtered$`Topics`, remove_special_characters) # nolint
+# 3. Convert to Lower-Case for a standard form
+evaluation_topics_filtered$`Topics` <- sapply(evaluation_topics_filtered$`Topics`, tolower) # nolint
+
+# 4. Tokenization, stopword removal, short word removal, and censorship
+evaluation_topics_filtered <- evaluation_topics_filtered %>% # nolint
+  unnest_tokens(word, `Topics`, token = "ngrams", n = 1) %>%
+  anti_join(stop_words, by = c("word")) %>%
+  distinct() %>%
+  filter(!word %in% undesirable_words) %>%
+  filter(nchar(word) > 3) %>%
+  rename(`Topics` = word)
+
 ### We can now perform lemmatization on the correctly spelt words ----
 # We need to first create a lemma lookup table. The lemmatize_strings()
 # function will then use this lookup table to replace the words.
@@ -1102,209 +1261,14 @@ lemma_dictionary_for_wishes <-
 evaluation_wishes_filtered$`Wishes` <-
   evaluation_wishes_filtered$`Wishes` %>%
   lemmatize_strings(dictionary = lemma_dictionary_for_wishes)
-```
 
-```{r SignificantWords_Likes, eval=FALSE, include=FALSE}
-## Evaluation Likes ----
-evaluation_likes_filtered_cloud <- evaluation_likes_filtered %>% # nolint
-  count(`Likes`, sort = TRUE)
+lemma_dictionary_for_topics <-
+  make_lemma_dictionary(evaluation_topics_filtered$Topics,
+                        engine = "hunspell")
 
-wordcloud2(evaluation_likes_filtered_cloud, size = .5)
-
-```
-
-```{r SignificantWords_Wishes, eval=FALSE, include=FALSE}
-## Evaluation Wishes ----
-evaluation_wishes_filtered_cloud <- evaluation_wishes_filtered %>%
-  count(`Wishes`, sort = TRUE)
-
-wordcloud2(evaluation_wishes_filtered_cloud, size = .5)
-```
-
-```{r removed_TFIDF_section_comment1, eval=FALSE, include=FALSE}
-# Term Frequency - Inverse Document Frequency (TF-IDF) Score
-# 
-# The plot below presents the quantitative measure of "significance" using the Term Frequency - Inverse Document Frequency (TF-IDF) score:
-# 
-# TF-IDF Score (likes) per gender:
-```
-
-```{r TF-IDFLikesPerGender, eval=FALSE, include=FALSE}
-popular_tfidf_words_gender_likes <- evaluation_likes_filtered %>% # nolint
-  unnest_tokens(word, `Likes`) %>%
-  distinct() %>%
-  filter(!word %in% undesirable_words) %>%
-  filter(nchar(word) > 3) %>%
-  rename(`Likes` = word) %>%
-  select(`Class Group`, `Gender`,
-         `N. Average Course Evaluation Rating`, `Likes`) %>%
-  count(`Gender`, `Likes`, sort = TRUE) %>%
-  ungroup() %>%
-  bind_tf_idf(`Likes`, `Gender`, n)
-
-top_popular_tfidf_words <- popular_tfidf_words_gender_likes %>%
-  arrange(desc(tf_idf)) %>%
-  mutate(`Likes` =
-           factor(`Likes`,
-                  levels = rev(unique(`Likes`)))) %>%
-  group_by(`Gender`) %>%
-  slice(seq_len(10)) %>%
-  ungroup() %>%
-  arrange(`Gender`, tf_idf) %>%
-  mutate(row = row_number())
-
-top_popular_tfidf_words %>%
-  ggplot(aes(x = row, tf_idf, fill = `Gender`)) +
-  geom_col(fill = blue_grey_colours_1) +
-  blue_grey_theme() +
-  labs(x = "Word in Course Evaluation", y = "TF-IDF Score") +
-  ggtitle("Important Words using TF-IDF by Chart Level") +
-  ggtitle("Most Important Words by TF-IDF Score in Course Evaluation Likes per 
-      Gender") +
-  facet_wrap(~`Gender`, scales = "free") +
-  scale_x_continuous(
-                     breaks = top_popular_tfidf_words$row,
-                     labels = top_popular_tfidf_words$`Likes`) +
-  coord_flip()
-```
-
-```{r removed_TFIDF_section_comment2, eval=FALSE, include=FALSE}
-# \newpage
-# 
-# TF-IDF Score (likes) per specific class group:
-```
-
-```{r TF-IDFLikesPerGroup, eval=FALSE, include=FALSE}
-### TF-IDF Score per Group ----
-popular_tfidf_words_likes <- evaluation_likes_filtered %>% # nolint
-  unnest_tokens(word, `Likes`) %>%
-  distinct() %>%
-  filter(!word %in% undesirable_words) %>%
-  filter(nchar(word) > 3) %>%
-  rename(`Likes` = word) %>%
-  select(`Class Group`, `Gender`,
-         `N. Average Course Evaluation Rating`, `Likes`) %>%
-  count(`Class Group`, `Likes`, sort = TRUE) %>%
-  ungroup() %>%
-  bind_tf_idf(`Likes`, `Class Group`, n)
-
-top_popular_tfidf_words <- popular_tfidf_words_likes %>%
-  arrange(desc(tf_idf)) %>%
-  mutate(`Likes` =
-           factor(`Likes`,
-                  levels = rev(unique(`Likes`)))) %>%
-  group_by(`Class Group`) %>%
-  slice(seq_len(10)) %>%
-  ungroup() %>%
-  arrange(`Class Group`, tf_idf) %>%
-  mutate(row = row_number())
-
-top_popular_tfidf_words %>%
-  ggplot(aes(x = row, tf_idf, fill = `Class Group`)) +
-  geom_col(fill = blue_grey_colours_1) +
-  blue_grey_theme() +
-  labs(x = "Word in Course Evaluation", y = "TF-IDF Score") +
-  ggtitle("Important Words using TF-IDF by Chart Level") +
-  ggtitle("Most Important Words by TF-IDF Score in Course Evaluation Likes per 
-      Specific Class Group") +
-  facet_wrap(~`Class Group`, scales = "free") +
-  scale_x_continuous(
-                     breaks = top_popular_tfidf_words$row,
-                     labels = top_popular_tfidf_words$`Likes`) +
-  coord_flip()
-```
-
-```{r removed_TFIDF_section_comment3, eval=FALSE, include=FALSE}
-# \newpage
-# 
-# TF-IDF Score (wishes) per gender:
-```
-
-```{r TF-IDFWishesPerGender, eval=FALSE, include=FALSE}
-## Evaluation Wishes ----
-### TF-IDF Score per Gender ----
-popular_tfidf_words_gender_wishes <- evaluation_wishes_filtered %>% # nolint
-  unnest_tokens(word, `Wishes`) %>%
-  distinct() %>%
-  filter(!word %in% undesirable_words) %>%
-  filter(nchar(word) > 3) %>%
-  rename(`Wishes` = word) %>%
-  select(`Class Group`, `Gender`,
-         `N. Average Course Evaluation Rating`, `Wishes`) %>%
-  count(`Gender`, `Wishes`, sort = TRUE) %>%
-  ungroup() %>%
-  bind_tf_idf(`Wishes`, `Gender`, n)
-
-top_popular_tfidf_words <- popular_tfidf_words_gender_wishes %>%
-  arrange(desc(tf_idf)) %>%
-  mutate(`Wishes` =
-           factor(`Wishes`,
-                  levels = rev(unique(`Wishes`)))) %>%
-  group_by(`Gender`) %>%
-  slice(seq_len(10)) %>%
-  ungroup() %>%
-  arrange(`Gender`, tf_idf) %>%
-  mutate(row = row_number())
-
-top_popular_tfidf_words %>%
-  ggplot(aes(x = row, tf_idf, fill = `Gender`)) +
-  geom_col(fill = blue_grey_colours_1) +
-  blue_grey_theme() +
-  labs(x = "Word in Course Evaluation", y = "TF-IDF Score") +
-  ggtitle("Important Words using TF-IDF by Chart Level") +
-  ggtitle("Most Important Words by TF-IDF Score in Course Evaluation Wishes per 
-      Gender") +
-  facet_wrap(~`Gender`, scales = "free") +
-  scale_x_continuous(
-                     breaks = top_popular_tfidf_words$row,
-                     labels = top_popular_tfidf_words$`Wishes`) +
-  coord_flip()
-```
-
-```{r removed_TFIDF_section_comment4, eval=FALSE, include=FALSE}
-# \newpage
-# 
-# TF-IDF score (wishes) per specific class group:
-```
-
-```{r TF-IDFWishesPerGroup, eval=FALSE, include=FALSE}
-### TF-IDF Score per Group ----
-popular_tfidf_words_likes <- evaluation_wishes_filtered %>% # nolint
-  unnest_tokens(word, `Wishes`) %>%
-  distinct() %>%
-  filter(!word %in% undesirable_words) %>%
-  filter(nchar(word) > 3) %>%
-  rename(`Wishes` = word) %>%
-  select(`Class Group`, `Gender`,
-         `N. Average Course Evaluation Rating`, `Wishes`) %>%
-  count(`Class Group`, `Wishes`, sort = TRUE) %>%
-  ungroup() %>%
-  bind_tf_idf(`Wishes`, `Class Group`, n)
-
-top_popular_tfidf_words <- popular_tfidf_words_likes %>%
-  arrange(desc(tf_idf)) %>%
-  mutate(`Wishes` =
-           factor(`Wishes`,
-                  levels = rev(unique(`Wishes`)))) %>%
-  group_by(`Class Group`) %>%
-  slice(seq_len(10)) %>%
-  ungroup() %>%
-  arrange(`Class Group`, tf_idf) %>%
-  mutate(row = row_number())
-
-top_popular_tfidf_words %>%
-  ggplot(aes(x = row, tf_idf, fill = `Class Group`)) +
-  geom_col(fill = blue_grey_colours_1) +
-  blue_grey_theme() +
-  labs(x = "Word in Course Evaluation", y = "TF-IDF Score") +
-  ggtitle("Important Words using TF-IDF by Chart Level") +
-  ggtitle("Most Important Words by TF-IDF Score in Course Evaluation Wishes per 
-      Specific Class Group") +
-  facet_wrap(~`Class Group`, scales = "free") +
-  scale_x_continuous(
-                     breaks = top_popular_tfidf_words$row,
-                     labels = top_popular_tfidf_words$`Wishes`) +
-  coord_flip()
+evaluation_topics_filtered$Topics <-
+  evaluation_topics_filtered$Topics %>%
+  lemmatize_strings(dictionary = lemma_dictionary_for_wishes)
 ```
 
 ## Sentiment Analysis (Lexicon-Based)
@@ -1325,7 +1289,7 @@ evaluation_wishes_filtered_nrc <- evaluation_wishes_filtered %>%
 
 ```
 
-The "likes" refer to the answer to the question, "Write two things you like about the teaching and learning in this unit so far." The sentiments expressed through the "likes" are:
+The "likes" refer to the answer to the question, "Write two things you liked about the teaching and learning in this course." The sentiments expressed through the "likes" are:
 
 ```{r OverallSentimentForLikes, echo=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE}
 # STEP 6. Overall Sentiment ----
@@ -1349,7 +1313,7 @@ nrc_likes_plot <- evaluation_likes_filtered_nrc %>%
 plot(nrc_likes_plot)
 ```
 
-The "wishes" refer to the answer to the question, "Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)." The sentiments expressed through the "wishes" are:
+The "wishes" refer to the answer to the question, "Write at least one recommendation to improve the teaching and learning in this course (for future classes)". The sentiments expressed through the "wishes" are:
 
 ```{r OverallSentimentForWishes, echo=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE}
 ## Evaluation Wishes ----
@@ -1473,17 +1437,32 @@ The goal of topic modelling is to identify latent (hidden) terms (topics) in the
 # LDA requires the data to be presented in a Document-Term Matrix (DTM)
 # format. The conversion into a DTM is done below: 
 evaluation_likes_filtered_dtm <-    evaluation_likes_filtered %>%   count(`Class Group`, Likes, sort = TRUE) %>%   ungroup() %>%   cast_dtm(`Class Group`, Likes, n)
-
 # inspect(evaluation_likes_filtered_dtm)
-evaluation_wishes_filtered_dtm <-    evaluation_wishes_filtered %>%   count(`Class Group`, Wishes, sort = TRUE) %>%   ungroup() %>%   cast_dtm(`Class Group`, Wishes, n) # inspect(evaluation_likes_filtered_dtm)
+
+evaluation_wishes_filtered_dtm <-    evaluation_wishes_filtered %>%   count(`Class Group`, Wishes, sort = TRUE) %>%   ungroup() %>%   cast_dtm(`Class Group`, Wishes, n)
+# inspect(evaluation_likes_filtered_dtm)
+
+evaluation_topics_filtered_dtm <-    evaluation_topics_filtered %>%   count(`Class Group`, Topics, sort = TRUE) %>%   ungroup() %>%   cast_dtm(`Class Group`, Topics, n)
+# inspect(evaluation_topics_filtered_dtm)
+
+# Check for rows with at least one non-zero entry
+rows_with_nonzero <- apply(evaluation_topics_filtered_dtm, 1, function(row) any(row != 0))
+
+# Select rows with at least one non-zero entry
+evaluation_topics_filtered_dtm_non_zero <- evaluation_topics_filtered_dtm[rows_with_nonzero, , drop = FALSE]
 ```
 
 ```{r train_LDA_model_for_topic_modelling, message=TRUE, warning=TRUE, include=FALSE}
 likes_topic_model <- LDA(evaluation_likes_filtered_dtm,
                          k = 3,
                          control = list(seed = 7))
+
 wishes_topic_model <- LDA(evaluation_wishes_filtered_dtm,
-                          k = 5,
+                          k = 4,
+                          control = list(seed = 7))
+
+topics_topic_model <- LDA(evaluation_topics_filtered_dtm_non_zero,
+                          k = 3,
                           control = list(seed = 7))
 ```
 
@@ -1491,9 +1470,9 @@ The 2 topics for the "likes" (as guided by the LDA model) are:
 
 1.  Topic 1: Well-Explained Lectures
 
-2.  Topic 2: Interactive and Practical Labs
+2.  Topic 2: Collaborative Environment
 
-3.  Topic 3: Learning Practical Skills
+3.  Topic 3: Well-Taught for Ease of Understanding
 
 ```{r visualizations_for_likes_topic_modelling, echo=FALSE}
 likes_topics <- tidy(likes_topic_model, matrix = "beta")
@@ -1513,15 +1492,13 @@ likes_top_terms %>%
 
 The 5 topics for the "wishes" (as guided by the LDA model) are:
 
-1.  Topic 1: Reduce the Amount of Content
+1.  Topic 1: Reduce the Workload
 
-2.  Topic 2: Allocate More Time for the Labs
+2.  Topic 2: Reduce the Complexity of the Labs
 
-3.  Topic 3: Lenient Deadlines
+3.  Topic 3: Application of Data Engineering
 
-4.  Topic 4: Recommend Professional Certifications
-
-5.  Topic 5: Help when Stuck in Technical Labs
+4.  Topic 4: Application of Python
 
 ```{r visualizations_for_wishes_topic_modelling, echo=FALSE}
 wishes_topics <- tidy(wishes_topic_model, matrix = "beta")
@@ -1540,53 +1517,107 @@ wishes_top_terms %>%
 
 \newpage
 
+The 3 topics for the recommended BI content (as guided by the LDA model) are:
+
+1.  Topic 1: Python
+
+2.  Topic 2: Tableau
+
+3.  Topic 3: PowerBI
+
+```{r visualizations_for_recommended_topics_topic_modelling, echo=FALSE}
+recommended_topics <- tidy(topics_topic_model, matrix = "beta")
+recommended_topics_top_terms <-
+  recommended_topics %>%
+  group_by (topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+
+recommended_topics_top_terms %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +   geom_col(show.legend = FALSE) +   facet_wrap(~topic, scales = "free") +   theme_minimal() +   theme(plot.title =            element_text(hjust = 0.5, size = 18)) +   labs(     title = "Topic Model of Recommended BI Topics",     caption = "Top Terms by Topic (betas)"     ) +   ylab("") +   xlab("") +   coord_flip()
+```
+
+\newpage
+
 # Appendices
 
-## Appendix A: Full Names of Variables
+## Appendix A: Full Name of Variables
 
 The following variables have been renamed to fit the correlation plots:
 
--   \`A. Enjoying Subject\` = \`Q02_General Questions-\>A - 1. I am enjoying the subject\`,
+-   \`A. Enjoying Subject\` = \`Q02_General Questions-\>A - 1. I enjoyed the subject\`,
 
--   \`B. Classes Start-End\` = \`Q02_General Questions-\>A - 2. Classes start and end on time\`,
+-   \`B. Classes Start-End\` = \`Q02_General Questions-\>A - 2. Classes started and ended on time\`,
 
--   \`C. Learning Environment\` = \`Q02_General Questions-\>A - 3. The learning environment is participative, involves learning by doing and is group-based\`,
+-   \`C. Learning Environment\` = \`Q02_General Questions-\>A - 3. The learning environment was participative, involved learning by doing and was group-based\`,
 
--   \`D. Content Delivery\` = \`Q02_General Questions-\>A - 4. The subject content is delivered according to the course outline and meets my expectations\`,
+-   \`D. Content Delivery\` = \`Q02_General Questions-\>A - 4. The subject content was delivered according to the course outline and met my expectations\`,
 
--   \`E. Clear Topics\` = \`Q02_General Questions-\>A - 5. The topics are clear and logically developed\`,
+-   \`E. Clear Topics\` = \`Q02_General Questions-\>A - 5. The topics were clear and logically developed\`,
 
--   \`F. Oral and Writing\` = \`Q02_General Questions-\>A - 6. I am developing my oral and writing skills\`,
+-   \`F. Oral and Writing\` = \`Q02_General Questions-\>A - 6. I developed my oral and writing skills\`,
 
--   \`G. Critical Thinking\` = \`Q02_General Questions-\>A - 7. I am developing my reflective and critical reasoning skills\`,
+-   \`G. Critical Thinking\` = \`Q02_General Questions-\>A - 7. I developed my reflective and critical reasoning skills\`,
 
--   \`H. Assessment Methods\` = \`Q02_General Questions-\>A - 8. The assessment methods are assisting me to learn\`,
+-   \`H. Assessment Methods\` = \`Q02_General Questions-\>A - 8. The assessment methods assisted me to learn\`,
 
--   \`I. Relevant Feedback\` = \`Q02_General Questions-\>A - 9. I receive relevant feedback\`,
+-   \`I. Relevant Feedback\` = \`Q02_General Questions-\>A - 9. I received relevant feedback\`,
 
 -   \`J. Read Recommendations\` = \`Q02_General Questions-\>A - 10. I read the recommended readings and notes\`,
 
--   \`L. eLearning Material\` = \`Q02_General Questions-\>A - 11. I use the eLearning material posted\`,
+-   \`L. eLearning Material\` = \`Q02_General Questions-\>A - 11. I used the eLearning material posted\`,
 
--   \`Understood Concept 1\` = \`Q03_Level of Learning Achieved-\>B - 1. Concept 1 of 4 - Ensemble Methods for Predictive Analytics\`,
+-   \`Understood BI1 Concept 1\` = \`Q03_Level of Learning Achieved-\>B - 1. - BI1 - Concept 1 of 4: Ensemble Methods for Predictive Analytics\`,
 
--   \`Understood Concept 2\` = \`Q03_Level of Learning Achieved-\>B - 2. Concept 2 of 4 - Predictive Modelling Using R\`,
+-   \`Understood BI1 Concept 2\` = \`Q03_Level of Learning Achieved-\>B - 2. - BI1 - Concept 2 of 4: Linear Algorithms for Predictive Analytics\`,
 
--   \`Teaching - Labs\` = \`Q04_Quality of Teaching Strategies-\>C - 1. Labs with comments that describe each step to be followed\`,
+-   \`Understood BI1 Concept 3\` = \`Q03_Level of Learning Achieved-\>B - 3. - BI1 - Concept 3 of 4: Non-Linear Algorithms for Predictive Analytics\`,
 
--   \`Labs with Submission\` = \`Q04_Quality of Teaching Strategies-\>C - 2. Labs that require you to put in effort to make a submission related to the content of the lab\`,
+-   \`Understood BI1 Concept 4\` = \`Q03_Level of Learning Achieved-\>B - 4. - BI1 - Concept 4 of 4: Dashboarding for Business-Facing and Customer-Facing Analytics\`,
 
--   \`Git in Teams\` =\`Q04_Quality of Teaching Strategies-\>C - 3. Labs that require you to use Git to work in a team\`,
+-   \`Understood BI2 Concept 1\` = \`Q03_Level of Learning Achieved-\>B - 1. - BI2 - Concept 1 of 4: Ensemble Methods for Predictive Analytics\`,
 
--   \`Solo Labs\` = \`Q04_Quality of Teaching Strategies-\>C - 4. Labs that require you to work alone\`,
+-   \`Understood BI2 Concept 2\` = \`Q03_Level of Learning Achieved-\>B - 2. - BI2 - Concept 2 of 4: Predictive Modelling Using R\`,
 
--   \`Quality of Lectures\` = \`Q04_Quality of Teaching Strategies-\>C - 5. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical/lively the lectures are)\`,
+-   \`Understood BI2 Concept 3\` = \`Q03_Level of Learning Achieved-\>B - 3. - BI2 - Concept 3 of 4: Data Warehousing and BI Strategy Implementation\`,
 
--   \`Recordings of Classes\` = \`Q04_Quality of Teaching Strategies-\>C - 6. The recordings of online classes\`,
+-   \`Understood BI2 Concept 4\` = \`Q03_Level of Learning Achieved-\>B - 4. - BI2 - Concept 4 of 4: Data Engineering\`,
 
--   \`Online Classes\` = \`Q04_Quality of Teaching Strategies-\>C - 7. Online classes in general\`,
+-   \`Acquired Skill 1\` = \`Q04_Competency for Technologies-\>D - 1. ChartJS\`,
 
--   \`Physical Classes\` = \`Q04_Quality of Teaching Strategies-\>C - 8. Face-to-Face classes in general\`
+-   \`Acquired Skill 2\` = \`Q04_Competency for Technologies-\>D - 2. R (includes R markdown and R plumber)\`,
+
+-   \`Acquired Skill 3\` = \`Q04_Competency for Technologies-\>D - 3. MySQL\`,
+
+-   \`Acquired Skill 4\` = \`Q04_Competency for Technologies-\>D - 4. Kafka\`,
+
+-   \`Acquired Skill 5\` = \`Q04_Competency for Technologies-\>D - 5. ksqlDB\`,
+
+-   \`Acquired Skill 6\` = \`Q04_Competency for Technologies-\>D - 6. ClickHouse\`,
+
+-   \`Acquired Skill 7\` = \`Q04_Competency for Technologies-\>D - 7. Linear and Non-Linear ML Algorithms in the caret package\`,
+
+-   \`Group Project\` = \`Q05_Quality of Teaching Strategies-\>E - 1. Group project\`,
+
+-   \`Labs Manuals\` = \`Q05_Quality of Teaching Strategies-\>E - 2. Lab manuals that outline the steps to follow during the labs\`,
+
+-   \`Lab Submissions\` = \`Q05_Quality of Teaching Strategies-\>E - 3. Required lab work submissions at the end of each lab manual that outline the activity to be done on your own\`,
+
+-   \`Supplementary Videos/Audio\` = \`Q05_Quality of Teaching Strategies-\>E - 4. Supplementary videos/audio to watch/listen to\`,
+
+-   \`Lecture Slides\` = \`Q05_Quality of Teaching Strategies-\>E - 5. Lectures slides\`,
+
+-   \`Lecture Notes\` = \`Q05_Quality of Teaching Strategies-\>E - 6. Lecture notes on some of the lecture slides\`,
+
+-   \`Quality of Lectures\` = \`Q05_Quality of Teaching Strategies-\>E - 7. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun/comical the lectures are)\`,
+
+-   \`Online for Theory\` = \`Q05_Quality of Teaching Strategies-\>E - 8. The division of theory and practice such that most of the theory is done during the recorded online classes and most of the practice is done during the physical classes\`,
+
+-   \`Recording of Online\` = \`Q05_Quality of Teaching Strategies-\>E - 9. The recordings of online classes\`
+
+\newpage
 
 ## Appendix B: Raw Qualitative Data
 
@@ -1595,11 +1626,11 @@ The following variables have been renamed to fit the correlation plots:
 The raw data of the likes is as follows:
 
 ```{r RawLikesData, echo=FALSE, message=FALSE, warning=FALSE}
-knitr::kable(course_evaluation_dataset$`Q05_Likes->D - 1. Write two things you like about the teaching and learning in this unit so far.`, caption = "Write two things you like about the teaching and learning in this unit so far", digits = 4, col.names = "Comment (Likes)", align = "l", escape = TRUE, longtable = TRUE, booktabs = TRUE, linesep = "\\hline") %>%
+knitr::kable(course_evaluation_dataset$`Q07_Likes->G - 1. Write two things you liked about the teaching and learning in this course.`, caption = "Write two things you like about the teaching and learning in this unit so far", digits = 4, col.names = "Comment (Likes)", align = "l", escape = TRUE, longtable = TRUE, booktabs = TRUE, linesep = "\\hline") %>%
   column_spec(1, width = "35em", extra_css = "border-bottom: 1px solid;") %>% 
   kable_styling(latex_options="scale_down")
 
-# course_evaluation_dataset$`Q05_Likes->D - 1. Write two things you like about the teaching and learning in this unit so far.` %>%
+# course_evaluation_dataset$`Q07_Likes->G - 1. Write two things you liked about the teaching and learning in this course.` %>%
   # my_kable_styling("Write two things you like about the teaching and learning in this unit so far")
 ```
 
@@ -1610,10 +1641,22 @@ knitr::kable(course_evaluation_dataset$`Q05_Likes->D - 1. Write two things you l
 The raw data of the wishes is as follows:
 
 ```{r RawWishesData, echo=FALSE, message=FALSE, warning=FALSE}
-knitr::kable(course_evaluation_dataset$`Q05_Wishes->D - 2. Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)`, caption = "Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)", digits = 4, col.names = "Comment (Wishes)", align = "l", escape = TRUE, longtable = TRUE, booktabs = TRUE, linesep = "\\hline") %>%
+knitr::kable(course_evaluation_dataset$`Q07_Wishes->G - 2. Write at least one recommendation to improve the teaching and learning in this course (for future classes)`, caption = "Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)", digits = 4, col.names = "Comment (Wishes)", align = "l", escape = TRUE, longtable = TRUE, booktabs = TRUE, linesep = "\\hline") %>%
   column_spec(1, width = "35em", extra_css = "border-bottom: 1px solid;") %>% 
   kable_styling(latex_options="scale_down")
 
-# course_evaluation_dataset$`Q05_Wishes->D - 2. Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)` %>%
+# course_evaluation_dataset$`Q07_Wishes->G - 2. Write at least one recommendation to improve the teaching and learning in this course (for future classes)` %>%
   # my_kable_styling("Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)")
+```
+
+\newpage
+
+## Appendix C: Additional Topics to Include in the Course
+
+The raw data of the addtional topics to include is as follows:
+
+```{r AdditionalTopics, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::kable(course_evaluation_dataset$`Q06_Topics to Add->F - 1. Are there any topics that you recommend should be added to in addition to the ones already in the BI1 and BI2 course outlines?`, caption = "Are there any topics that you recommend should be added to in addition to the ones already in the BI1 and BI2 course outlines?", digits = 4, col.names = "List of Topics", align = "l", escape = TRUE, longtable = TRUE, booktabs = TRUE, linesep = "\\hline") %>%
+  column_spec(1, width = "35em", extra_css = "border-bottom: 1px solid;") %>% 
+  kable_styling(latex_options="scale_down")
 ```
