@@ -1480,10 +1480,10 @@ evaluation_wishes_filtered_dtm <-    evaluation_wishes_filtered %>%   count(`Cla
 
 ```{r train_LDA_model_for_topic_modelling, message=TRUE, warning=TRUE, include=FALSE}
 likes_topic_model <- LDA(evaluation_likes_filtered_dtm,
-                         k = 2,
+                         k = 3,
                          control = list(seed = 7))
 wishes_topic_model <- LDA(evaluation_wishes_filtered_dtm,
-                          k = 3,
+                          k = 5,
                           control = list(seed = 7))
 ```
 
@@ -1492,6 +1492,8 @@ The 2 topics for the "likes" (as guided by the LDA model) are:
 1.  Topic 1: Well-Explained Lectures
 
 2.  Topic 2: Interactive and Practical Labs
+
+3.  Topic 3: Learning Practical Skills
 
 ```{r visualizations_for_likes_topic_modelling, echo=FALSE}
 likes_topics <- tidy(likes_topic_model, matrix = "beta")
@@ -1509,13 +1511,17 @@ likes_top_terms %>%
 
 \newpage
 
-The 3 topics for the "wishes" (as guided by the LDA model) are:
+The 5 topics for the "wishes" (as guided by the LDA model) are:
 
-1.  Topic 1: Reduce Workload
+1.  Topic 1: Reduce the Amount of Content
 
-2.  Topic 2: Lenient Deadlines
+2.  Topic 2: Allocate More Time for the Labs
 
-3.  Topic 3: Recommend Professional Certifications
+3.  Topic 3: Lenient Deadlines
+
+4.  Topic 4: Recommend Professional Certifications
+
+5.  Topic 5: Help when Stuck in Technical Labs
 
 ```{r visualizations_for_wishes_topic_modelling, echo=FALSE}
 wishes_topics <- tidy(wishes_topic_model, matrix = "beta")

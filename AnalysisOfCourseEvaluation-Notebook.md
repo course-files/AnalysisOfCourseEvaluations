@@ -1,7 +1,7 @@
 ---
 title: "Mid-Semester Course Evaluation Results"
 # author: "Allan Omondi"
-# date: "2023-11-26"
+# date: "2023-11-27"
 output:
   html_document: 
     toc: yes
@@ -239,17 +239,23 @@ The 2 topics for the "likes" (as guided by the LDA model) are:
 
 2.  Topic 2: Interactive and Practical Labs
 
+3.  Topic 3: Learning Practical Skills
+
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/visualizations_for_likes_topic_modelling-1.png)<!-- -->
 
 \newpage
 
-The 3 topics for the "wishes" (as guided by the LDA model) are:
+The 5 topics for the "wishes" (as guided by the LDA model) are:
 
-1.  Topic 1: Reduce Workload
+1.  Topic 1: Reduce the Amount of Content
 
-2.  Topic 2: Lenient Deadlines
+2.  Topic 2: Allocate More Time for the Labs
 
-3.  Topic 3: Recommend Professional Certifications
+3.  Topic 3: Lenient Deadlines
+
+4.  Topic 4: Recommend Professional Certifications
+
+5.  Topic 5: Help when Stuck in Technical Labs
 
 ![](AnalysisOfCourseEvaluation-Notebook_files/figure-html/visualizations_for_wishes_topic_modelling-1.png)<!-- -->
 
