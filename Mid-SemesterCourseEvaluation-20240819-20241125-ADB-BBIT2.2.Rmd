@@ -1,0 +1,1489 @@
+---
+title: "Mid-Semester Course Evaluation Results"
+# author: "Allan Omondi"
+# date: "`r Sys.Date()`"
+output:
+  pdf_document: 
+    toc: true
+    number_sections: true
+    fig_width: 8
+    fig_height: 8
+    keep_tex: true
+  html_document: 
+    toc: true
+    df_print: kable
+    fig_width: 8
+    fig_height: 8
+    fig_caption: true
+    toc_depth: 4
+    keep_md: true
+    css: CSS_Chunk.css
+  html_notebook: default
+  always_allow_html: true
+  word_document:
+    toc: yes
+---
+
+|  |  |
+|---------------------------------------|---------------------------------|
+| **Course** | Advanced Database Systems |
+| **Course Code** | BBT3104 |
+| **Class** | BBIT 2.2 |
+| **Semester Duration** | 19^th^ August 2024 to 25^th^ November 2024 |
+| **Date of Evaluation** | 23^rd^ September 2024 to 29^th^ September 2024 (Week 6 of 14) |
+| **Total number of students who submitted the course evaluation** | 171 |
+| **Total number of students registered in the AMS at the time of the course evaluation** | 192 |
+| **Response rate** | 89% |
+| **e-Learning URL** | <https://classroom.google.com/c/NzAxMDA1ODc3MzU4?cjc=cqyoyyy> |
+| **Data collection tool** | <https://docs.google.com/forms/d/e/1FAIpQLSd4By-juKjo3nB_ZEFWEdpUpWKBsTPeibqkYcoBKwZ0BOgXRg/viewform?usp=sf_link> |
+| **Raw Data** | <https://docs.google.com/spreadsheets/d/1R7UcA0w7yNBO1e0FeC2SusxJt9u3GsVkC5mOZQ-bP4k/edit?usp=sharing> |
+| **Lecturer** | Dr Allan Omondi \<aomondi\@strathmore.edu\> |
+
+------------------------------------------------------------------------
+
+```{r InstallandLoadtheRequiredPackages, include=FALSE, warning=FALSE}
+# Install and Load the Required Packages ----
+# The following packages can be installed and loaded before proceeding to 
+# the subsequent steps.
+
+## dplyr - For data manipulation ----
+if (!is.element("dplyr", installed.packages()[, 1])) {
+  install.packages("dplyr", dependencies = TRUE)
+}
+require("dplyr")
+
+## ggplot2 - For data visualizations using the Grammar for Graphics package ----
+if (!is.element("ggplot2", installed.packages()[, 1])) {
+  install.packages("ggplot2", dependencies = TRUE)
+}
+require("ggplot2")
+
+## ggrepel - Additional options for the Grammar for Graphics package ----
+if (!is.element("ggrepel", installed.packages()[, 1])) {
+  install.packages("ggrepel", dependencies = TRUE)
+}
+require("ggrepel")
+
+## ggraph - Additional options for the Grammar for Graphics package ----
+if (!is.element("ggraph", installed.packages()[, 1])) {
+  install.packages("ggraph", dependencies = TRUE)
+}
+require("ggraph")
+
+## tidytext - For text mining ----
+if (!is.element("tidytext", installed.packages()[, 1])) {
+  install.packages("tidytext", dependencies = TRUE)
+}
+require("tidytext")
+
+## tidyr - To tidy messy data ----
+if (!is.element("tidyr", installed.packages()[, 1])) {
+  install.packages("tidyr", dependencies = TRUE)
+}
+require("tidyr")
+
+## widyr - To widen, process, and re-tidy a dataset ----
+if (!is.element("widyr", installed.packages()[, 1])) {
+  install.packages("widyr", dependencies = TRUE)
+}
+require("widyr")
+
+## gridExtra - to arrange multiple grid-based plots on a page ----
+if (!is.element("gridExtra", installed.packages()[, 1])) {
+  install.packages("gridExtra", dependencies = TRUE)
+}
+require("gridExtra")
+
+## knitr - for dynamic report generation ----
+if (!is.element("knitr", installed.packages()[, 1])) {
+  install.packages("knitr", dependencies = TRUE)
+}
+require("knitr")
+
+## devtools ----
+if (!is.element("devtools", installed.packages()[, 1])) {
+  install.packages("devtools", dependencies = TRUE)
+}
+require("devtools")
+
+## kableExtra - for nicely formatted output tables ----
+#if (!is.element("kableExtra", installed.packages()[, 1])) {
+#  install.packages("kableExtra", dependencies = TRUE)
+#}
+#require("kableExtra")
+# The following kableExtra is used as an alternative to the one
+# stored in CRAN because of the errors when rendering to PDF.
+devtools::install_github("kupietz/kableExtra")
+require("kableExtra")
+
+## formattable -  To create a formattable object ----
+# A formattable object is an object to which a formatting function and related
+# attributes are attached.
+if (!is.element("formattable", installed.packages()[, 1])) {
+  install.packages("formattable", dependencies = TRUE)
+}
+require("formattable")
+
+## circlize - To create a cord diagram or visualization ----
+# by Gu et al. (2014)
+if (!is.element("circlize", installed.packages()[, 1])) {
+  install.packages("circlize", dependencies = TRUE)
+}
+require("circlize")
+
+## memery - For creating data analysis related memes ----
+# The memery package generates internet memes that optionally include a
+# superimposed inset plot and other atypical features, combining the visual
+# impact of an attention-grabbing meme with graphic results of data analysis.
+if (!is.element("memery", installed.packages()[, 1])) {
+  install.packages("memery", dependencies = TRUE)
+}
+require("memery")
+
+## magick - For image processing in R ----
+if (!is.element("magick", installed.packages()[, 1])) {
+  install.packages("magick", dependencies = TRUE)
+}
+require("magick")
+
+## yarrr - To create a pirate plot ----
+if (!is.element("yarrr", installed.packages()[, 1])) {
+  install.packages("yarrr", dependencies = TRUE)
+}
+require("yarrr")
+
+## radarchart - To create interactive radar charts using ChartJS ----
+if (!is.element("radarchart", installed.packages()[, 1])) {
+  install.packages("radarchart", dependencies = TRUE)
+}
+require("radarchart")
+
+## igraph - To create ngram network diagrams ----
+if (!is.element("igraph", installed.packages()[, 1])) {
+  install.packages("igraph", dependencies = TRUE)
+}
+require("igraph")
+
+## wordcloud2 - For creating wordcloud by using 'wordcloud2.JS ----
+if (!is.element("wordcloud2", installed.packages()[, 1])) {
+  install.packages("wordcloud2", dependencies = TRUE)
+}
+require("wordcloud2")
+
+## textdata - Download sentiment lexicons and labeled text data sets ----
+if (!is.element("textdata", installed.packages()[, 1])) {
+  install.packages("textdata", dependencies = TRUE)
+}
+require("textdata")
+
+## readr - Load datasets from CSV files ----
+if (!is.element("readr", installed.packages()[, 1])) {
+  install.packages("readr", dependencies = TRUE)
+}
+require("readr")
+
+## stringr - For processing characters in a string ----
+if (!is.element("stringr", installed.packages()[, 1])) {
+  install.packages("stringr", dependencies = TRUE,
+                   repos = "https://cloud.r-project.org")
+}
+require("stringr")
+
+## ggcorrplot - For correlation plots ----
+if (!is.element("ggcorrplot", installed.packages()[, 1])) {
+  install.packages("ggcorrplot", dependencies = TRUE,
+                   repos = "https://cloud.r-project.org")
+}
+require("ggcorrplot")
+
+## reshape2 - For formatting correlation plots ----
+if (!is.element("reshape2", installed.packages()[, 1])) {
+  install.packages("reshape2", dependencies = TRUE,
+                   repos = "https://cloud.r-project.org")
+}
+require("reshape2")
+
+## textstem - Used to lemmatize words ----
+if (!is.element("textstem", installed.packages()[, 1])) {
+  install.packages("textstem", dependencies = TRUE,
+                   repos = "https://cloud.r-project.org")
+}
+require("textstem")
+
+## hunspell - High-Performance Stemmer, Tokenizer, and Spell Checker ----
+if (!is.element("hunspell", installed.packages()[, 1])) {
+  install.packages("hunspell", dependencies = TRUE,
+                   repos = "https://cloud.r-project.org")
+}
+require("hunspell")
+
+## stringr - For processing characters in a string ----
+if (!is.element("stringr", installed.packages()[, 1])) {
+  install.packages("stringr", dependencies = TRUE,
+                   repos = "https://cloud.r-project.org")
+}
+require("stringr")
+
+## webshot2 - To ensure that HTML content is shown as a screenshot ----
+if (!is.element("webshot2", installed.packages()[, 1])) {
+  install.packages("webshot2", dependencies = TRUE,
+                   repos = "https://cloud.r-project.org")
+}
+require("webshot2")
+
+## caret - To create multivariate box and whisker plots ----
+if (!is.element("caret", installed.packages()[, 1])) {
+  install.packages("caret", dependencies = TRUE)
+}
+require("caret")
+
+## tm - For text mining (qualitative data analysis) ----
+if (!is.element("tm", installed.packages()[, 1])) {
+  install.packages("tm", dependencies = TRUE)
+}
+require("tm")
+
+## plotly - For interactive ggplot graphs ----
+if (!is.element("plotly", installed.packages()[, 1])) {
+  install.packages("plotly", dependencies = TRUE)
+}
+require("plotly")
+
+## lda - For Latent Dirichlet Allocation (LDA) used for topic modelling ----
+if (!is.element("lda", installed.packages()[, 1])) {
+  install.packages("lda", dependencies = TRUE)
+}
+require("lda")
+
+## topicmodels - For an interface to the C code for LDA models ----
+if (!is.element("topicmodels", installed.packages()[, 1])) {
+  install.packages("topicmodels", dependencies = TRUE)
+}
+require("topicmodels")
+```
+
+```{r CustomizetheVisualizations, include=FALSE, warning=FALSE}
+# Customize the Visualizations, Tables, and Colour Scheme ----
+# The following defines a blue-grey colour scheme for the visualizations:
+## shades of blue and shades of grey
+blue_grey_colours_11 <- c("#27408E", "#304FAF", "#536CB5", "#6981c7", "#8da0db",
+                          "#dde5ec", "#c8c9ca", "#B9BCC2", "#A7AAAF", "#888A8E",
+                          "#636569")
+
+blue_grey_colours_6 <- c("#27408E", "#304FAF", "#536CB5",
+                         "#B9BCC2", "#A7AAAF", "#888A8E")
+
+blue_grey_colours_4 <- c("#27408E", "#536CB5",
+                         "#B9BCC2", "#888A8E")
+
+blue_grey_colours_3 <- c("#6981c7", "#304FAF", "#888A8E")
+
+blue_grey_colours_2 <- c("#27408E",
+                         "#888A8E")
+
+blue_grey_colours_1 <- c("#6981c7")
+
+# Custom theme for visualizations
+blue_grey_theme <- function() {
+  theme(
+    axis.ticks = element_line(
+                              linewidth = 1, linetype = "dashed",
+                              lineend = NULL, color = "#dfdede",
+                              arrow = NULL, inherit.blank = FALSE),
+    axis.text = element_text(
+                             face = "plain", color = "#3f3f41",
+                             size = 12, hjust = 0.5),
+    axis.title = element_text(face = "plain", color = "#3f3f41",
+                              size = 12, hjust = 0.5),
+    plot.title = element_text(face = "bold", color = "#3f3f41",
+                              size = 12, hjust = 0.5),
+    panel.grid = element_line(
+                              linewidth = 0.1, linetype = "dashed",
+                              lineend = NULL, color = "#dfdede",
+                              arrow = NULL, inherit.blank = FALSE),
+    panel.background = element_rect(fill = "#f3eeee"),
+    legend.title = element_text(face = "plain", color = "#3f3f41",
+                                size = 12, hjust = 0),
+    legend.position = "right"
+  )
+}
+
+# Customize the text tables for consistency using HTML formatting
+my_kable_styling <- function(dat, caption) {
+  knitr::kable(dat, "html", escape = FALSE, caption = caption) %>%
+    kableExtra::kable_styling(bootstrap_options = c("striped", "condensed", "bordered"), full_width = FALSE)
+}
+```
+
+```{r ImportDataset, include=FALSE, warning=FALSE}
+# Load the Dataset ----
+library(readr)
+course_evaluation_dataset <-
+  read_csv(
+    "data/Mid-Term Course Evaluation Form (Responses) - Raw Data.csv",
+    col_types = cols(
+      `Timestamp` = col_datetime(format = "%d/%m/%Y %H:%M"),
+      `A - 2. Which group are you in?` = col_factor(levels = c(
+                                    "Group A - Regular",
+                                    "Group B - Regular",
+                                    "Group C - Regular")),
+      Gender = col_factor(levels = c("Male", "Female"))
+    )
+  )
+```
+
+```{r evaluation_rating_per_question_per_group_per_gender, warning=FALSE, include=FALSE}
+# Evaluation Rating per Group (1st) and per Gender (2nd) ----
+## Average per Question per Group ----
+evaluation_rating_per_question_per_group_per_gender <- course_evaluation_dataset %>%
+  rename(`Class Group` = `A - 2. Which group are you in?`) %>%
+  filter(!is.na(`B - 11. I use the eLearning material posted`)) %>%
+  rowwise() %>%
+  
+  # average_course_evaluation_rating
+  mutate(average_course_evaluation_rating = mean(c(`B - 1. I am enjoying the course`, `B - 2. Classes start and end on time`, `B - 3. The learning environment is participative, involves learning by doing, and is group-based`, `B - 4. The subject content is delivered according to the course outline and meets my expectations`, `B - 5. The topics are clear and logically developed`, `B - 6. I am developing my oral and writing skills`, `B - 7. I am developing my reflective and critical reasoning skills`, `B - 8. The assessment methods are assisting me to learn`, `B - 9. I receive relevant feedback`, `B - 10. I read the recommended readings and notes`, `B - 11. I use the eLearning material posted`))) %>%
+  
+  # average_level_of_learning_achieved
+  mutate(average_level_of_learning_achieved = mean(c(`C - 1. Concept 1 of 6: Business Processes`, `C - 2. Concept 2 of 6: Conceptual Data Modelling`,`C - 3. Concept 3 of 6: Database Constraints`))) %>%
+  
+  # average_level_of_skill_achieved
+
+  # average_quality_of_teaching_strategies  
+  mutate(average_quality_of_teaching_strategies = mean(c(`D - 1. The group project`, `D - 2. Quizzes at the end of each concept`, `D - 3. Lab manuals that outline the steps to follow during the labs`, `D - 4. Required lab work submissions at the end of each lab manual that outline the activity to be done on your own`, `D - 5. Labs that require you to use Git to work in a team`, `D - 6. Labs that require you to work alone`, `D - 7. Supplementary videos to watch as an additional explanation of a topic`, `D - 8. Supplementary content to read`, `D - 9. Lectures slides`, `D - 10. Lecture notes on some of the lecture slides`, `D - 11. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun, comical, or entertaining the lectures are)`, `D - 12. The integration of practical labs in most classes even if it is not in a computer lab`))) %>%
+  
+  group_by(`Class Group`, `Gender`) %>%
+  summarise(
+    `A. I am enjoying the course` =
+      mean(`B - 1. I am enjoying the course`),
+    `B. Classes start and end on time` =
+      mean(`B - 2. Classes start and end on time`),
+    `C. The learning environment is participative, involves learning by doing, and is group-based` =
+      mean(`B - 3. The learning environment is participative, involves learning by doing, and is group-based`),
+    `D. The subject content is delivered according to the course outline and meets my expectations` =
+      mean(`B - 4. The subject content is delivered according to the course outline and meets my expectations`),
+    `E. The topics are clear and logically developed` =
+      mean(`B - 5. The topics are clear and logically developed`),
+    `F. I am developing my oral and writing skillss` =
+      mean(`B - 6. I am developing my oral and writing skills`),
+    `G. I am developing my reflective and critical reasoning skills` =
+      mean(`B - 7. I am developing my reflective and critical reasoning skills`),
+    `H. The assessment methods are assisting me to learn` =
+      mean(`B - 8. The assessment methods are assisting me to learn`),
+    `I. I receive relevant feedback` =
+      mean(`B - 9. I receive relevant feedback`),
+    `J. I read the recommended readings and notes` =
+      mean(`B - 10. I read the recommended readings and notes`),
+    `K. I use the eLearning material posted` =
+      mean(`B - 11. I use the eLearning material posted`),
+     `L. Average Quality of Teaching Strategies` =
+      mean(average_quality_of_teaching_strategies),
+     `M. Average Level of Learning Achieved` =
+      mean(average_level_of_learning_achieved),
+     # `N. Average Level of Technical Skill Achieved` =
+     #  mean(average_level_of_skill_achieved),
+     `O. Average Course Evaluation Rating` =
+      mean(average_course_evaluation_rating)
+  ) %>%
+  # If we had to sort the results
+  # arrange(`Mean Average Course Evaluation Rating`) %>%
+  select(
+    `Class Group`,
+    `Gender`,
+    `A. I am enjoying the course`,
+    `B. Classes start and end on time`,
+    `C. The learning environment is participative, involves learning by doing, and is group-based`,
+    `D. The subject content is delivered according to the course outline and meets my expectations`,
+    `E. The topics are clear and logically developed`,
+    `F. I am developing my oral and writing skillss`,
+    `G. I am developing my reflective and critical reasoning skills`,
+    `H. The assessment methods are assisting me to learn`,
+    `I. I receive relevant feedback`,
+    `J. I read the recommended readings and notes`,
+    `K. I use the eLearning material posted`,
+    `L. Average Quality of Teaching Strategies`,
+    `M. Average Level of Learning Achieved`,
+    # `N. Average Level of Technical Skill Achieved`,
+    `O. Average Course Evaluation Rating`
+  )
+```
+
+```{r OverallScore, include=FALSE}
+overall_score <- course_evaluation_dataset %>%
+  rename(`Class Group` = `A - 2. Which group are you in?`) %>%
+  filter(!is.na(`B - 11. I use the eLearning material posted`)) %>%
+  rowwise() %>%
+  
+  # average_course_evaluation_rating
+  mutate(average_course_evaluation_rating = mean(c(`B - 1. I am enjoying the course`, `B - 2. Classes start and end on time`, `B - 3. The learning environment is participative, involves learning by doing, and is group-based`, `B - 4. The subject content is delivered according to the course outline and meets my expectations`, `B - 5. The topics are clear and logically developed`, `B - 6. I am developing my oral and writing skills`, `B - 7. I am developing my reflective and critical reasoning skills`, `B - 8. The assessment methods are assisting me to learn`, `B - 9. I receive relevant feedback`, `B - 10. I read the recommended readings and notes`, `B - 11. I use the eLearning material posted`))) %>%
+  
+  # average_level_of_learning_achieved
+  mutate(average_level_of_learning_achieved = mean(c(`C - 1. Concept 1 of 6: Business Processes`, `C - 2. Concept 2 of 6: Conceptual Data Modelling`, `C - 3. Concept 3 of 6: Database Constraints`))) %>%
+  
+  # average_level_of_skill_achieved
+  # mutate(average_level_of_skill_achieved = mean(c(`Q04_Competency for Technologies->D - 1. ChartJS`, `Q04_Competency for Technologies->D - 2. R (includes R markdown and R plumber)`, `Q04_Competency for Technologies->D - 3. MySQL`, `Q04_Competency for Technologies->D - 4. Kafka`, `Q04_Competency for Technologies->D - 5. ksqlDB`, `Q04_Competency for Technologies->D - 6. ClickHouse`, `Q04_Competency for Technologies->D - 7. Linear and Non-Linear ML Algorithms in the caret package`))) %>%
+
+  # average_quality_of_teaching_strategies  
+  mutate(average_quality_of_teaching_strategies = mean(c(`D - 1. The group project`, `D - 2. Quizzes at the end of each concept`, `D - 3. Lab manuals that outline the steps to follow during the labs`, `D - 4. Required lab work submissions at the end of each lab manual that outline the activity to be done on your own`, `D - 5. Labs that require you to use Git to work in a team`, `D - 6. Labs that require you to work alone`, `D - 7. Supplementary videos to watch as an additional explanation of a topic`, `D - 8. Supplementary content to read`, `D - 9. Lectures slides`, `D - 10. Lecture notes on some of the lecture slides`, `D - 11. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun, comical, or entertaining the lectures are)`, `D - 12. The integration of practical labs in most classes even if it is not in a computer lab`))) %>%
+  ungroup() %>%
+  summarise(mean_score = mean(average_course_evaluation_rating), median_score = median(average_course_evaluation_rating)) %>%
+  select(mean_score, median_score)
+
+percentage_overall_score <- (overall_score$mean_score / 5) * 100
+
+df <- data.frame(
+  overall_score$mean_score,
+  percentage_overall_score,
+  overall_score$median_score
+)
+colnames(df) <- c("Mean Score", "Percentage", "Median Score")
+```
+
+# Course Evaluation Score
+
+```{r TabularResultOfOverallScore, echo=FALSE, warning=FALSE, results='asis'}
+formatted_mean_score <- sprintf("Mean Course Evaluation Score = %.4f", df$`Mean Score`)
+cat(formatted_mean_score)
+cat(" / 5")
+
+formatted_percentage_mean_score <- sprintf("\n\nPercentage Mean Course Evaluation Score = %.2f", df$Percentage)
+cat(formatted_percentage_mean_score)
+cat("%")
+
+formatted_median_score <- sprintf("\n\nMedian Course Evaluation Score = %.4f", df$`Median Score`)
+cat(formatted_median_score)
+cat(" / 5")
+```
+
+------------------------------------------------------------------------
+
+```{r evaluation_rating_per_question_per_eLearning_class_per_gender, include=FALSE, warning=FALSE}
+# Evaluation Rating per e-learning Class Group (1st) and per Gender (2nd) ----
+# Get the average course evaluation rating per class group on e-learning
+# (first grouping) and per gender (second grouping) 
+evaluation_rating_per_question_per_eLearning_class_per_gender <- course_evaluation_dataset %>%
+  rename(`Class Group` = `A - 2. Which group are you in?`) %>%
+  filter(!is.na(`B - 11. I use the eLearning material posted`)) %>%
+  rowwise() %>%
+  
+  # average_course_evaluation_rating
+  mutate(average_course_evaluation_rating = mean(c(`B - 1. I am enjoying the course`, `B - 2. Classes start and end on time`, `B - 3. The learning environment is participative, involves learning by doing, and is group-based`, `B - 4. The subject content is delivered according to the course outline and meets my expectations`, `B - 5. The topics are clear and logically developed`, `B - 6. I am developing my oral and writing skills`, `B - 7. I am developing my reflective and critical reasoning skills`, `B - 8. The assessment methods are assisting me to learn`, `B - 9. I receive relevant feedback`, `B - 10. I read the recommended readings and notes`, `B - 11. I use the eLearning material posted`))) %>%
+  
+  # average_level_of_learning_achieved
+  mutate(average_level_of_learning_achieved = mean(c(`C - 1. Concept 1 of 6: Business Processes`, `C - 2. Concept 2 of 6: Conceptual Data Modelling`, `C - 3. Concept 3 of 6: Database Constraints`))) %>%
+  
+  # average_level_of_skill_achieved
+#   mutate(average_level_of_skill_achieved = mean(c(`Q04_Competency for Technologies->D - 1. ChartJS`, `Q04_Competency for Technologies->D - 2. R (includes R markdown and R plumber)`, `Q04_Competency for Technologies->D - 3. MySQL`, `Q04_Competency for Technologies->D - 4. Kafka`, `Q04_Competency for Technologies->D - 5. ksqlDB`, `Q04_Competency for Technologies->D - 6. ClickHouse`, `Q04_Competency for Technologies->D - 7. Linear and Non-Linear ML Algorithms in the caret package`))) %>%
+
+  # average_quality_of_teaching_strategies  
+  mutate(average_quality_of_teaching_strategies = mean(c(`D - 1. The group project`, `D - 2. Quizzes at the end of each concept`, `D - 3. Lab manuals that outline the steps to follow during the labs`, `D - 4. Required lab work submissions at the end of each lab manual that outline the activity to be done on your own`, `D - 5. Labs that require you to use Git to work in a team`, `D - 6. Labs that require you to work alone`, `D - 7. Supplementary videos to watch as an additional explanation of a topic`, `D - 8. Supplementary content to read`, `D - 9. Lectures slides`, `D - 10. Lecture notes on some of the lecture slides`, `D - 11. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun, comical, or entertaining the lectures are)`, `D - 12. The integration of practical labs in most classes even if it is not in a computer lab`))) %>%
+  
+  group_by(`Class Group`, `Gender`) %>%
+  summarise(
+    `A. I am enjoying the course` =
+      mean(`B - 1. I am enjoying the course`),
+    `B. Classes start and end on time` =
+      mean(`B - 2. Classes start and end on time`),
+    `C. The learning environment is participative, involves learning by doing, and is group-based` =
+      mean(`B - 3. The learning environment is participative, involves learning by doing, and is group-based`),
+    `D. The subject content is delivered according to the course outline and meets my expectations` =
+      mean(`B - 4. The subject content is delivered according to the course outline and meets my expectations`),
+    `E. The topics are clear and logically developed` =
+      mean(`B - 5. The topics are clear and logically developed`),
+    `F. I am developing my oral and writing skillss` =
+      mean(`B - 6. I am developing my oral and writing skills`),
+    `G. I am developing my reflective and critical reasoning skills` =
+      mean(`B - 7. I am developing my reflective and critical reasoning skills`),
+    `H. The assessment methods are assisting me to learn` =
+      mean(`B - 8. The assessment methods are assisting me to learn`),
+    `I. I receive relevant feedback` =
+      mean(`B - 9. I receive relevant feedback`),
+    `J. I read the recommended readings and notes` =
+      mean(`B - 10. I read the recommended readings and notes`),
+    `K. I use the eLearning material posted` =
+      mean(`B - 11. I use the eLearning material posted`),
+     `L. Average Quality of Teaching Strategies` =
+      mean(average_quality_of_teaching_strategies),
+     `M. Average Level of Learning Achieved` =
+      mean(average_level_of_learning_achieved),
+     # `N. Average Level of Technical Skill Achieved` =
+      # mean(average_level_of_skill_achieved),
+     `O. Average Course Evaluation Rating` =
+      mean(average_course_evaluation_rating)
+  ) %>%
+  # If we had to sort the results
+  # arrange(`O. Average Course Evaluation Rating`) %>%
+  select(
+    `Class Group`,
+    `Gender`,
+    `A. I am enjoying the course`,
+    `B. Classes start and end on time`,
+    `C. The learning environment is participative, involves learning by doing, and is group-based`,
+    `D. The subject content is delivered according to the course outline and meets my expectations`,
+    `E. The topics are clear and logically developed`,
+    `F. I am developing my oral and writing skillss`,
+    `G. I am developing my reflective and critical reasoning skills`,
+    `H. The assessment methods are assisting me to learn`,
+    `I. I receive relevant feedback`,
+    `J. I read the recommended readings and notes`,
+    `K. I use the eLearning material posted`,
+    `L. Average Quality of Teaching Strategies`,
+    `M. Average Level of Learning Achieved`,
+    # `N. Average Level of Technical Skill Achieved`,
+    `O. Average Course Evaluation Rating`
+  )
+```
+
+```{r evaluation_rating_per_question_per_gender_per_group, include=FALSE, warning=FALSE}
+# Evaluation Rating per Gender (1st) and per Group (2nd) ----
+# The average course evaluation rating per gender (first grouping) and per
+# group (second grouping)
+evaluation_rating_per_question_per_gender_per_group <- course_evaluation_dataset %>%
+  rename(`Class Group` = `A - 2. Which group are you in?`) %>%
+  filter(!is.na(`B - 11. I use the eLearning material posted`)) %>%
+  rowwise() %>%
+  
+  # average_course_evaluation_rating
+  mutate(average_course_evaluation_rating = mean(c(`B - 1. I am enjoying the course`, `B - 2. Classes start and end on time`, `B - 3. The learning environment is participative, involves learning by doing, and is group-based`, `B - 4. The subject content is delivered according to the course outline and meets my expectations`, `B - 5. The topics are clear and logically developed`, `B - 6. I am developing my oral and writing skills`, `B - 7. I am developing my reflective and critical reasoning skills`, `B - 8. The assessment methods are assisting me to learn`, `B - 9. I receive relevant feedback`, `B - 10. I read the recommended readings and notes`, `B - 11. I use the eLearning material posted`))) %>%
+  
+  # average_level_of_learning_achieved
+  mutate(average_level_of_learning_achieved = mean(c(`C - 1. Concept 1 of 6: Business Processes`, `C - 2. Concept 2 of 6: Conceptual Data Modelling`, `C - 3. Concept 3 of 6: Database Constraints`))) %>%
+
+  # average_level_of_skill_achieved
+#   mutate(average_level_of_skill_achieved = mean(c(`Q04_Competency for Technologies->D - 1. ChartJS`, `Q04_Competency for Technologies->D - 2. R (includes R markdown and R plumber)`, `Q04_Competency for Technologies->D - 3. MySQL`, `Q04_Competency for Technologies->D - 4. Kafka`, `Q04_Competency for Technologies->D - 5. ksqlDB`, `Q04_Competency for Technologies->D - 6. ClickHouse`, `Q04_Competency for Technologies->D - 7. Linear and Non-Linear ML Algorithms in the caret package`))) %>%
+
+  # average_quality_of_teaching_strategies  
+  mutate(average_quality_of_teaching_strategies = mean(c(`D - 1. The group project`, `D - 2. Quizzes at the end of each concept`, `D - 3. Lab manuals that outline the steps to follow during the labs`, `D - 4. Required lab work submissions at the end of each lab manual that outline the activity to be done on your own`, `D - 5. Labs that require you to use Git to work in a team`, `D - 6. Labs that require you to work alone`, `D - 7. Supplementary videos to watch as an additional explanation of a topic`, `D - 8. Supplementary content to read`, `D - 9. Lectures slides`, `D - 10. Lecture notes on some of the lecture slides`, `D - 11. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun, comical, or entertaining the lectures are)`, `D - 12. The integration of practical labs in most classes even if it is not in a computer lab`))) %>%
+
+  group_by(`Gender`, `Class Group`) %>%
+  summarise(
+    `A. I am enjoying the course` =
+      mean(`B - 1. I am enjoying the course`),
+    `B. Classes start and end on time` =
+      mean(`B - 2. Classes start and end on time`),
+    `C. The learning environment is participative, involves learning by doing, and is group-based` =
+      mean(`B - 3. The learning environment is participative, involves learning by doing, and is group-based`),
+    `D. The subject content is delivered according to the course outline and meets my expectations` =
+      mean(`B - 4. The subject content is delivered according to the course outline and meets my expectations`),
+    `E. The topics are clear and logically developed` =
+      mean(`B - 5. The topics are clear and logically developed`),
+    `F. I am developing my oral and writing skillss` =
+      mean(`B - 6. I am developing my oral and writing skills`),
+    `G. I am developing my reflective and critical reasoning skills` =
+      mean(`B - 7. I am developing my reflective and critical reasoning skills`),
+    `H. The assessment methods are assisting me to learn` =
+      mean(`B - 8. The assessment methods are assisting me to learn`),
+    `I. I receive relevant feedback` =
+      mean(`B - 9. I receive relevant feedback`),
+    `J. I read the recommended readings and notes` =
+      mean(`B - 10. I read the recommended readings and notes`),
+    `K. I use the eLearning material posted` =
+      mean(`B - 11. I use the eLearning material posted`),
+     `L. Average Quality of Teaching Strategies` =
+      mean(average_quality_of_teaching_strategies),
+     `M. Average Level of Learning Achieved` =
+      mean(average_level_of_learning_achieved),
+     # `N. Average Level of Technical Skill Achieved` =
+      # mean(average_level_of_skill_achieved),
+     `O. Average Course Evaluation Rating` =
+      mean(average_course_evaluation_rating)
+  ) %>%
+  # If we had to sort the results
+  # arrange(`O. Average Course Evaluation Rating`) %>%
+  select(
+    `Class Group`,
+    `Gender`,
+    `A. I am enjoying the course`,
+    `B. Classes start and end on time`,
+    `C. The learning environment is participative, involves learning by doing, and is group-based`,
+    `D. The subject content is delivered according to the course outline and meets my expectations`,
+    `E. The topics are clear and logically developed`,
+    `F. I am developing my oral and writing skillss`,
+    `G. I am developing my reflective and critical reasoning skills`,
+    `H. The assessment methods are assisting me to learn`,
+    `I. I receive relevant feedback`,
+    `J. I read the recommended readings and notes`,
+    `K. I use the eLearning material posted`,
+    `L. Average Quality of Teaching Strategies`,
+    `M. Average Level of Learning Achieved`,
+    # `N. Average Level of Technical Skill Achieved`,
+    `O. Average Course Evaluation Rating`
+  )
+```
+
+```{r Transpose, include=FALSE, warning=FALSE}
+# Transpose the Data  for Easier Visualization ----
+# We then transpose the data frame (for the group by class group and group by gender options)
+
+# Group by Class Group
+evaluation_rating_per_question_per_group_long_data <- evaluation_rating_per_question_per_group_per_gender %>%
+  select(-`Gender`) %>%
+  pivot_longer(
+               cols = -`Class Group`,
+               names_to = "Evaluation Question",
+               values_to = "Mean Value")
+
+# Group by Gender
+evaluation_rating_per_question_per_gender_long_data <- evaluation_rating_per_question_per_gender_per_group %>%
+  select(-`Class Group`) %>%
+  pivot_longer(
+               cols = -`Gender`,
+               names_to = "Evaluation Question",
+               values_to = "Mean Value")
+```
+
+\newpage
+
+# Quantitative Data Analysis
+
+## Course Evaluation Scores per Group
+
+```{r ProcessStringsBeforePlotting, warning=FALSE, include=FALSE}
+# This is done to enable word wrapping when the plot is created
+# Per Group
+evaluation_rating_per_question_per_group_long_data$`Evaluation Question` <- 
+  str_wrap(evaluation_rating_per_question_per_group_long_data$`Evaluation Question`, # nolint
+         width = 30)
+
+# Per Gender
+evaluation_rating_per_question_per_gender_long_data$`Evaluation Question` <- 
+  str_wrap(evaluation_rating_per_question_per_gender_long_data$`Evaluation Question`, # nolint
+         width = 30)
+```
+
+The **"Average Course Evaluation Rating"** variable in the plot below indicates the score **per gender** with a baseline of 4/5.
+
+```{r VisualizationsForCourseEvaluationResultsperGender, echo=FALSE, fig.height=12, warning=FALSE}
+### Visualizations (Grouped Vertical Bar Chart) ----
+# Per Group
+ggplot(evaluation_rating_per_question_per_gender_long_data,
+       aes(fill = `Gender`, y = `Mean Value`, x = `Evaluation Question`,
+           label = `Mean Value`)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  coord_flip() +  # Flip the coordinates to make it vertical
+  labs(title = "Standard Course Evaluation Score per Question per Gender",
+       x = "Standard Course Evaluation Questions", y = "Mean Value") +
+  scale_fill_manual(values = blue_grey_colours_2) +
+  blue_grey_theme() +
+  geom_hline(yintercept = 4, color = "#b90c0c",
+             linetype = "dashed", size = 1)
+```
+
+\newpage
+
+The **"Average Course Evaluation Rating"** variable in the plot below indicates the score **per class group** with a baseline of 4/5.
+
+```{r VisualizationsForCourseEvaluationResultsperGroup, echo=FALSE, fig.height=12, warning=FALSE}
+### Visualizations (Grouped Vertical Bar Chart) ----
+# Per Group
+ggplot(evaluation_rating_per_question_per_group_long_data,
+       aes(fill = `Class Group`, y = `Mean Value`, x = `Evaluation Question`,
+           label = `Mean Value`)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  coord_flip() +  # Flip the coordinates to make it vertical
+  labs(title = "Standard Course Evaluation Score per Question per Group",
+       x = "Standard Course Evaluation Questions", y = "Mean Value") +
+  scale_fill_manual(values = blue_grey_colours_6) +
+  blue_grey_theme() +
+  geom_hline(yintercept = 4, color = "#b90c0c",
+             linetype = "dashed", size = 1)
+
+
+
+```
+
+\newpage
+
+## Correlations
+
+```{r CorrelationMatrixWithoutFigures, fig.height=10, include=FALSE}
+# The general correlation values are presented below:
+course_evaluation_dataset_short_names <- course_evaluation_dataset %>%
+  rename(
+    `A. Enjoying Subject` = `B - 1. I am enjoying the course`,
+    `B. Classes Start-End` = `B - 2. Classes start and end on time`,
+    `C. Learning Environment` = `B - 3. The learning environment is participative, involves learning by doing, and is group-based`,
+    `D. Content Delivery` = `B - 4. The subject content is delivered according to the course outline and meets my expectations`,
+    `E. Clear Topics` = `B - 5. The topics are clear and logically developed`,
+     `F. Oral and Writing` = `B - 6. I am developing my oral and writing skills`,
+    `G. Critical Thinking` = `B - 7. I am developing my reflective and critical reasoning skills`,
+     `H. Assessment Methods` = `B - 8. The assessment methods are assisting me to learn`,
+    `I. Relevant Feedback` = `B - 9. I receive relevant feedback`,
+    `J. Read Recommendations` = `B - 10. I read the recommended readings and notes`,
+    `L. eLearning Material` = `B - 11. I use the eLearning material posted`,
+    `Understood Concept 1` = `C - 1. Concept 1 of 6: Business Processes`,
+    `Understood Concept 2` = `C - 2. Concept 2 of 6: Conceptual Data Modelling`,
+    `Understood Concept 3` = `C - 3. Concept 3 of 6: Database Constraints`,
+    # `Acquired Skill 1` = `Q04_Competency for Technologies->D - 1. ChartJS`,
+    # `Acquired Skill 2` = `Q04_Competency for Technologies->D - 2. R (includes R markdown and R plumber)`,
+    # `Acquired Skill 3` = `Q04_Competency for Technologies->D - 3. MySQL`,
+    # `Acquired Skill 4` = `Q04_Competency for Technologies->D - 4. Kafka`,
+    
+    # `Acquired Skill 5` = `Q04_Competency for Technologies->D - 5. ksqlDB`,
+    # `Acquired Skill 6` = `Q04_Competency for Technologies->D - 6. ClickHouse`,
+    # `Acquired Skill 7` = `Q04_Competency for Technologies->D - 7. Linear and Non-Linear ML Algorithms in the caret package`,
+    
+    `Group Project` = `D - 1. The group project`,
+    `Quizzes Ratings` = `D - 2. Quizzes at the end of each concept`,
+    `Lab Manuals` = `D - 3. Lab manuals that outline the steps to follow during the labs`,
+    `Lab Submissions` = `D - 4. Required lab work submissions at the end of each lab manual that outline the activity to be done on your own`,
+    `Use of Git` = `D - 5. Labs that require you to use Git to work in a team`,
+    `Individual Lab Work` = `D - 6. Labs that require you to work alone`,
+    `Supplementary Videos` = `D - 7. Supplementary videos to watch as an additional explanation of a topic`,
+    `Supplementary Notes` = `D - 8. Supplementary content to read`,
+    `Lecture Slides` = `D - 9. Lectures slides`,
+    `Lecture Notes on Slides` = `D - 10. Lecture notes on some of the lecture slides`,
+    `Actual Lectures` = `D - 11. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun, comical, or entertaining the lectures are)`,
+    `Lab and Theory Integration` = `D - 12. The integration of practical labs in most classes even if it is not in a computer lab`,
+    `Coursework Marks` = `Coursework`
+    ) %>%
+  
+  filter(!is.na(`Coursework Marks`)) %>%
+  
+  select(
+    `Absenteeism`,
+    `A. Enjoying Subject`,
+    `B. Classes Start-End`,
+    `C. Learning Environment`,
+    `D. Content Delivery`,
+    `E. Clear Topics`,
+    `F. Oral and Writing`,
+    `G. Critical Thinking`,
+    `H. Assessment Methods`,
+    `I. Relevant Feedback`,
+    `J. Read Recommendations`,
+    `L. eLearning Material`,
+    `Understood Concept 1`,
+    `Understood Concept 2`,
+    `Understood Concept 3`,
+    # `Acquired Skill 1`,
+    # `Acquired Skill 2`,
+    # `Acquired Skill 3`,
+    # `Acquired Skill 4`,
+    # `Acquired Skill 5`,
+    # `Acquired Skill 6`,
+    # `Acquired Skill 7`,
+
+    `Group Project`,
+    `Quizzes Ratings`,
+    `Lab Manuals`,
+    `Lab Submissions`,
+    `Use of Git`,
+    `Individual Lab Work`,
+    `Supplementary Videos`,
+    `Supplementary Notes`,
+    `Lecture Slides`,
+    `Lecture Notes on Slides`,
+    `Actual Lectures`,
+    `Lab and Theory Integration`,
+    `Coursework Marks`
+    
+  )
+
+# ggcorrplot(cor(course_evaluation_dataset_short_names))
+
+```
+
+The specific correlation values are presented below:
+
+```{r CorrelationMatrixWithFigures, echo=FALSE, fig.height=12, fig.width=12}
+# Create a correlation matrix
+corr_matrix <- cor(course_evaluation_dataset_short_names)
+
+# Create a ggplot2 plot for the correlation matrix
+p <- ggplot2::ggplot(data = reshape2::melt(corr_matrix),
+                     ggplot2::aes(Var1, Var2, fill = value)) +
+  ggplot2::geom_tile() +
+  ggplot2::geom_text(ggplot2::aes(label = label_wrap(label, width = 6)), size = 4) +  # Customize label_wrap width
+  ggplot2::scale_fill_gradient2(low = "red", high = "green") +
+  ggplot2::theme_minimal() +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
+
+ggcorrplot(lab_size = 2, corr_matrix, hc.order = TRUE, type = "lower", lab = TRUE)
+```
+
+### Interesting Correlations
+
+Correlations worth noting include:
+
+-   **0.78 correlation** between "lectures slides" and "lecture notes on some of the lecture slides": *Having lecture notes to accompany some lecture slides improves the overall quality of the lecture slide*
+
+-   **0.72 correlation** between "Supplementary videos to watch as an additional explanation of a topic" and "Supplementary content to read": *Students who find the supplementary videos useful with regad to their learning also find the supplementary notes useful*
+
+-   **0.72 correlation** between "the quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun, comical, or entertaining the lectures are)" and "the integration of practical labs in most classes even if it is not in a computer lab": *Mixing practicals with theory in the same class improves the overall quality of the lecture.*
+
+-   **0.7 correlation** between "understood Concept 2 (Conceptual Data Modelling)" and "understood Concept 3 (Database Constraints)": *Students who do not understand Concept 2 also do not understand Concept 3. It is necessary to understand Concept 2 before moving on to Concept 3.*
+
+-   **-0.56 correlation** between "Absenteeism" and "Coursework Marks": *The higher the absenteeism, the lower the student's coursework marks*
+
+-   **-0.29 correlation** between "Absenteeism" and "Understood Concept 1": *The more late students are to register for the course, the harder it is for them to understand concept 1*
+
+\newpage
+
+The negative correlation between "absenteeism" and "coursework marks" is stronger among the female students, i.e., the more classes a student misses, the worse their performance, especially for female students.
+
+```{r DrillDownCorr1, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(course_evaluation_dataset,
+       aes(x = `Absenteeism`, y = `Coursework`, shape = Gender, color = Gender)) +
+  geom_point() +
+  geom_smooth(method = lm)
+```
+
+\newpage
+
+### Absenteeism Percentage
+
+#### Absenteeism by Specific Class Group
+
+Group C has the lowest absenteeism issues despite having a class on Friday afternoon.
+
+```{r AbsenteeismBoxandWhiskerSpecificGroup, echo=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE}
+featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dataset$`A - 2. Which group are you in?`, plot = "box")
+```
+
+#### Absenteeism by Gender
+
+```{r AbsenteeismBoxandWhiskerGender, echo=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE}
+featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dataset$Gender, plot = "box")
+```
+
+\newpage
+
+# Qualitative Data Analysis
+
+```{r QualitativeDatareProcessing, message=FALSE, warning=FALSE, include=FALSE}
+## Average per Question per Group ----
+evaluation_likes_and_wishes <- course_evaluation_dataset %>%
+  rename(`Class Group` = `A - 2. Which group are you in?`) %>%
+  rename(`Likes` = `E - 1. Write at least two things you like about the teaching and learning in this unit so far.`) %>%
+  rename(`Wishes` = `E - 2. Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester).`) %>%
+  filter(!is.na(`B - 11. I use the eLearning material posted`)) %>%
+  rowwise() %>%
+  
+  # average_course_evaluation_rating
+  mutate(average_course_evaluation_rating = mean(c(`B - 1. I am enjoying the course`, `B - 2. Classes start and end on time`, `B - 3. The learning environment is participative, involves learning by doing, and is group-based`, `B - 4. The subject content is delivered according to the course outline and meets my expectations`, `B - 5. The topics are clear and logically developed`, `B - 6. I am developing my oral and writing skills`, `B - 7. I am developing my reflective and critical reasoning skills`, `B - 8. The assessment methods are assisting me to learn`, `B - 9. I receive relevant feedback`, `B - 10. I read the recommended readings and notes`, `B - 11. I use the eLearning material posted`))) %>%
+  
+  # average_level_of_learning_achieved
+  mutate(average_level_of_learning_achieved = mean(c(`C - 1. Concept 1 of 6: Business Processes`, `C - 2. Concept 2 of 6: Conceptual Data Modelling`, `C - 3. Concept 3 of 6: Database Constraints`))) %>%
+  
+  # average_level_of_skill_achieved
+#   mutate(average_level_of_skill_achieved = mean(c(`Q04_Competency for Technologies->D - 1. ChartJS`, `Q04_Competency for Technologies->D - 2. R (includes R markdown and R plumber)`, `Q04_Competency for Technologies->D - 3. MySQL`, `Q04_Competency for Technologies->D - 4. Kafka`, `Q04_Competency for Technologies->D - 5. ksqlDB`, `Q04_Competency for Technologies->D - 6. ClickHouse`, `Q04_Competency for Technologies->D - 7. Linear and Non-Linear ML Algorithms in the caret package`))) %>%
+
+  # average_quality_of_teaching_strategies  
+  mutate(average_quality_of_teaching_strategies = mean(c(`D - 1. The group project`, `D - 2. Quizzes at the end of each concept`, `D - 3. Lab manuals that outline the steps to follow during the labs`, `D - 4. Required lab work submissions at the end of each lab manual that outline the activity to be done on your own`, `D - 5. Labs that require you to use Git to work in a team`, `D - 6. Labs that require you to work alone`, `D - 7. Supplementary videos to watch as an additional explanation of a topic`, `D - 8. Supplementary content to read`, `D - 9. Lectures slides`, `D - 10. Lecture notes on some of the lecture slides`, `D - 11. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun, comical, or entertaining the lectures are)`, `D - 12. The integration of practical labs in most classes even if it is not in a computer lab`))) %>%
+  
+    rename(
+    `A. I am enjoying the course` =
+      (`B - 1. I am enjoying the course`),
+    `B. Classes start and end on time` =
+      (`B - 2. Classes start and end on time`),
+    `C. The learning environment is participative, involves learning by doing, and is group-based` =
+      (`B - 3. The learning environment is participative, involves learning by doing, and is group-based`),
+    `D. The subject content is delivered according to the course outline and meets my expectations` =
+      (`B - 4. The subject content is delivered according to the course outline and meets my expectations`),
+    `E. The topics are clear and logically developed` =
+      (`B - 5. The topics are clear and logically developed`),
+    `F. I am developing my oral and writing skillss` =
+      (`B - 6. I am developing my oral and writing skills`),
+    `G. I am developing my reflective and critical reasoning skills` =
+      (`B - 7. I am developing my reflective and critical reasoning skills`),
+    `H. The assessment methods are assisting me to learn` =
+      (`B - 8. The assessment methods are assisting me to learn`),
+    `I. I receive relevant feedback` =
+      (`B - 9. I receive relevant feedback`),
+    `J. I read the recommended readings and notes` =
+      (`B - 10. I read the recommended readings and notes`),
+    `K. I use the eLearning material posted` =
+      (`B - 11. I use the eLearning material posted`),
+     `L. Average Quality of Teaching Strategies` =
+      (average_quality_of_teaching_strategies),
+     `M. Average Level of Learning Achieved` =
+      (average_level_of_learning_achieved),
+     # `N. Average Level of Technical Skill Achieved` =
+      # (average_level_of_skill_achieved),
+     `O. Average Course Evaluation Rating` =
+      (average_course_evaluation_rating)
+  ) %>%
+  
+  group_by(`Class Group`, `Gender`) %>%
+  # If we had to sort the results
+  arrange(`O. Average Course Evaluation Rating`) %>%
+  select(
+    `Class Group`,
+    `Gender`,
+    `A. I am enjoying the course`,
+    `B. Classes start and end on time`,
+    `C. The learning environment is participative, involves learning by doing, and is group-based`,
+    `D. The subject content is delivered according to the course outline and meets my expectations`,
+    `E. The topics are clear and logically developed`,
+    `F. I am developing my oral and writing skillss`,
+    `G. I am developing my reflective and critical reasoning skills`,
+    `H. The assessment methods are assisting me to learn`,
+    `I. I receive relevant feedback`,
+    `J. I read the recommended readings and notes`,
+    `K. I use the eLearning material posted`,
+    `L. Average Quality of Teaching Strategies`,
+    `M. Average Level of Learning Achieved`,
+    # `N. Average Level of Technical Skill Achieved`,
+    `O. Average Course Evaluation Rating`,
+    `Likes`,
+    `Wishes`
+    # `Topics`
+  )
+
+
+expand_contractions <- function(doc) {
+  doc <- gsub("I'm", "I am", doc, ignore.case = TRUE)
+  doc <- gsub("you're", "you are", doc, ignore.case = TRUE)
+  doc <- gsub("he's", "he is", doc, ignore.case = TRUE)
+  doc <- gsub("she's", "she is", doc, ignore.case = TRUE)
+  doc <- gsub("it's", "it is", doc, ignore.case = TRUE)
+  doc <- gsub("we're", "we are", doc, ignore.case = TRUE)
+  doc <- gsub("they're", "they are", doc, ignore.case = TRUE)
+  doc <- gsub("I'll", "I will", doc, ignore.case = TRUE)
+  doc <- gsub("you'll", "you will", doc, ignore.case = TRUE)
+  doc <- gsub("he'll", "he will", doc, ignore.case = TRUE)
+  doc <- gsub("she'll", "she will", doc, ignore.case = TRUE)
+  doc <- gsub("it'll", "it will", doc, ignore.case = TRUE)
+  doc <- gsub("we'll", "we will", doc, ignore.case = TRUE)
+  doc <- gsub("they'll", "they will", doc, ignore.case = TRUE)
+  doc <- gsub("won't", "will not", doc, ignore.case = TRUE)
+  doc <- gsub("can't", "cannot", doc, ignore.case = TRUE)
+  doc <- gsub("n't", " not", doc, ignore.case = TRUE)
+  return(doc)
+}
+
+# Expand contractions
+evaluation_likes_and_wishes$Likes <- sapply(evaluation_likes_and_wishes$Likes, expand_contractions)
+
+evaluation_likes_and_wishes$Wishes <- sapply(evaluation_likes_and_wishes$Wishes, expand_contractions)
+
+# Remove special characters
+remove_special_characters <- function(doc) {
+  gsub("[^a-zA-Z ]", "", doc, ignore.case = TRUE)
+}
+
+evaluation_likes_and_wishes$Likes <- sapply(evaluation_likes_and_wishes$Likes, remove_special_characters)
+
+evaluation_likes_and_wishes$Wishes <- sapply(evaluation_likes_and_wishes$Wishes, remove_special_characters)
+
+# evaluation_likes_and_wishes$Topics <- sapply(evaluation_likes_and_wishes$Topics, remove_special_characters)
+
+# Tokenization, stopword removal, censorship, short word removal
+undesirable_words <- c("wow", "lol", "none", "na")
+
+evaluation_likes_filtered <- evaluation_likes_and_wishes %>%
+  # We start by tokenization (un-nesting words). This is from the variable
+  # "Like" into the variable "word".
+  unnest_tokens(word, Likes, token = "ngrams", n = 1) %>%
+  # Then we remove stopwords using an anti-join
+  # Anti-join: do not join where the word is in the list of stopwords
+  anti_join(stop_words, by = c("word")) %>%
+  distinct() %>%
+  # Censor or filter out unwanted words
+  filter(!word %in% undesirable_words) %>%
+  # Include only words that are more than 3 characters long (assuming that
+  # these are the words that are meaningful)
+  filter(nchar(word) > 3) %>%
+  # We then rename the variable "word" for ease of use.
+  rename(`Likes` = word) # %>%
+  # We focus only on the likes in this data frame
+  # select(-Wishes)
+
+# The same is done to create a data frame for the "wishes" only
+evaluation_wishes_filtered <- evaluation_likes_and_wishes %>% # nolint
+  unnest_tokens(word, Wishes, token = "ngrams", n = 1) %>%
+  anti_join(stop_words, by = c("word")) %>%
+  distinct() %>%
+  filter(!word %in% undesirable_words) %>%
+  filter(nchar(word) > 3) %>%
+  rename(`Wishes` = word) # %>%
+  # select(-Likes)
+
+# The same is done to create a data frame for the "topics" only
+# evaluation_topics_filtered <- evaluation_likes_and_wishes %>% # nolint
+#   unnest_tokens(word, Topics, token = "ngrams", n = 1) %>%
+#   anti_join(stop_words, by = c("word")) %>%
+#   distinct() %>%
+#   filter(!word %in% undesirable_words) %>%
+#   filter(nchar(word) > 3) %>%
+#   rename(`Topics` = word) # %>%
+  # select(-Likes)
+
+
+# Correct Spelling
+correct_spelling <- function(x) {
+  sapply(1:length(x),
+    function(y) {
+      bad <- hunspell(x[y])[[1]]
+      good <-
+        unlist(lapply(hunspell_suggest(bad),
+                      `[[`, 1))
+
+      if (length(bad)) {
+        for (i in 1:length(bad)){
+          x[y] <<- gsub(bad[i], good[i], x[y])
+        }
+      }
+    }
+  )
+  x
+}
+
+# Likes
+corrected_spelling <-
+  evaluation_likes_filtered$`Likes` %>%
+  correct_spelling()
+
+evaluation_likes_filtered$`Likes` <- corrected_spelling
+
+# The repeated pre-processing includes:
+# 1. Expanding Contractions
+evaluation_likes_filtered$`Likes` <- sapply(evaluation_likes_filtered$`Likes`, expand_contractions)
+
+# 2. Remove special Characters
+evaluation_likes_filtered$`Likes` <- sapply(evaluation_likes_filtered$`Likes`, remove_special_characters)
+
+# 3. Convert to Lower-Case for a standard form
+evaluation_likes_filtered$`Likes` <- sapply(evaluation_likes_filtered$`Likes`, tolower)
+
+# 4. Tokenization, stopword removal, short word removal, and censorship
+evaluation_likes_filtered <- evaluation_likes_filtered %>% # nolint
+  unnest_tokens(word, `Likes`, token = "ngrams", n = 1) %>%
+  anti_join(stop_words, by = c("word")) %>%
+  distinct() %>%
+  filter(!word %in% undesirable_words) %>%
+  filter(nchar(word) > 3) %>%
+  rename(`Likes` = word)
+
+# Wishes
+corrected_spelling <-
+  evaluation_wishes_filtered$`Wishes` %>%
+  correct_spelling()
+
+evaluation_wishes_filtered$`Wishes` <- corrected_spelling
+
+### Repeat the pre-processing for the correctly spelt words ----
+# This is done for the sake of the words which were split into more than one
+# word after correcting the spelling mistake.
+
+# The repeated pre-processing includes:
+# 1. Expanding Contractions
+evaluation_wishes_filtered$`Wishes` <- sapply(evaluation_wishes_filtered$`Wishes`, expand_contractions) # nolint
+# 2. Remove special Characters
+evaluation_wishes_filtered$`Wishes` <- sapply(evaluation_wishes_filtered$`Wishes`, remove_special_characters) # nolint
+# 3. Convert to Lower-Case for a standard form
+evaluation_wishes_filtered$`Wishes` <- sapply(evaluation_wishes_filtered$`Wishes`, tolower) # nolint
+
+# 4. Tokenization, stopword removal, short word removal, and censorship
+evaluation_wishes_filtered <- evaluation_wishes_filtered %>% # nolint
+  unnest_tokens(word, `Wishes`, token = "ngrams", n = 1) %>%
+  anti_join(stop_words, by = c("word")) %>%
+  distinct() %>%
+  filter(!word %in% undesirable_words) %>%
+  filter(nchar(word) > 3) %>%
+  rename(`Wishes` = word)
+
+# Wishes
+corrected_spelling <-
+  evaluation_wishes_filtered$`Wishes` %>%
+  correct_spelling()
+
+evaluation_wishes_filtered$`Wishes` <- corrected_spelling
+
+# Topics
+# corrected_spelling <-
+  # evaluation_topics_filtered$`Topics` %>%
+  # correct_spelling()
+
+# evaluation_topics_filtered$Topics <- corrected_spelling
+
+### ***** Repeat the pre-processing for the correctly spelt words ----
+# The repeated pre-processing includes:
+# 1. Expanding Contractions
+# evaluation_topics_filtered$`Topics` <- sapply(evaluation_topics_filtered$`Topics`, expand_contractions) # nolint
+# 2. Remove special Characters
+# evaluation_topics_filtered$`Topics` <- sapply(evaluation_topics_filtered$`Topics`, remove_special_characters) # nolint
+# 3. Convert to Lower-Case for a standard form
+# evaluation_topics_filtered$`Topics` <- sapply(evaluation_topics_filtered$`Topics`, tolower) # nolint
+
+# 4. Tokenization, stopword removal, short word removal, and censorship
+# evaluation_topics_filtered <- evaluation_topics_filtered %>% # nolint
+#   unnest_tokens(word, `Topics`, token = "ngrams", n = 1) %>%
+#   anti_join(stop_words, by = c("word")) %>%
+#   distinct() %>%
+#   filter(!word %in% undesirable_words) %>%
+#   filter(nchar(word) > 3) %>%
+#   rename(`Topics` = word)
+
+### We can now perform lemmatization on the correctly spelt words ----
+# We need to first create a lemma lookup table. The lemmatize_strings()
+# function will then use this lookup table to replace the words.
+
+# Think of the lemma lookup table as a subset of an entire lemma dictionary.
+# This makes it easier to search for a word in the smaller lookup table
+# instead of searching for a word in the entire lemma dictionary.
+
+# Lemma lookup tables specific to a project can be made by referring to
+# a pre-existing lemma dictionary. The code below shows how the "Hunspell"
+# lemma dictionary is used to create  the lemma lookup table (subset of
+# the dictionary).
+
+# Lemma dictionaries include:
+#   1. Hunspell: https://hunspell.github.io/ or
+#                https://cran.r-project.org/package=hunspell
+#   2. koRpus: https://reaktanz.de/?c=hacking&s=koRpus or
+#              https://cran.r-project.org/package=koRpus
+#   3. Michal Měchura (2016): https://www.lexiconista.com/
+#   etc.
+
+lemma_dictionary_for_likes <-
+  make_lemma_dictionary(evaluation_likes_filtered$`Likes`,
+                        engine = "hunspell")
+
+evaluation_likes_filtered$`Likes` <-
+  evaluation_likes_filtered$`Likes` %>%
+  lemmatize_strings(dictionary = lemma_dictionary_for_likes)
+
+lemma_dictionary_for_wishes <-
+  make_lemma_dictionary(evaluation_wishes_filtered$`Wishes`,
+                        engine = "hunspell")
+
+evaluation_wishes_filtered$`Wishes` <-
+  evaluation_wishes_filtered$`Wishes` %>%
+  lemmatize_strings(dictionary = lemma_dictionary_for_wishes)
+
+# lemma_dictionary_for_topics <-
+#   make_lemma_dictionary(evaluation_topics_filtered$Topics,
+#                         engine = "hunspell")
+
+# evaluation_topics_filtered$Topics <-
+#   evaluation_topics_filtered$Topics %>%
+#   lemmatize_strings(dictionary = lemma_dictionary_for_wishes)
+```
+
+## Sentiment Analysis (Lexicon-Based)
+
+```{r SentimentAnalysisWithNRC, include=FALSE}
+nrc <- get_sentiments("nrc")
+
+# Inner Join the Likes/Wishes with the Corresponding Sentiment(s) ----
+evaluation_likes_filtered_nrc <- evaluation_likes_filtered %>%
+  inner_join(get_sentiments("nrc"),
+             by = join_by(`Likes` == word),
+             relationship = "many-to-many")
+
+evaluation_wishes_filtered_nrc <- evaluation_wishes_filtered %>%
+  inner_join(get_sentiments("nrc"),
+             by = join_by(`Wishes` == word),
+             relationship = "many-to-many")
+
+```
+
+The "likes" refer to the answer to the question, "Write at least two things you like about the teaching and learning in this unit so far." The sentiments expressed through the "likes" are:
+
+```{r OverallSentimentForLikes, eval=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE, include=FALSE}
+# STEP 6. Overall Sentiment ----
+## Evaluation Likes ----
+nrc_likes_plot <- evaluation_likes_filtered_nrc %>%
+  group_by(sentiment) %>%
+  # You can filter by the class group if you wish
+  # filter(`Class Group` == "A") %>%
+  summarise(word_count = n()) %>%
+  ungroup() %>%
+  mutate(sentiment = reorder(sentiment, word_count)) %>%
+  # `fill = -word_count` is used to make the larger bars darker
+  ggplot(aes(sentiment, word_count, fill = -word_count)) +
+  geom_col() +
+  guides(fill = FALSE) + # Turn off the legend
+  blue_grey_theme() +
+  labs(x = "Sentiment", y = "Word Count") +
+  # scale_y_continuous(limits = c(0, 15000)) + #Hard code the axis limit
+  ggtitle("Lexicon-Based Sentiment Analysis of Course Evaluation Likes") +
+  coord_flip()
+plot(nrc_likes_plot)
+```
+
+The "wishes" refer to the answer to the question, "Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)". The sentiments expressed through the "wishes" are:
+
+```{r OverallSentimentForWishes, eval=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE, include=FALSE}
+## Evaluation Wishes ----
+nrc_wishes_plot <- evaluation_wishes_filtered_nrc %>%
+  group_by(sentiment) %>%
+  # You can filter by the class group if you wish
+  # filter(`Class Group` == "A") %>%
+  summarise(word_count = n()) %>%
+  ungroup() %>%
+  mutate(sentiment = reorder(sentiment, word_count)) %>%
+  # fill = -word_count is used to make the larger bars darker
+  ggplot(aes(sentiment, word_count, fill = -word_count)) +
+  geom_col() +
+  guides(fill = FALSE) + # Turn off the legend
+  blue_grey_theme() +
+  labs(x = "Sentiment", y = "Word Count") +
+  # scale_y_continuous(limits = c(0, 15000)) + #Hard code the axis limit
+  ggtitle("Lexicon-Based Sentiment Analysis of Course Evaluation Wishes") +
+  coord_flip()
+plot(nrc_wishes_plot)
+```
+
+\newpage
+
+### Chord Diagram of Sentiments for Likes per Class Group
+
+```{r ChordDiagramLikesPerGroup, echo=FALSE, message=FALSE, warning=FALSE}
+nrc_likes_chord <-  evaluation_likes_filtered_nrc %>%
+  count(sentiment, `Class Group`) %>%
+  group_by(`Class Group`, sentiment) %>%
+  summarise(sentiment_sum = sum(n)) %>%
+  filter(sentiment_sum > 5) %>%
+  mutate(sentiment = reorder(sentiment, sentiment_sum)) %>%
+  ungroup()
+
+circos.clear()
+# Set the gap size
+circos.par(gap.after = c(rep(5, length(unique(nrc_likes_chord[[1]])) - 1), 15,
+                         rep(5, length(unique(nrc_likes_chord[[2]])) - 1), 15))
+
+
+chordDiagram(nrc_likes_chord, transparency = .2)
+title("Lexicon-Based Sentiment Analysis of Course Evaluation Likes per Class Group")
+```
+
+\newpage
+
+### Chord Diagram of Sentiments for Likes per Class Gender
+
+```{r ChordDiagramLikesPerGender, echo=FALSE, message=FALSE, warning=FALSE}
+nrc_likes_chord <-  evaluation_likes_filtered_nrc %>%
+  count(sentiment, `Gender`) %>%
+  group_by(`Gender`, sentiment) %>%
+  summarise(sentiment_sum = sum(n)) %>%
+  filter(sentiment_sum > 5) %>%
+  mutate(sentiment = reorder(sentiment, sentiment_sum)) %>%
+  ungroup()
+
+circos.clear()
+# Set the gap size
+circos.par(gap.after = c(rep(5, length(unique(nrc_likes_chord[[1]])) - 1), 15,
+                         rep(5, length(unique(nrc_likes_chord[[2]])) - 1), 15))
+
+
+chordDiagram(nrc_likes_chord, transparency = .2)
+title("Lexicon-Based Sentiment Analysis of Course Evaluation Likes per Gender")
+```
+
+The results are similar for both genders but the male students are more positive and trustworthy based on their choice of words for the "likes question".
+
+\newpage
+
+### Chord Diagram of Sentiments for Wishes per Class Group
+
+```{r ChordDiagramPerGroup_Wishes, echo=FALSE, message=FALSE, warning=FALSE}
+nrc_wishes_chord <-  evaluation_wishes_filtered_nrc %>%
+  count(sentiment, `Class Group`) %>%
+  group_by(`Class Group`, sentiment) %>%
+  summarise(sentiment_sum = sum(n)) %>%
+  filter(sentiment_sum > 3) %>%
+  mutate(sentiment = reorder(sentiment, sentiment_sum)) %>%
+  ungroup()
+
+circos.clear()
+# Set the gap size
+circos.par(gap.after = c(rep(5, length(unique(nrc_wishes_chord[[1]])) - 1), 15,
+                         rep(5, length(unique(nrc_wishes_chord[[2]])) - 1), 15))
+
+chordDiagram(nrc_wishes_chord, transparency = .2)
+title("Lexicon-Based Sentiment Analysis of Course Evaluation Wishes per Class Group")
+
+```
+
+Group A and C express more negative sentiments with Group C also expressing fear based on their choice of words for the "wishes question".
+
+\newpage
+
+### Chord Diagram of Sentiments for Wishes per Gender
+
+```{r ChordDiagramPerGender_Wishes, echo=FALSE, message=FALSE, warning=FALSE}
+nrc_wishes_chord <-  evaluation_wishes_filtered_nrc %>%
+  count(sentiment, `Gender`) %>%
+  group_by(`Gender`, sentiment) %>%
+  summarise(sentiment_sum = sum(n)) %>%
+  filter(sentiment_sum > 3) %>%
+  mutate(sentiment = reorder(sentiment, sentiment_sum)) %>%
+  ungroup()
+
+circos.clear()
+# Set the gap size
+circos.par(gap.after = c(rep(5, length(unique(nrc_wishes_chord[[1]])) - 1), 15,
+                         rep(5, length(unique(nrc_wishes_chord[[2]])) - 1), 15))
+
+chordDiagram(nrc_wishes_chord, transparency = .2)
+title("Lexicon-Based Sentiment Analysis of Course Evaluation Wishes per Gender")
+```
+
+The sentiments for wishes are similar across both genders but female students express more fear than male students based on their choice of words.
+
+\newpage
+
+## Topic Modelling (Latent Dirichlet Allocation (LDA) based)
+
+The goal of topic modelling is to identify latent (hidden) terms (topics) in the students' course evaluation textual feedback. In this case, a topic is a mixture of words and a student's textual feedback is a combination of one or more topics (mixed-membership model).
+
+```{r Create_a_DTM, message=TRUE, warning=TRUE, include=FALSE}
+# LDA requires the data to be presented in a Document-Term Matrix (DTM)
+# format. The conversion into a DTM is done below: 
+evaluation_likes_filtered_dtm <-    evaluation_likes_filtered %>%   count(`Class Group`, Likes, sort = TRUE) %>%   ungroup() %>%   cast_dtm(`Class Group`, Likes, n)
+# inspect(evaluation_likes_filtered_dtm)
+
+evaluation_wishes_filtered_dtm <-    evaluation_wishes_filtered %>%   count(`Class Group`, Wishes, sort = TRUE) %>%   ungroup() %>%   cast_dtm(`Class Group`, Wishes, n)
+# inspect(evaluation_likes_filtered_dtm)
+
+# evaluation_topics_filtered_dtm <-    evaluation_topics_filtered %>%   count(`Class Group`, Topics, sort = TRUE) %>%   ungroup() %>%   cast_dtm(`Class Group`, Topics, n)
+# inspect(evaluation_topics_filtered_dtm)
+
+# Check for rows with at least one non-zero entry
+# rows_with_nonzero <- apply(evaluation_topics_filtered_dtm, 1, function(row) any(row != 0))
+
+# Select rows with at least one non-zero entry
+# evaluation_topics_filtered_dtm_non_zero <- evaluation_topics_filtered_dtm[rows_with_nonzero, , drop = FALSE]
+```
+
+```{r train_LDA_model_for_topic_modelling, message=TRUE, warning=TRUE, include=FALSE}
+likes_topic_model <- LDA(evaluation_likes_filtered_dtm,
+                         k = 3,
+                         control = list(seed = 7))
+
+wishes_topic_model <- LDA(evaluation_wishes_filtered_dtm,
+                          k = 4,
+                          control = list(seed = 7))
+
+# topics_topic_model <- LDA(evaluation_topics_filtered_dtm_non_zero,
+#                           k = 3,
+#                           control = list(seed = 7))
+```
+
+The 2 topics for the "likes" (as guided by the LDA model) are:
+
+1.  Topic 1: Well-Taught for Ease of Understanding
+
+2.  Topic 2: Practical
+
+3.  Topic 3: Organized
+
+```{r visualizations_for_likes_topic_modelling, echo=FALSE}
+likes_topics <- tidy(likes_topic_model, matrix = "beta")
+likes_top_terms <-
+  likes_topics %>%
+  group_by (topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+
+likes_top_terms %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +   geom_col(show.legend = FALSE) +   facet_wrap(~topic, scales = "free") +   theme_minimal() +   theme(plot.title =            element_text(hjust = 0.5, size = 18)) +   labs(     title = "Topic Model of Course Evaluation Likes",     caption = "Top Terms by Topic (betas)"     ) +   ylab("") +   xlab("") +   coord_flip()
+```
+
+\newpage
+
+The 5 topics for the "wishes" (as guided by the LDA model) are:
+
+1.  Topic 1: Extend the deadlines
+
+2.  Topic 2: Reduce the group work
+
+3.  Topic 3: More breaks during lectures
+
+```{r visualizations_for_wishes_topic_modelling, echo=FALSE}
+wishes_topics <- tidy(wishes_topic_model, matrix = "beta")
+wishes_top_terms <-
+  wishes_topics %>%
+  group_by (topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+
+wishes_top_terms %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +   facet_wrap(~topic, scales = "free") +   theme_minimal() + theme(plot.title = element_text(hjust = 0.5, size = 18)) +   labs(     title = "Topic Model of Course Evaluation Wishes",     caption = "Top Terms by Topic (betas)"     ) +   ylab("") +   xlab("") +   coord_flip()
+```
+
+\newpage
+
+# Appendices
+
+## Appendix A: Full Name of Variables
+
+The following variables have been renamed to fit the correlation plots:
+
+```         
+`A. Enjoying Subject` = `B - 1. I am enjoying the course`,
+`B. Classes Start-End` = `B - 2. Classes start and end on time`,
+`C. Learning Environment` = `B - 3. The learning environment is participative, involves learning by doing, and is group-based`,
+`D. Content Delivery` = `B - 4. The subject content is delivered according to the course outline and meets my expectations`,
+`E. Clear Topics` = `B - 5. The topics are clear and logically developed`,
+ `F. Oral and Writing` = `B - 6. I am developing my oral and writing skills`,
+`G. Critical Thinking` = `B - 7. I am developing my reflective and critical reasoning skills`,
+ `H. Assessment Methods` = `B - 8. The assessment methods are assisting me to learn`,
+`I. Relevant Feedback` = `B - 9. I receive relevant feedback`,
+`J. Read Recommendations` = `B - 10. I read the recommended readings and notes`,
+`L. eLearning Material` = `B - 11. I use the eLearning material posted`,
+`Understood Concept 1` = `C - 1. Concept 1 of 6: Business Processes`,
+`Understood Concept 2` = `C - 2. Concept 2 of 6: Conceptual Data Modelling`,
+`Understood Concept 3` = `C - 3. Concept 3 of 6: Database Constraints`,
+# `Acquired Skill 1` = `Q04_Competency for Technologies->D - 1. ChartJS`,
+# `Acquired Skill 2` = `Q04_Competency for Technologies->D - 2. R (includes R markdown and R plumber)`,
+# `Acquired Skill 3` = `Q04_Competency for Technologies->D - 3. MySQL`,
+# `Acquired Skill 4` = `Q04_Competency for Technologies->D - 4. Kafka`,
+
+# `Acquired Skill 5` = `Q04_Competency for Technologies->D - 5. ksqlDB`,
+# `Acquired Skill 6` = `Q04_Competency for Technologies->D - 6. ClickHouse`,
+# `Acquired Skill 7` = `Q04_Competency for Technologies->D - 7. Linear and Non-Linear ML Algorithms in the caret package`,
+
+`Group Project` = `D - 1. The group project`,
+`Quizzes Ratings` = `D - 2. Quizzes at the end of each concept`,
+`Lab Manuals` = `D - 3. Lab manuals that outline the steps to follow during the labs`,
+`Lab Submissions` = `D - 4. Required lab work submissions at the end of each lab manual that outline the activity to be done on your own`,
+`Use of Git` = `D - 5. Labs that require you to use Git to work in a team`,
+`Individual Lab Work` = `D - 6. Labs that require you to work alone`,
+`Supplementary Videos` = `D - 7. Supplementary videos to watch as an additional explanation of a topic`,
+`Supplementary Notes` = `D - 8. Supplementary content to read`,
+`Lecture Slides` = `D - 9. Lectures slides`,
+`Lecture Notes on Slides` = `D - 10. Lecture notes on some of the lecture slides`,
+`Actual Lectures` = `D - 11. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun, comical, or entertaining the lectures are)`,
+`Lab and Theory Integration` = `D - 12. The integration of practical labs in most classes even if it is not in a computer lab`,
+`Coursework Marks` = `Coursework`
+```
+
+\newpage
+
+## Appendix B: Raw Qualitative Data
+
+### Likes
+
+The raw data of the likes is as follows:
+
+```{r RawLikesData, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::kable(course_evaluation_dataset$`E - 1. Write at least two things you like about the teaching and learning in this unit so far.`, caption = "Write two things you like about the teaching and learning in this unit so far", digits = 4, col.names = "Comment (Likes)", align = "l", escape = TRUE, longtable = TRUE, booktabs = TRUE, linesep = "\\hline") %>%
+  column_spec(1, width = "35em", extra_css = "border-bottom: 1px solid;") %>% 
+  kable_styling(latex_options="scale_down")
+
+# course_evaluation_dataset$`Q07_Likes->G - 1. Write two things you liked about the teaching and learning in this course.` %>%
+  # my_kable_styling("Write two things you like about the teaching and learning in this unit so far")
+```
+
+\newpage
+
+### Wishes
+
+The raw data of the wishes is as follows:
+
+```{r RawWishesData, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::kable(course_evaluation_dataset$`E - 2. Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester).`, caption = "Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)", digits = 4, col.names = "Comment (Wishes)", align = "l", escape = TRUE, longtable = TRUE, booktabs = TRUE, linesep = "\\hline") %>%
+  column_spec(1, width = "35em", extra_css = "border-bottom: 1px solid;") %>% 
+  kable_styling(latex_options="scale_down")
+
+# course_evaluation_dataset$`Q07_Wishes->G - 2. Write at least one recommendation to improve the teaching and learning in this course (for future classes)` %>%
+  # my_kable_styling("Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)")
+```
