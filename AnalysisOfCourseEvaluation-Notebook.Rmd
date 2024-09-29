@@ -3,6 +3,14 @@ title: "Mid-Semester Course Evaluation Results"
 # author: "Allan Omondi"
 # date: "`r Sys.Date()`"
 output:
+  pdf_document:
+    toc: yes
+    number_sections: yes
+    fig_width: 8
+    fig_height: 8
+    fig_caption: yes
+    keep_tex: yes
+  html_notebook: default
   html_document: 
     toc: yes
     df_print: kable
@@ -12,14 +20,6 @@ output:
     toc_depth: 4
     keep_md: yes
     css: CSS_Chunk.css
-  html_notebook: default
-  pdf_document:
-    toc: yes
-    number_sections: yes
-    fig_width: 8
-    fig_height: 8
-    fig_caption: yes
-    keep_tex: yes
   always_allow_html: true
   word_document:
     toc: yes

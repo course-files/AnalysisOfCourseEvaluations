@@ -24,20 +24,31 @@ output:
     toc: yes
 ---
 
-|  |  |
-|---------------------------------------|---------------------------------|
-| **Course** | Advanced Database Systems |
-| **Course Code** | BBT3104 |
-| **Class** | BBIT 2.2 |
-| **Semester Duration** | 19^th^ August 2024 to 25^th^ November 2024 |
-| **Date of Evaluation** | 23^rd^ September 2024 to 29^th^ September 2024 (Week 6 of 14) |
-| **Total number of students who submitted the course evaluation** | 171 |
-| **Total number of students registered in the AMS at the time of the course evaluation** | 192 |
-| **Response rate** | 89% |
-| **e-Learning URL** | <https://classroom.google.com/c/NzAxMDA1ODc3MzU4?cjc=cqyoyyy> |
-| **Data collection tool** | <https://docs.google.com/forms/d/e/1FAIpQLSd4By-juKjo3nB_ZEFWEdpUpWKBsTPeibqkYcoBKwZ0BOgXRg/viewform?usp=sf_link> |
-| **Raw Data** | <https://docs.google.com/spreadsheets/d/1R7UcA0w7yNBO1e0FeC2SusxJt9u3GsVkC5mOZQ-bP4k/edit?usp=sharing> |
-| **Lecturer** | Dr Allan Omondi \<aomondi\@strathmore.edu\> |
++-----------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| **Course**                                                                              | Advanced Database Systems                                                                                          |
++-----------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| **Course Code**                                                                         | BBT3104                                                                                                            |
++-----------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| **Class**                                                                               | BBIT 2.2                                                                                                           |
++-----------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| **Semester Duration**                                                                   | 19^th^ August 2024 to 25^th^ November 2024                                                                         |
++-----------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| **Date of Evaluation**                                                                  | 23^rd^ September 2024 to 29^th^ September 2024 (Week 6 of 14)                                                      |
++-----------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| **Total number of students who submitted the course evaluation**                        | 171                                                                                                                |
++-----------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| **Total number of students registered in the AMS at the time of the course evaluation** | 192                                                                                                                |
++-----------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| **Response rate**                                                                       | 89%                                                                                                                |
++-----------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| **e-Learning URL**                                                                      | <https://classroom.google.com/c/NzAxMDA1ODc3MzU4?cjc=cqyoyyy>                                                      |
++-----------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| **Data collection tool**                                                                | <https://docs.google.com/forms/d/e/1FAIpQLSd4By-juKjo3nB_ZEFWEdpUpWKBsTPeibqkYcoBKwZ0BOgXRg/viewform?usp=sf_link>\ |
++-----------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| **Raw Data**                                                                            | <https://docs.google.com/spreadsheets/d/1R7UcA0w7yNBO1e0FeC2SusxJt9u3GsVkC5mOZQ-bP4k/edit?usp=sharing>\            |
++-----------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| **Lecturer**                                                                            | Dr Allan Omondi \<aomondi\@strathmore.edu\>                                                                        |
++-----------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
 
 ------------------------------------------------------------------------
 
@@ -260,6 +271,12 @@ if (!is.element("topicmodels", installed.packages()[, 1])) {
   install.packages("topicmodels", dependencies = TRUE)
 }
 require("topicmodels")
+
+## formatR - To format the printed tables ----
+if (!is.element("formatR", installed.packages()[, 1])) {
+  install.packages("formatR", dependencies = TRUE)
+}
+require("formatR")
 ```
 
 ```{r CustomizetheVisualizations, include=FALSE, warning=FALSE}
@@ -631,8 +648,6 @@ evaluation_rating_per_question_per_gender_long_data <- evaluation_rating_per_que
                values_to = "Mean Value")
 ```
 
-\newpage
-
 # Quantitative Data Analysis
 
 ## Course Evaluation Scores per Group
@@ -649,8 +664,6 @@ evaluation_rating_per_question_per_gender_long_data$`Evaluation Question` <-
   str_wrap(evaluation_rating_per_question_per_gender_long_data$`Evaluation Question`, # nolint
          width = 30)
 ```
-
-The **"Average Course Evaluation Rating"** variable in the plot below indicates the score **per gender** with a baseline of 4/5.
 
 ```{r VisualizationsForCourseEvaluationResultsperGender, echo=FALSE, fig.height=12, warning=FALSE}
 ### Visualizations (Grouped Vertical Bar Chart) ----
@@ -669,8 +682,6 @@ ggplot(evaluation_rating_per_question_per_gender_long_data,
 ```
 
 \newpage
-
-The **"Average Course Evaluation Rating"** variable in the plot below indicates the score **per class group** with a baseline of 4/5.
 
 ```{r VisualizationsForCourseEvaluationResultsperGroup, echo=FALSE, fig.height=12, warning=FALSE}
 ### Visualizations (Grouped Vertical Bar Chart) ----
@@ -783,7 +794,7 @@ course_evaluation_dataset_short_names <- course_evaluation_dataset %>%
 
 ```
 
-The specific correlation values are presented below:
+Please refer to [Appendix A: Full Name of Variables] for the full name of the variables listed in the correlation plot below.
 
 ```{r CorrelationMatrixWithFigures, echo=FALSE, fig.height=12, fig.width=12}
 # Create a correlation matrix
@@ -805,21 +816,21 @@ ggcorrplot(lab_size = 2, corr_matrix, hc.order = TRUE, type = "lower", lab = TRU
 
 Correlations worth noting include:
 
--   **0.78 correlation** between "lectures slides" and "lecture notes on some of the lecture slides": *Having lecture notes to accompany some lecture slides improves the overall quality of the lecture slide*
+-   **0.78 correlation** between "lectures slides" and "lecture notes on some of the lecture slides": *Having lecture notes to accompany some lecture slides may improve the overall quality of the lecture slide*
 
--   **0.72 correlation** between "Supplementary videos to watch as an additional explanation of a topic" and "Supplementary content to read": *Students who find the supplementary videos useful with regad to their learning also find the supplementary notes useful*
+-   **0.72 correlation** between "the quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun, comical, or entertaining the lectures are)" and "the integration of practical labs in most classes even if it is not in a computer lab": *Mixing practicals with theory in the same class may improve the overall quality of the lecture.*
 
--   **0.72 correlation** between "the quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun, comical, or entertaining the lectures are)" and "the integration of practical labs in most classes even if it is not in a computer lab": *Mixing practicals with theory in the same class improves the overall quality of the lecture.*
+-   **0.72 correlation** between "Supplementary videos to watch as an additional explanation of a topic" and "Supplementary content to read": *Students who find the supplementary videos useful with regard to their learning are likely to also find the supplementary notes useful*
 
--   **0.7 correlation** between "understood Concept 2 (Conceptual Data Modelling)" and "understood Concept 3 (Database Constraints)": *Students who do not understand Concept 2 also do not understand Concept 3. It is necessary to understand Concept 2 before moving on to Concept 3.*
+-   **0.7 correlation** between "understood Concept 2 (Conceptual Data Modelling)" and "understood Concept 3 (Database Constraints)": *Most students who do not understand Concept 2 also do not understand Concept 3. It may be necessary for students to understand Concept 2 before moving on to Concept 3.*
 
--   **-0.56 correlation** between "Absenteeism" and "Coursework Marks": *The higher the absenteeism, the lower the student's coursework marks*
+-   **-0.56 correlation** between "Absenteeism" and "Coursework Marks": *It is probable that the higher the absenteeism, the lower the student's coursework marks*
 
--   **-0.29 correlation** between "Absenteeism" and "Understood Concept 1": *The more late students are to register for the course, the harder it is for them to understand concept 1*
+-   **-0.29 correlation** between "Absenteeism" and "Understood Concept 1": *It is probable that the more late students are to register for the course and begin the semester, the harder it is for them to understand concept 1*
 
 \newpage
 
-The negative correlation between "absenteeism" and "coursework marks" is stronger among the female students, i.e., the more classes a student misses, the worse their performance, especially for female students.
+The negative correlation between "absenteeism" and "coursework marks" is slightly stronger among the female students, i.e., the more classes a student misses, the worse their performance, especially for female students.
 
 ```{r DrillDownCorr1, echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(course_evaluation_dataset,
@@ -840,7 +851,11 @@ Group C has the lowest absenteeism issues despite having a class on Friday after
 featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dataset$`A - 2. Which group are you in?`, plot = "box")
 ```
 
+\newpage
+
 #### Absenteeism by Gender
+
+Male students have more absenteeism challenges than female students.
 
 ```{r AbsenteeismBoxandWhiskerGender, echo=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE}
 featurePlot(x = course_evaluation_dataset$Absenteeism, y = course_evaluation_dataset$Gender, plot = "box")
@@ -1179,9 +1194,11 @@ evaluation_wishes_filtered_nrc <- evaluation_wishes_filtered %>%
 
 ```
 
-The "likes" refer to the answer to the question, "Write at least two things you like about the teaching and learning in this unit so far." The sentiments expressed through the "likes" are:
-
 ```{r OverallSentimentForLikes, eval=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE, include=FALSE}
+###################
+# Commented Text:
+# The "likes" refer to the answer to the question, "Write at least two things you like about the teaching and learning in this unit so far." The sentiments expressed through the "likes" are:
+##################
 # STEP 6. Overall Sentiment ----
 ## Evaluation Likes ----
 nrc_likes_plot <- evaluation_likes_filtered_nrc %>%
@@ -1203,9 +1220,12 @@ nrc_likes_plot <- evaluation_likes_filtered_nrc %>%
 plot(nrc_likes_plot)
 ```
 
-The "wishes" refer to the answer to the question, "Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)". The sentiments expressed through the "wishes" are:
-
 ```{r OverallSentimentForWishes, eval=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE, include=FALSE}
+###################
+# Commented Text:
+# The "wishes" refer to the answer to the question, "Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)". The sentiments expressed through the "wishes" are:
+##################
+
 ## Evaluation Wishes ----
 nrc_wishes_plot <- evaluation_wishes_filtered_nrc %>%
   group_by(sentiment) %>%
@@ -1225,8 +1245,6 @@ nrc_wishes_plot <- evaluation_wishes_filtered_nrc %>%
   coord_flip()
 plot(nrc_wishes_plot)
 ```
-
-\newpage
 
 ### Chord Diagram of Sentiments for Likes per Class Group
 
@@ -1248,6 +1266,8 @@ circos.par(gap.after = c(rep(5, length(unique(nrc_likes_chord[[1]])) - 1), 15,
 chordDiagram(nrc_likes_chord, transparency = .2)
 title("Lexicon-Based Sentiment Analysis of Course Evaluation Likes per Class Group")
 ```
+
+The sentiments expressed based on the choice of words are similar across all the 3 groups, i.e., positive sentiments.
 
 \newpage
 
@@ -1399,7 +1419,7 @@ wishes_topics <- tidy(wishes_topic_model, matrix = "beta")
 wishes_top_terms <-
   wishes_topics %>%
   group_by (topic) %>%
-  top_n(10, beta) %>%
+  top_n(3, beta) %>%
   ungroup() %>%
   arrange(topic, -beta)
 
@@ -1429,17 +1449,10 @@ The following variables have been renamed to fit the correlation plots:
 `I. Relevant Feedback` = `B - 9. I receive relevant feedback`,
 `J. Read Recommendations` = `B - 10. I read the recommended readings and notes`,
 `L. eLearning Material` = `B - 11. I use the eLearning material posted`,
+
 `Understood Concept 1` = `C - 1. Concept 1 of 6: Business Processes`,
 `Understood Concept 2` = `C - 2. Concept 2 of 6: Conceptual Data Modelling`,
 `Understood Concept 3` = `C - 3. Concept 3 of 6: Database Constraints`,
-# `Acquired Skill 1` = `Q04_Competency for Technologies->D - 1. ChartJS`,
-# `Acquired Skill 2` = `Q04_Competency for Technologies->D - 2. R (includes R markdown and R plumber)`,
-# `Acquired Skill 3` = `Q04_Competency for Technologies->D - 3. MySQL`,
-# `Acquired Skill 4` = `Q04_Competency for Technologies->D - 4. Kafka`,
-
-# `Acquired Skill 5` = `Q04_Competency for Technologies->D - 5. ksqlDB`,
-# `Acquired Skill 6` = `Q04_Competency for Technologies->D - 6. ClickHouse`,
-# `Acquired Skill 7` = `Q04_Competency for Technologies->D - 7. Linear and Non-Linear ML Algorithms in the caret package`,
 
 `Group Project` = `D - 1. The group project`,
 `Quizzes Ratings` = `D - 2. Quizzes at the end of each concept`,
@@ -1453,6 +1466,7 @@ The following variables have been renamed to fit the correlation plots:
 `Lecture Notes on Slides` = `D - 10. Lecture notes on some of the lecture slides`,
 `Actual Lectures` = `D - 11. The quality of the lectures given (quality measured by the breadth (the full span of knowledge of a subject) and depth (the extent to which specific topics are focused upon, amplified, and explored) of learning - NOT quality measured by how fun, comical, or entertaining the lectures are)`,
 `Lab and Theory Integration` = `D - 12. The integration of practical labs in most classes even if it is not in a computer lab`,
+
 `Coursework Marks` = `Coursework`
 ```
 
@@ -1464,13 +1478,21 @@ The following variables have been renamed to fit the correlation plots:
 
 The raw data of the likes is as follows:
 
-```{r RawLikesData, echo=FALSE, message=FALSE, warning=FALSE}
-knitr::kable(course_evaluation_dataset$`E - 1. Write at least two things you like about the teaching and learning in this unit so far.`, caption = "Write two things you like about the teaching and learning in this unit so far", digits = 4, col.names = "Comment (Likes)", align = "l", escape = TRUE, longtable = TRUE, booktabs = TRUE, linesep = "\\hline") %>%
-  column_spec(1, width = "35em", extra_css = "border-bottom: 1px solid;") %>% 
-  kable_styling(latex_options="scale_down")
+```{r RawLikesData, echo=FALSE, message=FALSE, warning=FALSE, tidy=TRUE}
+# knitr::kable(course_evaluation_dataset$`E - 1. Write at least two things you like about the teaching and learning in this unit so far.`, caption = "Write two things you like about the teaching and learning in this unit so far", digits = 4, col.names = "Comment (Likes)", align = "l", escape = TRUE, longtable = TRUE, booktabs = TRUE, linesep = "\\hline") %>%
+  # column_spec(1, width = "35em", extra_css = "border-bottom: 1px solid;") %>% 
+  # kable_styling(latex_options="scale_down")
 
 # course_evaluation_dataset$`Q07_Likes->G - 1. Write two things you liked about the teaching and learning in this course.` %>%
   # my_kable_styling("Write two things you like about the teaching and learning in this unit so far")
+
+
+course_evaluation_dataset_text <- course_evaluation_dataset %>%
+  select(`E - 1. Write at least two things you like about the teaching and learning in this unit so far.`, `E - 2. Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester).`)
+  
+  # course_evaluation_dataset$`E - 1. Write at least two things you like about the teaching and learning in this unit so far.`
+
+print(course_evaluation_dataset_text$`E - 1. Write at least two things you like about the teaching and learning in this unit so far.`)
 ```
 
 \newpage
@@ -1479,11 +1501,13 @@ knitr::kable(course_evaluation_dataset$`E - 1. Write at least two things you lik
 
 The raw data of the wishes is as follows:
 
-```{r RawWishesData, echo=FALSE, message=FALSE, warning=FALSE}
-knitr::kable(course_evaluation_dataset$`E - 2. Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester).`, caption = "Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)", digits = 4, col.names = "Comment (Wishes)", align = "l", escape = TRUE, longtable = TRUE, booktabs = TRUE, linesep = "\\hline") %>%
-  column_spec(1, width = "35em", extra_css = "border-bottom: 1px solid;") %>% 
-  kable_styling(latex_options="scale_down")
+```{r RawWishesData, fig.width=6, message=FALSE, warning=FALSE, paged.print=TRUE, echo=FALSE, tidy=TRUE}
+# knitr::kable(course_evaluation_dataset$`E - 2. Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester).`, caption = "Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)", digits = 4, col.names = "Comment (Wishes)", align = "l", escape = TRUE, longtable = TRUE, booktabs = TRUE, linesep = "\\hline") %>%
+  # column_spec(1, width = "35em", extra_css = "border-bottom: 1px solid;") %>% 
+  # kable_styling(latex_options="scale_down")
 
 # course_evaluation_dataset$`Q07_Wishes->G - 2. Write at least one recommendation to improve the teaching and learning in this course (for future classes)` %>%
   # my_kable_styling("Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester)")
+
+print(course_evaluation_dataset_text$`E - 2. Write at least one recommendation to improve the teaching and learning in this unit (for the remaining weeks in the semester).`)
 ```
