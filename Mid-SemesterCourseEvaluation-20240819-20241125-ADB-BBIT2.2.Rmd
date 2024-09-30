@@ -9,6 +9,7 @@ output:
     fig_width: 8
     fig_height: 8
     keep_tex: true
+    fig_crop: false
   html_document: 
     toc: true
     df_print: kable
@@ -22,6 +23,9 @@ output:
   always_allow_html: true
   word_document:
     toc: yes
+  header-includes:
+  - \usepackage{geometry}
+  - \geometry{a4paper, landscape, margin=0.5in}
 ---
 
 +-----------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
@@ -1292,7 +1296,7 @@ chordDiagram(nrc_likes_chord, transparency = .2)
 title("Lexicon-Based Sentiment Analysis of Course Evaluation Likes per Gender")
 ```
 
-The results are similar for both genders but the male students are more positive and trustworthy based on their choice of words for the "likes question".
+The results are similar for both genders but the male students are more positive and express the sentiment of trust more based on their choice of words for the "likes question".
 
 \newpage
 
@@ -1317,7 +1321,9 @@ title("Lexicon-Based Sentiment Analysis of Course Evaluation Wishes per Class Gr
 
 ```
 
-Group A and C express more negative sentiments with Group C also expressing fear based on their choice of words for the "wishes question".
+Group A and C express more negative sentiments with Group C being the only group expressing fear based on their choice of words for the "wishes question". This may be attributed to the fact that Group C has missed a number of classes due to the events and holidays on Fridays. Group C is the only group with a class on Friday.
+
+The reason for Group A's negative sentiments needs to be investigated further.
 
 \newpage
 
@@ -1382,11 +1388,11 @@ wishes_topic_model <- LDA(evaluation_wishes_filtered_dtm,
 #                           control = list(seed = 7))
 ```
 
-The 2 topics for the "likes" (as guided by the LDA model) are:
+The 3 topics for the "likes" (as guided by the LDA model) are:
 
 1.  Topic 1: Well-Taught for Ease of Understanding
 
-2.  Topic 2: Practical
+2.  Topic 2: Practical and the use of Slack for Technical Troubleshooting
 
 3.  Topic 3: Organized
 
@@ -1406,9 +1412,9 @@ likes_top_terms %>%
 
 \newpage
 
-The 5 topics for the "wishes" (as guided by the LDA model) are:
+The 4 topics for the "wishes" (as guided by the LDA model) are:
 
-1.  Topic 1: Extend the deadlines
+1.  Topic 1 and 4: Extend the deadlines
 
 2.  Topic 2: Reduce the group work
 
