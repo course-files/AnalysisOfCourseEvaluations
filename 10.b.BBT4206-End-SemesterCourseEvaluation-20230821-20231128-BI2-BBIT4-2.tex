@@ -85,11 +85,11 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
-  pdftitle={Mid-Semester Course Evaluation Results},
+  pdftitle={End-Semester Course Evaluation Results},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Mid-Semester Course Evaluation Results}
+\title{End-Semester Course Evaluation Results}
 \author{}
 \date{\vspace{-2.5em}}
 
@@ -115,10 +115,10 @@
 \textbf{Date of Evaluation} & 21\textsuperscript{st} November 2023 to
 27\textsuperscript{th} November 2023 (Week 14 of 14) \\
 \textbf{Total number of students who submitted the course evaluation} &
-102 \\
+107 \\
 \textbf{Total number of students registered in the AMS at the time of
 the course evaluation} & 114 \\
-\textbf{Response rate} & 88.69\% \\
+\textbf{Response rate} & 94\% \\
 \textbf{e-Learning URL} &
 \url{https://elearning.strathmore.edu/course/view.php?id=6599} \\
 \begin{minipage}[t]{\linewidth}\raggedright
@@ -170,6 +170,23 @@ The plot below presents a drill-down of the class group into
 
 \newpage
 
+Note that the 22 indicated as ``NA'' are all in Group A. Group A
+students filled in the course evaluation form before the question was
+set. Out of those asked, 98\% do not regret the choice to take the
+Business Intelligence Option instead of the Computer Networking Option
+in their final year.
+
+\begin{verbatim}
+## # A tibble: 3 x 2
+##   `Do you regret choosing the BI Option?` Number
+##   <chr>                                    <int>
+## 1 1 : Yes                                      2
+## 2 2 : No                                      83
+## 3 <NA>                                        22
+\end{verbatim}
+
+\newpage
+
 \subsection{Correlations}\label{correlations}
 
 The specific correlation values are presented below:
@@ -218,6 +235,8 @@ not imply causation''.
 
 \includegraphics{10.b.BBT4206-End-SemesterCourseEvaluation-20230821-20231128-BI2-BBIT4-2_files/figure-latex/DrillDownCorr1-1.pdf}
 
+\newpage
+
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
 \setcounter{enumi}{1}
@@ -265,15 +284,14 @@ Group}\label{absenteeism-by-specific-class-group}
 (Lexicon-Based)}\label{sentiment-analysis-lexicon-based}
 
 The ``likes'' refer to the answer to the question, ``Write two things
-you like about the teaching and learning in this unit so far.'' The
+you liked about the teaching and learning in this course.'' The
 sentiments expressed through the ``likes'' are:
 
 \includegraphics{10.b.BBT4206-End-SemesterCourseEvaluation-20230821-20231128-BI2-BBIT4-2_files/figure-latex/OverallSentimentForLikes-1.pdf}
 
 The ``wishes'' refer to the answer to the question, ``Write at least one
-recommendation to improve the teaching and learning in this unit (for
-the remaining weeks in the semester).'' The sentiments expressed through
-the ``wishes'' are:
+recommendation to improve the teaching and learning in this course (for
+future classes)''. The sentiments expressed through the ``wishes'' are:
 
 \includegraphics{10.b.BBT4206-End-SemesterCourseEvaluation-20230821-20231128-BI2-BBIT4-2_files/figure-latex/OverallSentimentForWishes-1.pdf}
 
@@ -318,9 +336,9 @@ The 2 topics for the ``likes'' (as guided by the LDA model) are:
 \item
   Topic 1: Well-Explained Lectures
 \item
-  Topic 2: Interactive and Practical Labs
+  Topic 2: Collaborative Environment
 \item
-  Topic 3: Learning Practical Skills
+  Topic 3: Well-Taught for Ease of Understanding
 \end{enumerate}
 
 \includegraphics{10.b.BBT4206-End-SemesterCourseEvaluation-20230821-20231128-BI2-BBIT4-2_files/figure-latex/visualizations_for_likes_topic_modelling-1.pdf}
@@ -332,103 +350,171 @@ The 5 topics for the ``wishes'' (as guided by the LDA model) are:
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  Topic 1: Reduce the Amount of Content
+  Topic 1: Reduce the Workload
 \item
-  Topic 2: Allocate More Time for the Labs
+  Topic 2: Reduce the Complexity of the Labs
 \item
-  Topic 3: Lenient Deadlines
+  Topic 3: Application of Data Engineering
 \item
-  Topic 4: Recommend Professional Certifications
-\item
-  Topic 5: Help when Stuck in Technical Labs
+  Topic 4: Application of Python
 \end{enumerate}
 
 \includegraphics{10.b.BBT4206-End-SemesterCourseEvaluation-20230821-20231128-BI2-BBIT4-2_files/figure-latex/visualizations_for_wishes_topic_modelling-1.pdf}
 
 \newpage
 
+The 3 topics for the recommended BI content (as guided by the LDA model)
+are:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Topic 1: Python
+\item
+  Topic 2: Tableau
+\item
+  Topic 3: PowerBI
+\end{enumerate}
+
+\includegraphics{10.b.BBT4206-End-SemesterCourseEvaluation-20230821-20231128-BI2-BBIT4-2_files/figure-latex/visualizations_for_recommended_topics_topic_modelling-1.pdf}
+
+\newpage
+
 \section{Appendices}\label{appendices}
 
-\subsection{Appendix A: Full Names of
-Variables}\label{appendix-a-full-names-of-variables}
+\subsection{Appendix A: Full Name of
+Variables}\label{appendix-a-full-name-of-variables}
 
 The following variables have been renamed to fit the correlation plots:
 
 \begin{itemize}
 \item
   `A. Enjoying Subject` = `Q02\_General Questions-\textgreater A - 1. I
-  am enjoying the subject`,
+  enjoyed the subject`,
 \item
   `B. Classes Start-End` = `Q02\_General Questions-\textgreater A - 2.
-  Classes start and end on time`,
+  Classes started and ended on time`,
 \item
   `C. Learning Environment` = `Q02\_General Questions-\textgreater A -
-  3. The learning environment is participative, involves learning by
-  doing and is group-based`,
+  3. The learning environment was participative, involved learning by
+  doing and was group-based`,
 \item
   `D. Content Delivery` = `Q02\_General Questions-\textgreater A - 4.
-  The subject content is delivered according to the course outline and
-  meets my expectations`,
+  The subject content was delivered according to the course outline and
+  met my expectations`,
 \item
   `E. Clear Topics` = `Q02\_General Questions-\textgreater A - 5. The
-  topics are clear and logically developed`,
+  topics were clear and logically developed`,
 \item
   `F. Oral and Writing` = `Q02\_General Questions-\textgreater A - 6. I
-  am developing my oral and writing skills`,
+  developed my oral and writing skills`,
 \item
   `G. Critical Thinking` = `Q02\_General Questions-\textgreater A - 7. I
-  am developing my reflective and critical reasoning skills`,
+  developed my reflective and critical reasoning skills`,
 \item
   `H. Assessment Methods` = `Q02\_General Questions-\textgreater A - 8.
-  The assessment methods are assisting me to learn`,
+  The assessment methods assisted me to learn`,
 \item
   `I. Relevant Feedback` = `Q02\_General Questions-\textgreater A - 9. I
-  receive relevant feedback`,
+  received relevant feedback`,
 \item
   `J. Read Recommendations` = `Q02\_General Questions-\textgreater A -
   10. I read the recommended readings and notes`,
 \item
   `L. eLearning Material` = `Q02\_General Questions-\textgreater A - 11.
-  I use the eLearning material posted`,
+  I used the eLearning material posted`,
 \item
-  `Understood Concept 1` = `Q03\_Level of Learning
-  Achieved-\textgreater B - 1. Concept 1 of 4 - Ensemble Methods for
-  Predictive Analytics`,
+  `Understood BI1 Concept 1` = `Q03\_Level of Learning
+  Achieved-\textgreater B - 1. - BI1 - Concept 1 of 4: Ensemble Methods
+  for Predictive Analytics`,
 \item
-  `Understood Concept 2` = `Q03\_Level of Learning
-  Achieved-\textgreater B - 2. Concept 2 of 4 - Predictive Modelling
-  Using R`,
+  `Understood BI1 Concept 2` = `Q03\_Level of Learning
+  Achieved-\textgreater B - 2. - BI1 - Concept 2 of 4: Linear Algorithms
+  for Predictive Analytics`,
 \item
-  `Teaching - Labs` = `Q04\_Quality of Teaching
-  Strategies-\textgreater C - 1. Labs with comments that describe each
-  step to be followed`,
+  `Understood BI1 Concept 3` = `Q03\_Level of Learning
+  Achieved-\textgreater B - 3. - BI1 - Concept 3 of 4: Non-Linear
+  Algorithms for Predictive Analytics`,
 \item
-  `Labs with Submission` = `Q04\_Quality of Teaching
-  Strategies-\textgreater C - 2. Labs that require you to put in effort
-  to make a submission related to the content of the lab`,
+  `Understood BI1 Concept 4` = `Q03\_Level of Learning
+  Achieved-\textgreater B - 4. - BI1 - Concept 4 of 4: Dashboarding for
+  Business-Facing and Customer-Facing Analytics`,
 \item
-  `Git in Teams` =`Q04\_Quality of Teaching Strategies-\textgreater C -
-  3. Labs that require you to use Git to work in a team`,
+  `Understood BI2 Concept 1` = `Q03\_Level of Learning
+  Achieved-\textgreater B - 1. - BI2 - Concept 1 of 4: Ensemble Methods
+  for Predictive Analytics`,
 \item
-  `Solo Labs` = `Q04\_Quality of Teaching Strategies-\textgreater C - 4.
-  Labs that require you to work alone`,
+  `Understood BI2 Concept 2` = `Q03\_Level of Learning
+  Achieved-\textgreater B - 2. - BI2 - Concept 2 of 4: Predictive
+  Modelling Using R`,
 \item
-  `Quality of Lectures` = `Q04\_Quality of Teaching
-  Strategies-\textgreater C - 5. The quality of the lectures given
+  `Understood BI2 Concept 3` = `Q03\_Level of Learning
+  Achieved-\textgreater B - 3. - BI2 - Concept 3 of 4: Data Warehousing
+  and BI Strategy Implementation`,
+\item
+  `Understood BI2 Concept 4` = `Q03\_Level of Learning
+  Achieved-\textgreater B - 4. - BI2 - Concept 4 of 4: Data
+  Engineering`,
+\item
+  `Acquired Skill 1` = `Q04\_Competency for Technologies-\textgreater D
+  - 1. ChartJS`,
+\item
+  `Acquired Skill 2` = `Q04\_Competency for Technologies-\textgreater D
+  - 2. R (includes R markdown and R plumber)`,
+\item
+  `Acquired Skill 3` = `Q04\_Competency for Technologies-\textgreater D
+  - 3. MySQL`,
+\item
+  `Acquired Skill 4` = `Q04\_Competency for Technologies-\textgreater D
+  - 4. Kafka`,
+\item
+  `Acquired Skill 5` = `Q04\_Competency for Technologies-\textgreater D
+  - 5. ksqlDB`,
+\item
+  `Acquired Skill 6` = `Q04\_Competency for Technologies-\textgreater D
+  - 6. ClickHouse`,
+\item
+  `Acquired Skill 7` = `Q04\_Competency for Technologies-\textgreater D
+  - 7. Linear and Non-Linear ML Algorithms in the caret package`,
+\item
+  `Group Project` = `Q05\_Quality of Teaching Strategies-\textgreater E
+  - 1. Group project`,
+\item
+  `Labs Manuals` = `Q05\_Quality of Teaching Strategies-\textgreater E -
+  2. Lab manuals that outline the steps to follow during the labs`,
+\item
+  `Lab Submissions` = `Q05\_Quality of Teaching
+  Strategies-\textgreater E - 3. Required lab work submissions at the
+  end of each lab manual that outline the activity to be done on your
+  own`,
+\item
+  `Supplementary Videos/Audio` = `Q05\_Quality of Teaching
+  Strategies-\textgreater E - 4. Supplementary videos/audio to
+  watch/listen to`,
+\item
+  `Lecture Slides` = `Q05\_Quality of Teaching Strategies-\textgreater E
+  - 5. Lectures slides`,
+\item
+  `Lecture Notes` = `Q05\_Quality of Teaching Strategies-\textgreater E
+  - 6. Lecture notes on some of the lecture slides`,
+\item
+  `Quality of Lectures` = `Q05\_Quality of Teaching
+  Strategies-\textgreater E - 7. The quality of the lectures given
   (quality measured by the breadth (the full span of knowledge of a
   subject) and depth (the extent to which specific topics are focused
   upon, amplified, and explored) of learning - NOT quality measured by
-  how fun/comical/lively the lectures are)`,
+  how fun/comical the lectures are)`,
 \item
-  `Recordings of Classes` = `Q04\_Quality of Teaching
-  Strategies-\textgreater C - 6. The recordings of online classes`,
+  `Online for Theory` = `Q05\_Quality of Teaching
+  Strategies-\textgreater E - 8. The division of theory and practice
+  such that most of the theory is done during the recorded online
+  classes and most of the practice is done during the physical classes`,
 \item
-  `Online Classes` = `Q04\_Quality of Teaching Strategies-\textgreater C
-  - 7. Online classes in general`,
-\item
-  `Physical Classes` = `Q04\_Quality of Teaching
-  Strategies-\textgreater C - 8. Face-to-Face classes in general`
+  `Recording of Online` = `Q05\_Quality of Teaching
+  Strategies-\textgreater E - 9. The recordings of online classes`
 \end{itemize}
+
+\newpage
 
 \subsection{Appendix B: Raw Qualitative
 Data}\label{appendix-b-raw-qualitative-data}
@@ -734,8 +820,8 @@ slightly.\textbackslash{} \bottomrule \textbackslash end\{longtable\}
 
 \newpage
 
-\subsubsection{Additional Topics to Include in the
-Course}\label{additional-topics-to-include-in-the-course}
+\subsection{Appendix C: Additional Topics to Include in the
+Course}\label{appendix-c-additional-topics-to-include-in-the-course}
 
 The raw data of the addtional topics to include is as follows:
 
